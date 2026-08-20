@@ -1,0 +1,20 @@
+#status	ok
+#file	v105/linux/Crafts.d2s
+#kind	character
+#formatVersion	105
+#character	Crafts	1	AMAZON	false
+#itemGroups	items	12	deadBody	0	mercenary	0	golem	0
+#rows	12
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	ceh	9	1	0	NORMAL	0xf526c48a
+INVENTORY	ceh	9	0	0	NORMAL	0xa4c5602c
+INVENTORY	ceh	9	2	0	NORMAL	0xd6c20d32
+INVENTORY	rin	0	3	0	MAGIC	0x1648660e
+INVENTORY	bet	8	2	0	NORMAL	0x308d2fab
+INVENTORY	bet	8	1	0	NORMAL	0xd802c67a
+INVENTORY	bet	8	0	0	NORMAL	0x19e36a58
+INVENTORY	tes	9	3	0	NORMAL	0xa29c8eea

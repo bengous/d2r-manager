@@ -1,0 +1,18 @@
+#status	ok
+#file	v105/linux/BigSets.d2s
+#kind	character
+#formatVersion	105
+#character	BigSets	1	ASSASSIN	false
+#itemGroups	items	10	deadBody	0	mercenary	0	golem	0
+#rows	10
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	uul	0	0	0	SET	0x4ea4433e
+STASH	7ws	2	0	0	SET	0x78770bb6
+STASH	urn	4	0	0	SET	0xf4d95430
+STASH	ne9	6	0	0	SET	0xe0c7f218
+STASH	7qr	9	0	0	SET	0xcfa6c82a
+STASH	7gd	0	3	0	SET	0x54f771

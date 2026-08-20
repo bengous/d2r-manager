@@ -1,0 +1,14 @@
+#status	ok
+#file	v105/linux/TransferOne.d2s
+#kind	character
+#formatVersion	105
+#character	TransferOne	1	BARBARIAN	false
+#itemGroups	items	6	deadBody	0	mercenary	0	golem	0
+#rows	6
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+EQUIPPED	hax	4	0	0	NORMAL	0xa9790e61
+EQUIPPED	buc	5	0	0	NORMAL	0x893f8ff9

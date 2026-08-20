@@ -1,0 +1,28 @@
+#status	ok
+#file	v105/linux/CharmedTwo.d2s
+#kind	character
+#formatVersion	105
+#character	CharmedTwo	1	AMAZON	false
+#itemGroups	items	20	deadBody	0	mercenary	0	golem	0
+#rows	20
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	cm3	0	0	0	MAGIC	0xed57345d
+INVENTORY	cm1	0	3	0	MAGIC	0x5b2b852a
+INVENTORY	cm1	9	3	0	MAGIC	0xfd5cbc55
+INVENTORY	cm3	9	0	0	MAGIC	0x8ba76609
+INVENTORY	cm1	8	3	0	MAGIC	0xb591bde0
+INVENTORY	cm1	8	2	0	MAGIC	0xb35ba461
+INVENTORY	cm1	8	1	0	MAGIC	0x38214ffc
+INVENTORY	cm3	1	0	0	MAGIC	0x68a6aa19
+INVENTORY	cm3	2	0	0	MAGIC	0xa0544108
+INVENTORY	cm3	3	0	0	MAGIC	0x411c5dae
+INVENTORY	cm3	4	0	0	MAGIC	0x6e5f9cae
+INVENTORY	cm1	8	0	0	MAGIC	0xbf4e72a
+INVENTORY	cm1	1	3	0	MAGIC	0x492ff086
+INVENTORY	cm1	2	3	0	MAGIC	0x3d87216d
+INVENTORY	cm1	3	3	0	MAGIC	0xad36c214
+INVENTORY	cm1	4	3	0	MAGIC	0x6d3d907d

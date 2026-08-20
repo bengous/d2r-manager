@@ -1,0 +1,16 @@
+#status	ok
+#file	v105/linux/TCEightySeven.d2s
+#kind	character
+#formatVersion	105
+#character	TCEightySeven	1	PALADIN	false
+#itemGroups	items	8	deadBody	0	mercenary	0	golem	0
+#rows	8
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	7wd	0	0	0	SET	0xae544452
+INVENTORY	7p7	1	0	0	UNIQUE	0x9c9fbfb6
+INVENTORY	obf	3	0	0	UNIQUE	0xd1b64936
+INVENTORY	7pa	8	0	0	UNIQUE	0x6949eae0

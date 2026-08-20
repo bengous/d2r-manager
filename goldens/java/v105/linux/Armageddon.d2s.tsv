@@ -1,0 +1,76 @@
+#status	ok
+#file	v105/linux/Armageddon.d2s
+#kind	character
+#formatVersion	105
+#character	Armageddon	30	DRUID	false
+#itemGroups	items	61	deadBody	0	mercenary	1	golem	0
+#rows	68
+container	code	invX	invY	stack	quality	fingerprint
+STASH	r05	5	7	0	NONE	null
+STASH	skc	9	9	0	NONE	null
+STASH	gcg	9	8	0	NONE	null
+STASH	gcr	9	7	0	NONE	null
+STASH	gcy	9	6	0	NONE	null
+STASH	gcv	9	5	0	NONE	null
+STASH	gcw	9	4	0	NONE	null
+STASH	gcw	9	3	0	NONE	null
+STASH	r05	6	9	0	NONE	null
+STASH	r01	7	9	0	NONE	null
+STASH	r06	8	9	0	NONE	null
+STASH	r03	8	8	0	NONE	null
+STASH	r04	9	2	0	NONE	null
+STASH	r06	9	1	0	NONE	null
+STASH	r02	9	0	0	NONE	null
+STASH	skc	8	7	0	NONE	null
+INVENTORY	vps	9	2	0	NONE	null
+STASH	r02	8	6	0	NONE	null
+INVENTORY	key	2	0	5	NORMAL	0xf1067cc7
+STASH	r03	8	5	0	NONE	null
+STASH	r03	8	4	0	NONE	null
+INVENTORY	cm3	2	1	0	MAGIC	0x57e121d8
+STASH	r03	8	3	0	NONE	null
+INVENTORY	cm1	3	3	0	MAGIC	0x80149977
+INVENTORY	cm1	3	2	0	MAGIC	0x8d7dfabf
+BELT	rvs	2	0	0	NONE	null
+STASH	r04	8	1	0	NONE	null
+STASH	r06	8	0	0	NONE	null
+STASH	gcv	7	8	0	NONE	null
+EQUIPPED	rin	6	0	0	RARE	0xa5c39df
+EQUIPPED	rin	7	0	0	MAGIC	0x823986c6
+EQUIPPED	vbt	9	0	0	RARE	0x7c99740d
+EQUIPPED	mgl	10	0	0	RARE	0xe1c04707
+INVENTORY	cm1	3	1	0	MAGIC	0xdbcdcea2
+STASH	gpy	7	7	0	NONE	null
+INVENTORY	rvs	9	1	0	NONE	null
+BELT	hp4	1	0	0	NONE	null
+INVENTORY	hp4	9	0	0	NONE	null
+CUBE	brs	0	0	0	MAGIC	0xe2ee43bb
+EQUIPPED	dr1	1	0	0	NORMAL	0xeb7dac8b
+SOCKET	gcy	0	0	0	NONE	null
+SOCKET	gcy	1	0	0	NONE	null
+INVENTORY	tbk	0	2	20	NORMAL	0x87421b8c
+BELT	hp4	0	0	0	NONE	null
+INVENTORY	box	0	0	0	NORMAL	0xbc02db37
+INVENTORY	cm1	3	0	0	MAGIC	0x2482ddb4
+INVENTORY	mp4	9	3	0	NONE	null
+INVENTORY	mp4	8	3	0	NONE	null
+INVENTORY	mp4	8	2	0	NONE	null
+INVENTORY	mp4	8	1	0	NONE	null
+INVENTORY	mp4	8	0	0	NONE	null
+BELT	mp4	3	0	0	NONE	null
+INVENTORY	ibk	1	2	19	NORMAL	0xf417c9e9
+INVENTORY	xlg	4	0	0	MAGIC	0x564378ca
+EQUIPPED	sst	11	0	0	SUPERIOR	0x7042ed50
+SOCKET	r03	0	0	0	NONE	null
+SOCKET	r08	1	0	0	NONE	null
+INVENTORY	hp4	7	3	0	NONE	null
+INVENTORY	hp4	7	2	0	NONE	null
+INVENTORY	rvs	7	1	0	NONE	null
+INVENTORY	mp4	7	0	0	NONE	null
+INVENTORY	hp5	6	0	0	NONE	null
+INVENTORY	hp4	6	1	0	NONE	null
+INVENTORY	rvs	6	3	0	NONE	null
+EQUIPPED	mbl	8	0	0	SET	0xa2d1ed5c
+MERC:EQUIPPED	spt	4	0	0	NORMAL	0x6391fda0
+MERC:SOCKET	r07	0	0	0	NONE	null
+MERC:SOCKET	r07	1	0	0	NONE	null

@@ -1,0 +1,12 @@
+#status	ok
+#file	v105/linux/Fire.d2s
+#kind	character
+#formatVersion	105
+#character	Fire	1	SORCERESS	false
+#itemGroups	items	4	deadBody	0	mercenary	0	golem	0
+#rows	4
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null

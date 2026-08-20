@@ -1,0 +1,4001 @@
+{
+  "file": "v105/linux/SuperDuper.d2s",
+  "fileBytes": 1452,
+  "formatVersion": 105,
+  "itemCounts": {
+    "corpseItems": 0,
+    "ironGolemItems": 0,
+    "items": 13,
+    "mercItems": 0,
+    "total": 13,
+    "totalWithSockets": 27
+  },
+  "kind": "character",
+  "model": {
+    "$type": "D2Save",
+    "Character": {
+      "$type": "Character",
+      "AppearanceGraphics": "ffffffffffffffffffffffffffffffff",
+      "AppearanceTints": "ffffffffffffffffffffffffffffffff",
+      "Class": {
+        "name": "Barbarian",
+        "value": 4
+      },
+      "CreateTime": 0,
+      "Flags": {
+        "name": "Expansion",
+        "value": 32
+      },
+      "LastSaveTime": 1787236389,
+      "LeftSkill": {
+        "$type": "Skill",
+        "ItemIndex": 0,
+        "Side": {
+          "name": "Right",
+          "value": 0
+        },
+        "SkillId": 0
+      },
+      "Level": 1,
+      "MapSeed": 970485211,
+      "MercData": {
+        "$type": "MercData",
+        "Experience": 0,
+        "Flags": 0,
+        "HasMerc": false,
+        "HirelingId": 0,
+        "IsDead": false,
+        "NameIndex": 0,
+        "Seed": 0
+      },
+      "Name": "",
+      "NumSkills": 30,
+      "NumStats": 16,
+      "PlayTime": 4294967295,
+      "Preview": {
+        "$type": "PreviewData",
+        "ClassicExperience": 0,
+        "ClassicSaveTime": 0,
+        "ExpansionExperience": 0,
+        "ExpansionSaveTime": 0,
+        "Experiences": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "GameVersion": {
+          "name": "ReignOfTheWarlock",
+          "value": 3
+        },
+        "GuildEmblemColor": 0,
+        "Head": {
+          "$type": "PreviewItem",
+          "Code": 0,
+          "CodeString": "",
+          "FileIndex": 0,
+          "Flags": {
+            "name": "0",
+            "value": 0
+          },
+          "Quality": {
+            "name": "0",
+            "value": 0
+          },
+          "Transform": 0
+        },
+        "LeftHand": {
+          "$type": "PreviewItem",
+          "Code": 0,
+          "CodeString": "",
+          "FileIndex": 0,
+          "Flags": {
+            "name": "Targeting",
+            "value": 4
+          },
+          "Quality": {
+            "name": "0",
+            "value": 0
+          },
+          "Transform": 0
+        },
+        "Name": "SuperDuper",
+        "PreviewPadding": 0,
+        "RightHand": {
+          "$type": "PreviewItem",
+          "Code": 0,
+          "CodeString": "",
+          "FileIndex": 0,
+          "Flags": {
+            "name": "Targeting",
+            "value": 4
+          },
+          "Quality": {
+            "name": "0",
+            "value": 0
+          },
+          "Transform": 0
+        },
+        "SaveTimes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "Torso": {
+          "$type": "PreviewItem",
+          "Code": 0,
+          "CodeString": "",
+          "FileIndex": 0,
+          "Flags": {
+            "name": "0",
+            "value": 0
+          },
+          "Quality": {
+            "name": "0",
+            "value": 0
+          },
+          "Transform": 0
+        },
+        "Unk1": 0
+      },
+      "RightSkill": {
+        "$type": "Skill",
+        "ItemIndex": 0,
+        "Side": {
+          "name": "Right",
+          "value": 0
+        },
+        "SkillId": 0
+      },
+      "SkillHotkeys": [
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        },
+        {
+          "$type": "Skill",
+          "ItemIndex": 0,
+          "Side": {
+            "name": "Left",
+            "value": 1
+          },
+          "SkillId": 32767
+        }
+      ],
+      "SwitchLeftSkill": {
+        "$type": "Skill",
+        "ItemIndex": 0,
+        "Side": {
+          "name": "Right",
+          "value": 0
+        },
+        "SkillId": 0
+      },
+      "SwitchRightSkill": {
+        "$type": "Skill",
+        "ItemIndex": 0,
+        "Side": {
+          "name": "Right",
+          "value": 0
+        },
+        "SkillId": 0
+      },
+      "TownDifficulty": "800000",
+      "WeaponSwitch": 0
+    },
+    "Checksum": 3586893558,
+    "Corpses": [],
+    "Demon": {
+      "$type": "DemonSection",
+      "DemonData": null,
+      "HasDemon": false,
+      "Padding": 0,
+      "SectionVersion": 1
+    },
+    "FileSize": 1452,
+    "IronGolem": {
+      "$type": "IronGolemSection",
+      "GolemItem": null
+    },
+    "Items": [
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": null,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, StarterItem, CompactSave, JustSaved",
+          "value": 10616848
+        },
+        "GoldAmount": 0,
+        "ItemCode": 540110952,
+        "ItemCodeString": "hp1",
+        "ItemLevel": 1,
+        "ItemSeed": 0,
+        "MaxDurability": null,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 0,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "InBelt",
+            "value": 2
+          },
+          "StorePage": {
+            "name": "Null",
+            "value": 255
+          }
+        },
+        "Quality": {
+          "name": "Normal",
+          "value": 2
+        },
+        "QualityData": null,
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": null,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, StarterItem, CompactSave, JustSaved",
+          "value": 10616848
+        },
+        "GoldAmount": 0,
+        "ItemCode": 540110952,
+        "ItemCodeString": "hp1",
+        "ItemLevel": 1,
+        "ItemSeed": 0,
+        "MaxDurability": null,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 1,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "InBelt",
+            "value": 2
+          },
+          "StorePage": {
+            "name": "Null",
+            "value": 255
+          }
+        },
+        "Quality": {
+          "name": "Normal",
+          "value": 2
+        },
+        "QualityData": null,
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": null,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, StarterItem, CompactSave, JustSaved",
+          "value": 10616848
+        },
+        "GoldAmount": 0,
+        "ItemCode": 540110952,
+        "ItemCodeString": "hp1",
+        "ItemLevel": 1,
+        "ItemSeed": 0,
+        "MaxDurability": null,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 2,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "InBelt",
+            "value": 2
+          },
+          "StorePage": {
+            "name": "Null",
+            "value": 255
+          }
+        },
+        "Quality": {
+          "name": "Normal",
+          "value": 2
+        },
+        "QualityData": null,
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": null,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, StarterItem, CompactSave, JustSaved",
+          "value": 10616848
+        },
+        "GoldAmount": 0,
+        "ItemCode": 540110952,
+        "ItemCodeString": "hp1",
+        "ItemLevel": 1,
+        "ItemSeed": 0,
+        "MaxDurability": null,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 3,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "InBelt",
+            "value": 2
+          },
+          "StorePage": {
+            "name": "Null",
+            "value": 255
+          }
+        },
+        "Quality": {
+          "name": "Normal",
+          "value": 2
+        },
+        "QualityData": null,
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": 135,
+        "Durability": 86,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, Socketed, JustSaved, Runeword",
+          "value": 75499536
+        },
+        "GoldAmount": 0,
+        "ItemCode": 544500085,
+        "ItemCodeString": "uit",
+        "ItemLevel": 85,
+        "ItemSeed": 2674762173,
+        "MaxDurability": 86,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 4,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Normal",
+          "value": 2
+        },
+        "QualityData": null,
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": 20635,
+        "RunewordStats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Vitality",
+              "value": 3
+            },
+            "Layer": 0,
+            "Value": 22
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MaxMana",
+              "value": 9
+            },
+            "Layer": 0,
+            "Value": 24576
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "DefenseVsMissiles",
+              "value": 32
+            },
+            "Layer": 0,
+            "Value": 250
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "FasterHitRecovery",
+              "value": 99
+            },
+            "Layer": 0,
+            "Value": 55
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "FasterCastRate",
+              "value": 105
+            },
+            "Layer": 0,
+            "Value": 35
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 2
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AbsorbMagic",
+              "value": 147
+            },
+            "Layer": 0,
+            "Value": 7
+          }
+        ],
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540487794,
+            "ItemCodeString": "r07",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 0,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540029298,
+            "ItemCodeString": "r10",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 1,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540618866,
+            "ItemCodeString": "r09",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 2,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540094834,
+            "ItemCodeString": "r11",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 3,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          }
+        ],
+        "Stats": [],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": 117,
+        "Durability": 12,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, Socketed, JustSaved",
+          "value": 8390672
+        },
+        "GoldAmount": 0,
+        "ItemCode": 544235893,
+        "ItemCodeString": "uap",
+        "ItemLevel": 87,
+        "ItemSeed": 62092848,
+        "MaxDurability": 12,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 6,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Unique",
+          "value": 7
+        },
+        "QualityData": {
+          "$type": "SetUniqueQualityData",
+          "FileIndex": 248,
+          "SetUniqueFileIndex": 248
+        },
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 544829543,
+            "ItemCodeString": "gpy",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 0,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          }
+        ],
+        "Stats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Strength",
+              "value": 0
+            },
+            "Layer": 0,
+            "Value": 2
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Energy",
+              "value": 1
+            },
+            "Layer": 0,
+            "Value": 2
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Dexterity",
+              "value": 2
+            },
+            "Layer": 0,
+            "Value": 2
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Vitality",
+              "value": 3
+            },
+            "Layer": 0,
+            "Value": 2
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "DamageReduced",
+              "value": 36
+            },
+            "Layer": 0,
+            "Value": 10
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MagicFind",
+              "value": 80
+            },
+            "Layer": 0,
+            "Value": 50
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 2
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LifePerLevel",
+              "value": 216
+            },
+            "Layer": 0,
+            "Value": 3072
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ManaPerLevel",
+              "value": 217
+            },
+            "Layer": 0,
+            "Value": 3072
+          }
+        ],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": 20,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, Socketed, JustSaved, Runeword",
+          "value": 75499536
+        },
+        "GoldAmount": 0,
+        "ItemCode": 544436835,
+        "ItemCodeString": "crs",
+        "ItemLevel": 81,
+        "ItemSeed": 1634960841,
+        "MaxDurability": 20,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 0,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Normal",
+          "value": 2
+        },
+        "QualityData": null,
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": 20519,
+        "RunewordStats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MaxDamagePercent",
+              "value": 17
+            },
+            "Layer": 0,
+            "Value": 204
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MinDamagePercent",
+              "value": 18
+            },
+            "Layer": 0,
+            "Value": 204
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "HitPointRegeneration",
+              "value": 74
+            },
+            "Layer": 0,
+            "Value": 12
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "IncreasedAttackSpeed",
+              "value": 93
+            },
+            "Layer": 0,
+            "Value": 40
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "NonClassSkill",
+              "value": 97
+            },
+            "Layer": 146,
+            "Value": 3
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "NonClassSkill",
+              "value": 97
+            },
+            "Layer": 149,
+            "Value": 6
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "NonClassSkill",
+              "value": 97
+            },
+            "Layer": 155,
+            "Value": 5
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 1
+          }
+        ],
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540094834,
+            "ItemCodeString": "r11",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 0,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540553330,
+            "ItemCodeString": "r08",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 1,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540226162,
+            "ItemCodeString": "r23",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 2,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540291698,
+            "ItemCodeString": "r24",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 3,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540488306,
+            "ItemCodeString": "r27",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 4,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          }
+        ],
+        "Stats": [],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": 30,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, Socketed, JustSaved, Runeword",
+          "value": 75499536
+        },
+        "GoldAmount": 0,
+        "ItemCode": 543255654,
+        "ItemCodeString": "fla",
+        "ItemLevel": 81,
+        "ItemSeed": 3827680101,
+        "MaxDurability": 30,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 2,
+          "InvY": 0,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Superior",
+          "value": 3
+        },
+        "QualityData": {
+          "$type": "SuperiorQualityData",
+          "FileIndex": 3,
+          "SuperiorFileIndex": 3
+        },
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": 20557,
+        "RunewordStats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "FireResist",
+              "value": 39
+            },
+            "Layer": 0,
+            "Value": 39
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LightningResist",
+              "value": 41
+            },
+            "Layer": 0,
+            "Value": 39
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ColdResist",
+              "value": 43
+            },
+            "Layer": 0,
+            "Value": 39
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "PoisonResist",
+              "value": 45
+            },
+            "Layer": 0,
+            "Value": 39
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "HitPointRegeneration",
+              "value": 74
+            },
+            "Layer": 0,
+            "Value": 20
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MaxManaPercent",
+              "value": 77
+            },
+            "Layer": 0,
+            "Value": 15
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "FasterCastRate",
+              "value": 105
+            },
+            "Layer": 0,
+            "Value": 40
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 3
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ItemChargedSkill",
+              "value": 204
+            },
+            "Layer": 14158,
+            "Value": 15420
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ItemChargedSkill",
+              "value": 204
+            },
+            "Layer": 14468,
+            "Value": 6425
+          }
+        ],
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540553586,
+            "ItemCodeString": "r18",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 0,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540422770,
+            "ItemCodeString": "r26",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 1,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540095090,
+            "ItemCodeString": "r21",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 2,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          },
+          {
+            "$type": "Item",
+            "AdvancedStashStackSize": 0,
+            "AutoAffixId": null,
+            "ChronicleId": null,
+            "ChronicleRecipients": null,
+            "ChronicleTimestamp": null,
+            "Defense": null,
+            "Durability": null,
+            "EarFileIndex": 0,
+            "EarLevel": 0,
+            "EarName": "",
+            "Flags": {
+              "name": "Identified, CompactSave, JustSaved",
+              "value": 10485776
+            },
+            "GoldAmount": 0,
+            "ItemCode": 540029298,
+            "ItemCodeString": "r10",
+            "ItemLevel": 1,
+            "ItemSeed": 0,
+            "MaxDurability": null,
+            "PersonalizedName": "",
+            "PlayerGold": false,
+            "Position": {
+              "$type": "ItemPosition",
+              "BodyLocation": {
+                "name": "None",
+                "value": 0
+              },
+              "GroundX": 0,
+              "GroundY": 0,
+              "InvX": 3,
+              "InvY": 0,
+              "IsOnGround": false,
+              "Mode": {
+                "name": "Socketed",
+                "value": 6
+              },
+              "StorePage": {
+                "name": "Null",
+                "value": 255
+              }
+            },
+            "Quality": {
+              "name": "Normal",
+              "value": 2
+            },
+            "QualityData": null,
+            "Quantity": null,
+            "QuestDifficulty": null,
+            "RealmData": null,
+            "RunewordId": null,
+            "RunewordStats": null,
+            "SetBonusStats": [],
+            "SetItemMask": null,
+            "Sockets": [],
+            "Stats": [],
+            "VariableGfxId": null,
+            "Version": 101
+          }
+        ],
+        "Stats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MaxDamagePercent",
+              "value": 17
+            },
+            "Layer": 0,
+            "Value": 15
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MinDamagePercent",
+              "value": 18
+            },
+            "Layer": 0,
+            "Value": 15
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AttackRating",
+              "value": 19
+            },
+            "Layer": 0,
+            "Value": 1
+          }
+        ],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": null,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, JustSaved",
+          "value": 8388624
+        },
+        "GoldAmount": 0,
+        "ItemCode": 540110179,
+        "ItemCodeString": "cm1",
+        "ItemLevel": 99,
+        "ItemSeed": 1135022069,
+        "MaxDurability": null,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 0,
+          "InvY": 3,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Unique",
+          "value": 7
+        },
+        "QualityData": {
+          "$type": "SetUniqueQualityData",
+          "FileIndex": 381,
+          "SetUniqueFileIndex": 381
+        },
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Strength",
+              "value": 0
+            },
+            "Layer": 0,
+            "Value": 10
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Energy",
+              "value": 1
+            },
+            "Layer": 0,
+            "Value": 10
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Dexterity",
+              "value": 2
+            },
+            "Layer": 0,
+            "Value": 10
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Vitality",
+              "value": 3
+            },
+            "Layer": 0,
+            "Value": 10
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "FireResist",
+              "value": 39
+            },
+            "Layer": 0,
+            "Value": 16
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LightningResist",
+              "value": 41
+            },
+            "Layer": 0,
+            "Value": 16
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ColdResist",
+              "value": 43
+            },
+            "Layer": 0,
+            "Value": 16
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "PoisonResist",
+              "value": 45
+            },
+            "Layer": 0,
+            "Value": 16
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AddExperience",
+              "value": 85
+            },
+            "Layer": 0,
+            "Value": 8
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 1
+          }
+        ],
+        "VariableGfxId": 2,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": null,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, JustSaved",
+          "value": 8388624
+        },
+        "GoldAmount": 0,
+        "ItemCode": 544106866,
+        "ItemCodeString": "rin",
+        "ItemLevel": 85,
+        "ItemSeed": 2363715997,
+        "MaxDurability": null,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 1,
+          "InvY": 3,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Unique",
+          "value": 7
+        },
+        "QualityData": {
+          "$type": "SetUniqueQualityData",
+          "FileIndex": 268,
+          "SetUniqueFileIndex": 268
+        },
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MaxStamina",
+              "value": 11
+            },
+            "Layer": 0,
+            "Value": 12800
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LifeSteal",
+              "value": 60
+            },
+            "Layer": 0,
+            "Value": 3
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 1
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LifePerLevel",
+              "value": 216
+            },
+            "Layer": 0,
+            "Value": 1024
+          }
+        ],
+        "VariableGfxId": 1,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": null,
+        "Durability": null,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, JustSaved",
+          "value": 8388624
+        },
+        "GoldAmount": 0,
+        "ItemCode": 544106866,
+        "ItemCodeString": "rin",
+        "ItemLevel": 86,
+        "ItemSeed": 3753381559,
+        "MaxDurability": null,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 2,
+          "InvY": 3,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Unique",
+          "value": 7
+        },
+        "QualityData": {
+          "$type": "SetUniqueQualityData",
+          "FileIndex": 268,
+          "SetUniqueFileIndex": 268
+        },
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MaxStamina",
+              "value": 11
+            },
+            "Layer": 0,
+            "Value": 12800
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LifeSteal",
+              "value": 60
+            },
+            "Layer": 0,
+            "Value": 4
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 1
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LifePerLevel",
+              "value": 216
+            },
+            "Layer": 0,
+            "Value": 1024
+          }
+        ],
+        "VariableGfxId": 0,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": 63,
+        "Durability": 11,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, JustSaved",
+          "value": 8388624
+        },
+        "GoldAmount": 0,
+        "ItemCode": 543386741,
+        "ItemCodeString": "ulc",
+        "ItemLevel": 87,
+        "ItemSeed": 3781007991,
+        "MaxDurability": 12,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 3,
+          "InvY": 3,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Unique",
+          "value": 7
+        },
+        "QualityData": {
+          "$type": "SetUniqueQualityData",
+          "FileIndex": 373,
+          "SetUniqueFileIndex": 373
+        },
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ArmorPercent",
+              "value": 16
+            },
+            "Layer": 0,
+            "Value": 115
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MaxManaPercent",
+              "value": 77
+            },
+            "Layer": 0,
+            "Value": 5
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "FasterCastRate",
+              "value": 105
+            },
+            "Layer": 0,
+            "Value": 20
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AllSkills",
+              "value": 127
+            },
+            "Layer": 0,
+            "Value": 1
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "Slow",
+              "value": 150
+            },
+            "Layer": 0,
+            "Value": 10
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ItemChargedSkill",
+              "value": 204
+            },
+            "Layer": 17795,
+            "Value": 2827
+          }
+        ],
+        "VariableGfxId": null,
+        "Version": 101
+      },
+      {
+        "$type": "Item",
+        "AdvancedStashStackSize": null,
+        "AutoAffixId": null,
+        "ChronicleId": null,
+        "ChronicleRecipients": null,
+        "ChronicleTimestamp": null,
+        "Defense": 10,
+        "Durability": 12,
+        "EarFileIndex": 0,
+        "EarLevel": 0,
+        "EarName": "",
+        "Flags": {
+          "name": "Identified, JustSaved",
+          "value": 8388624
+        },
+        "GoldAmount": 0,
+        "ItemCode": 543975277,
+        "ItemCodeString": "mgl",
+        "ItemLevel": 78,
+        "ItemSeed": 1435386578,
+        "MaxDurability": 16,
+        "PersonalizedName": "",
+        "PlayerGold": false,
+        "Position": {
+          "$type": "ItemPosition",
+          "BodyLocation": {
+            "name": "None",
+            "value": 0
+          },
+          "GroundX": 0,
+          "GroundY": 0,
+          "InvX": 6,
+          "InvY": 2,
+          "IsOnGround": false,
+          "Mode": {
+            "name": "Stored",
+            "value": 0
+          },
+          "StorePage": {
+            "name": "Inventory",
+            "value": 0
+          }
+        },
+        "Quality": {
+          "name": "Unique",
+          "value": 7
+        },
+        "QualityData": {
+          "$type": "SetUniqueQualityData",
+          "FileIndex": 104,
+          "SetUniqueFileIndex": 104
+        },
+        "Quantity": null,
+        "QuestDifficulty": null,
+        "RealmData": null,
+        "RunewordId": null,
+        "RunewordStats": null,
+        "SetBonusStats": [],
+        "SetItemMask": null,
+        "Sockets": [],
+        "Stats": [
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ArmorPercent",
+              "value": 16
+            },
+            "Layer": 0,
+            "Value": 27
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "AttackRating",
+              "value": 19
+            },
+            "Layer": 0,
+            "Value": 25
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "ArmorClass",
+              "value": 31
+            },
+            "Layer": 0,
+            "Value": 15
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "GoldFind",
+              "value": 79
+            },
+            "Layer": 0,
+            "Value": 200
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "MagicFind",
+              "value": 80
+            },
+            "Layer": 0,
+            "Value": 38
+          },
+          {
+            "$type": "Stat",
+            "Id": {
+              "name": "LightRadius",
+              "value": 89
+            },
+            "Layer": 0,
+            "Value": 2
+          }
+        ],
+        "VariableGfxId": null,
+        "Version": 101
+      }
+    ],
+    "MercItems": {
+      "$type": "MercItemsSection",
+      "Items": []
+    },
+    "PlayerIntro": {
+      "$type": "PlayerIntroSection",
+      "Header": 30465,
+      "Hell": {
+        "$type": "NpcDialogDifficulty",
+        "Akara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Alkor": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Anya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Asheara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Atma": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActI": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActIII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActIV": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActV": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Charsi": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Drognan": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Elzix": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Fara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Geglash": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Gheed": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Greiz": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Halbu": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Hratli": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Izual": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Jerhyn": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Kashya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Larzuk": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Lysander": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Malah": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "MeshifActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "MeshifActIII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Natalya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Nihlathak": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "NpcIntroFlags": "0000000000000000",
+        "Ormus": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Qualkehk": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "QuestIntroFlags": "0000000000000000",
+        "Tyrael": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "WarrivActI": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "WarrivActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        }
+      },
+      "Nightmare": {
+        "$type": "NpcDialogDifficulty",
+        "Akara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Alkor": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Anya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Asheara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Atma": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActI": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActIII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActIV": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActV": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Charsi": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Drognan": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Elzix": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Fara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Geglash": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Gheed": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Greiz": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Halbu": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Hratli": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Izual": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Jerhyn": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Kashya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Larzuk": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Lysander": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Malah": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "MeshifActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "MeshifActIII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Natalya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Nihlathak": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "NpcIntroFlags": "0000000000000000",
+        "Ormus": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Qualkehk": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "QuestIntroFlags": "0000000000000000",
+        "Tyrael": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "WarrivActI": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "WarrivActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        }
+      },
+      "Normal": {
+        "$type": "NpcDialogDifficulty",
+        "Akara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Alkor": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Anya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Asheara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Atma": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActI": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActIII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActIV": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "CainActV": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Charsi": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Drognan": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Elzix": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Fara": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Geglash": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Gheed": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Greiz": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Halbu": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Hratli": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Izual": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Jerhyn": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Kashya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Larzuk": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Lysander": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Malah": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "MeshifActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "MeshifActIII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Natalya": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Nihlathak": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "NpcIntroFlags": "0000000000000000",
+        "Ormus": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "Qualkehk": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "QuestIntroFlags": "0000000000000000",
+        "Tyrael": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "WarrivActI": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        },
+        "WarrivActII": {
+          "$type": "NpcDialogData",
+          "NpcIntroShown": false,
+          "QuestIntroShown": false
+        }
+      },
+      "SectionSize": 52
+    },
+    "Quests": {
+      "$type": "QuestSection",
+      "Hell": {
+        "$type": "QuestsDifficulty",
+        "ActI": {
+          "$type": "ActIQuests",
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "DenOfEvil": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "SistersBurialGrounds": {
+            "name": "None",
+            "value": 0
+          },
+          "SistersToTheSlaughter": {
+            "name": "None",
+            "value": 0
+          },
+          "TheForgottenTower": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSearchForCain": {
+            "name": "None",
+            "value": 0
+          },
+          "ToolsOfTheTrade": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActII": {
+          "$type": "ActIIQuests",
+          "ArcaneSanctuary": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "RadamentsLair": {
+            "name": "None",
+            "value": 0
+          },
+          "TaintedSun": {
+            "name": "None",
+            "value": 0
+          },
+          "TheHoradricStaff": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSevenTombs": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSummoner": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActIII": {
+          "$type": "ActIIIQuests",
+          "BladeOfTheOldReligion": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "KhalimsWill": {
+            "name": "None",
+            "value": 0
+          },
+          "LamEsensTome": {
+            "name": "None",
+            "value": 0
+          },
+          "TheBlackenedTemple": {
+            "name": "None",
+            "value": 0
+          },
+          "TheGoldenBird": {
+            "name": "None",
+            "value": 0
+          },
+          "TheGuardian": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActIV": {
+          "$type": "ActIVQuests",
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Hellforge": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved1": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved2": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved3": {
+            "name": "None",
+            "value": 0
+          },
+          "TerrorsEnd": {
+            "name": "None",
+            "value": 0
+          },
+          "TheFallenAngel": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActV": {
+          "$type": "ActVQuests",
+          "BetrayalOfHarrogath": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "EveOfDestruction": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "PrisonOfIce": {
+            "name": "None",
+            "value": 0
+          },
+          "RescueOnMountArreat": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved1": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved2": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved3": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved4": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved5": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved6": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved7": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved8": {
+            "name": "None",
+            "value": 0
+          },
+          "RiteOfPassage": {
+            "name": "None",
+            "value": 0
+          },
+          "SiegeOnHarrogath": {
+            "name": "None",
+            "value": 0
+          }
+        }
+      },
+      "Nightmare": {
+        "$type": "QuestsDifficulty",
+        "ActI": {
+          "$type": "ActIQuests",
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "DenOfEvil": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "SistersBurialGrounds": {
+            "name": "None",
+            "value": 0
+          },
+          "SistersToTheSlaughter": {
+            "name": "None",
+            "value": 0
+          },
+          "TheForgottenTower": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSearchForCain": {
+            "name": "None",
+            "value": 0
+          },
+          "ToolsOfTheTrade": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActII": {
+          "$type": "ActIIQuests",
+          "ArcaneSanctuary": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "RadamentsLair": {
+            "name": "None",
+            "value": 0
+          },
+          "TaintedSun": {
+            "name": "None",
+            "value": 0
+          },
+          "TheHoradricStaff": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSevenTombs": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSummoner": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActIII": {
+          "$type": "ActIIIQuests",
+          "BladeOfTheOldReligion": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "KhalimsWill": {
+            "name": "None",
+            "value": 0
+          },
+          "LamEsensTome": {
+            "name": "None",
+            "value": 0
+          },
+          "TheBlackenedTemple": {
+            "name": "None",
+            "value": 0
+          },
+          "TheGoldenBird": {
+            "name": "None",
+            "value": 0
+          },
+          "TheGuardian": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActIV": {
+          "$type": "ActIVQuests",
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Hellforge": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved1": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved2": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved3": {
+            "name": "None",
+            "value": 0
+          },
+          "TerrorsEnd": {
+            "name": "None",
+            "value": 0
+          },
+          "TheFallenAngel": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActV": {
+          "$type": "ActVQuests",
+          "BetrayalOfHarrogath": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "EveOfDestruction": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "PrisonOfIce": {
+            "name": "None",
+            "value": 0
+          },
+          "RescueOnMountArreat": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved1": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved2": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved3": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved4": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved5": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved6": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved7": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved8": {
+            "name": "None",
+            "value": 0
+          },
+          "RiteOfPassage": {
+            "name": "None",
+            "value": 0
+          },
+          "SiegeOnHarrogath": {
+            "name": "None",
+            "value": 0
+          }
+        }
+      },
+      "Normal": {
+        "$type": "QuestsDifficulty",
+        "ActI": {
+          "$type": "ActIQuests",
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "DenOfEvil": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "RewardGranted",
+            "value": 1
+          },
+          "SistersBurialGrounds": {
+            "name": "None",
+            "value": 0
+          },
+          "SistersToTheSlaughter": {
+            "name": "None",
+            "value": 0
+          },
+          "TheForgottenTower": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSearchForCain": {
+            "name": "None",
+            "value": 0
+          },
+          "ToolsOfTheTrade": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActII": {
+          "$type": "ActIIQuests",
+          "ArcaneSanctuary": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "RadamentsLair": {
+            "name": "None",
+            "value": 0
+          },
+          "TaintedSun": {
+            "name": "None",
+            "value": 0
+          },
+          "TheHoradricStaff": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSevenTombs": {
+            "name": "None",
+            "value": 0
+          },
+          "TheSummoner": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActIII": {
+          "$type": "ActIIIQuests",
+          "BladeOfTheOldReligion": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "KhalimsWill": {
+            "name": "None",
+            "value": 0
+          },
+          "LamEsensTome": {
+            "name": "None",
+            "value": 0
+          },
+          "TheBlackenedTemple": {
+            "name": "None",
+            "value": 0
+          },
+          "TheGoldenBird": {
+            "name": "None",
+            "value": 0
+          },
+          "TheGuardian": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActIV": {
+          "$type": "ActIVQuests",
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "Hellforge": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved1": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved2": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved3": {
+            "name": "None",
+            "value": 0
+          },
+          "TerrorsEnd": {
+            "name": "None",
+            "value": 0
+          },
+          "TheFallenAngel": {
+            "name": "None",
+            "value": 0
+          }
+        },
+        "ActV": {
+          "$type": "ActVQuests",
+          "BetrayalOfHarrogath": {
+            "name": "None",
+            "value": 0
+          },
+          "Completion": {
+            "name": "None",
+            "value": 0
+          },
+          "EveOfDestruction": {
+            "name": "None",
+            "value": 0
+          },
+          "Introduction": {
+            "name": "None",
+            "value": 0
+          },
+          "PrisonOfIce": {
+            "name": "None",
+            "value": 0
+          },
+          "RescueOnMountArreat": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved1": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved2": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved3": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved4": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved5": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved6": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved7": {
+            "name": "None",
+            "value": 0
+          },
+          "Reserved8": {
+            "name": "None",
+            "value": 0
+          },
+          "RiteOfPassage": {
+            "name": "None",
+            "value": 0
+          },
+          "SiegeOnHarrogath": {
+            "name": "None",
+            "value": 0
+          }
+        }
+      },
+      "SectionSize": 298,
+      "Version": 6
+    },
+    "Skills": {
+      "$type": "SkillsSection",
+      "CharacterClass": {
+        "name": "Barbarian",
+        "value": 4
+      },
+      "SkillIdOffset": 126,
+      "SkillLevels": "000000000000000000000000000000000000000000000000000000000000"
+    },
+    "Stats": [
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Strength",
+          "value": 0
+        },
+        "Layer": 0,
+        "Value": 30
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Energy",
+          "value": 1
+        },
+        "Layer": 0,
+        "Value": 10
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Dexterity",
+          "value": 2
+        },
+        "Layer": 0,
+        "Value": 20
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Vitality",
+          "value": 3
+        },
+        "Layer": 0,
+        "Value": 25
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Life",
+          "value": 6
+        },
+        "Layer": 0,
+        "Value": 14080
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "MaxLife",
+          "value": 7
+        },
+        "Layer": 0,
+        "Value": 14080
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Mana",
+          "value": 8
+        },
+        "Layer": 0,
+        "Value": 2560
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "MaxMana",
+          "value": 9
+        },
+        "Layer": 0,
+        "Value": 2560
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Stamina",
+          "value": 10
+        },
+        "Layer": 0,
+        "Value": 23552
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "MaxStamina",
+          "value": 11
+        },
+        "Layer": 0,
+        "Value": 23552
+      },
+      {
+        "$type": "Stat",
+        "Id": {
+          "name": "Level",
+          "value": 12
+        },
+        "Layer": 0,
+        "Value": 1
+      }
+    ],
+    "TrailingData": "",
+    "Version": 105,
+    "Waypoints": {
+      "$type": "WaypointSection",
+      "Hell": {
+        "$type": "WaypointDifficultyData",
+        "ActI": {
+          "name": "RogueEncampment",
+          "value": 1
+        },
+        "ActII": {
+          "name": "None",
+          "value": 0
+        },
+        "ActIII": {
+          "name": "None",
+          "value": 0
+        },
+        "ActIV": {
+          "name": "None",
+          "value": 0
+        },
+        "ActV": {
+          "name": "None",
+          "value": 0
+        },
+        "Header": 258,
+        "Padding": 0,
+        "Reserved": "00000000000000000000000000000000"
+      },
+      "Nightmare": {
+        "$type": "WaypointDifficultyData",
+        "ActI": {
+          "name": "RogueEncampment",
+          "value": 1
+        },
+        "ActII": {
+          "name": "None",
+          "value": 0
+        },
+        "ActIII": {
+          "name": "None",
+          "value": 0
+        },
+        "ActIV": {
+          "name": "None",
+          "value": 0
+        },
+        "ActV": {
+          "name": "None",
+          "value": 0
+        },
+        "Header": 258,
+        "Padding": 0,
+        "Reserved": "00000000000000000000000000000000"
+      },
+      "Normal": {
+        "$type": "WaypointDifficultyData",
+        "ActI": {
+          "name": "RogueEncampment",
+          "value": 1
+        },
+        "ActII": {
+          "name": "None",
+          "value": 0
+        },
+        "ActIII": {
+          "name": "None",
+          "value": 0
+        },
+        "ActIV": {
+          "name": "None",
+          "value": 0
+        },
+        "ActV": {
+          "name": "None",
+          "value": 0
+        },
+        "Header": 258,
+        "Padding": 0,
+        "Reserved": "00000000000000000000000000000000"
+      },
+      "SectionSize": 80,
+      "Version": 1
+    }
+  },
+  "roundTrip": {
+    "identical": true,
+    "writtenBytes": 1452
+  },
+  "sha256": "69fbb48f0c879dd3af1510491f786b0c93bcd863fdea1b993a30c82ec5c6e820",
+  "status": "ok"
+}

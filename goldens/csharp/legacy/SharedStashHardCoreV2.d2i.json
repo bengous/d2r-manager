@@ -1,0 +1,2652 @@
+{
+  "file": "legacy/SharedStashHardCoreV2.d2i",
+  "fileBytes": 710,
+  "formatVersion": 99,
+  "itemCounts": {
+    "advancedStashStacks": 0,
+    "items": 34,
+    "itemsPlusAdvancedStashStacks": 34,
+    "total": 34,
+    "totalWithSockets": 34
+  },
+  "kind": "stash",
+  "model": [
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 99,
+      "Items": [
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": 13,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, Ethereal, JustSaved",
+            "value": 12582928
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543910256,
+          "ItemCodeString": "pik",
+          "ItemLevel": 34,
+          "ItemSeed": 2495741068,
+          "MaxDurability": 13,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 0,
+            "InvY": 6,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": 36,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544236403,
+          "ItemCodeString": "scp",
+          "ItemLevel": 45,
+          "ItemSeed": 3659356747,
+          "MaxDurability": 50,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 7,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Unique",
+            "value": 7
+          },
+          "QualityData": {
+            "$type": "SetUniqueQualityData",
+            "FileIndex": 15,
+            "SetUniqueFileIndex": 15
+          },
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxMana",
+                "value": 9
+              },
+              "Layer": 0,
+              "Value": 3840
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxDamagePercent",
+                "value": 17
+              },
+              "Layer": 0,
+              "Value": 72
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MinDamagePercent",
+                "value": 18
+              },
+              "Layer": 0,
+              "Value": 72
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "AttackRating",
+                "value": 19
+              },
+              "Layer": 0,
+              "Value": 35
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "FireResist",
+                "value": 39
+              },
+              "Layer": 0,
+              "Value": 20
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonResist",
+                "value": 45
+              },
+              "Layer": 0,
+              "Value": 20
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "CrushingBlow",
+                "value": 136
+              },
+              "Layer": 0,
+              "Value": 25
+            }
+          ],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 540110179,
+          "ItemCodeString": "cm1",
+          "ItemLevel": 49,
+          "ItemSeed": 886468399,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 6,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Magic",
+            "value": 4
+          },
+          "QualityData": {
+            "$type": "MagicQualityData",
+            "FileIndex": null,
+            "PrefixId": 658,
+            "SuffixId": 727
+          },
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "LightningMinDamage",
+                "value": 50
+              },
+              "Layer": 0,
+              "Value": 1
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "LightningMaxDamage",
+                "value": 51
+              },
+              "Layer": 0,
+              "Value": 10
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonMinDamage",
+                "value": 57
+              },
+              "Layer": 0,
+              "Value": 52
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonMaxDamage",
+                "value": 58
+              },
+              "Layer": 0,
+              "Value": 52
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonLength",
+                "value": 59
+              },
+              "Layer": 0,
+              "Value": 75
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonCount",
+                "value": 326
+              },
+              "Layer": 0,
+              "Value": 1
+            }
+          ],
+          "VariableGfxId": 2,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": 12,
+          "Durability": 14,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544498292,
+          "ItemCodeString": "tbt",
+          "ItemLevel": 49,
+          "ItemSeed": 894473431,
+          "MaxDurability": 18,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 4,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Unique",
+            "value": 7
+          },
+          "QualityData": {
+            "$type": "SetUniqueQualityData",
+            "FileIndex": 110,
+            "SetUniqueFileIndex": 110
+          },
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ArmorPercent",
+                "value": 16
+              },
+              "Layer": 0,
+              "Value": 54
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ArmorClass",
+                "value": 31
+              },
+              "Layer": 0,
+              "Value": 15
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "NormalDamageReduction",
+                "value": 34
+              },
+              "Layer": 0,
+              "Value": 1
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MagicDamageReduction",
+                "value": 35
+              },
+              "Layer": 0,
+              "Value": 1
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "LightRadius",
+                "value": 89
+              },
+              "Layer": 0,
+              "Value": -1
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "CrushingBlow",
+                "value": 136
+              },
+              "Layer": 0,
+              "Value": 25
+            }
+          ],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": 16,
+          "Durability": 17,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543975272,
+          "ItemCodeString": "hgl",
+          "ItemLevel": 62,
+          "ItemSeed": 4216562091,
+          "MaxDurability": 24,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 3,
+            "InvY": 0,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Unique",
+            "value": 7
+          },
+          "QualityData": {
+            "$type": "SetUniqueQualityData",
+            "FileIndex": 106,
+            "SetUniqueFileIndex": 106
+          },
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ArmorPercent",
+                "value": 16
+              },
+              "Layer": 0,
+              "Value": 11
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxDamagePercent",
+                "value": 17
+              },
+              "Layer": 0,
+              "Value": 5
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MinDamagePercent",
+                "value": 18
+              },
+              "Layer": 0,
+              "Value": 5
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ArmorClass",
+                "value": 31
+              },
+              "Layer": 0,
+              "Value": 30
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ColdMinDamage",
+                "value": 54
+              },
+              "Layer": 0,
+              "Value": 1
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ColdMaxDamage",
+                "value": 55
+              },
+              "Layer": 0,
+              "Value": 6
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ColdLength",
+                "value": 56
+              },
+              "Layer": 0,
+              "Value": 50
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxManaPercent",
+                "value": 77
+              },
+              "Layer": 0,
+              "Value": 40
+            }
+          ],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": 21,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544039795,
+          "ItemCodeString": "scm",
+          "ItemLevel": 11,
+          "ItemSeed": 2440798317,
+          "MaxDurability": 22,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 7,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Unique",
+            "value": 7
+          },
+          "QualityData": {
+            "$type": "SetUniqueQualityData",
+            "FileIndex": 26,
+            "SetUniqueFileIndex": 26
+          },
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxLife",
+                "value": 7
+              },
+              "Layer": 0,
+              "Value": 3840
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxDamagePercent",
+                "value": 17
+              },
+              "Layer": 0,
+              "Value": 70
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MinDamagePercent",
+                "value": 18
+              },
+              "Layer": 0,
+              "Value": 70
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "FireResist",
+                "value": 39
+              },
+              "Layer": 0,
+              "Value": 15
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "LightningResist",
+                "value": 41
+              },
+              "Layer": 0,
+              "Value": 15
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ColdResist",
+                "value": 43
+              },
+              "Layer": 0,
+              "Value": 15
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonResist",
+                "value": 45
+              },
+              "Layer": 0,
+              "Value": 15
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "LifeSteal",
+                "value": 60
+              },
+              "Layer": 0,
+              "Value": 15
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "LightRadius",
+                "value": 89
+              },
+              "Layer": 0,
+              "Value": 4
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "IncreasedAttackSpeed",
+                "value": 93
+              },
+              "Layer": 0,
+              "Value": 15
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "OpenWounds",
+                "value": 135
+              },
+              "Layer": 0,
+              "Value": 33
+            }
+          ],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544433524,
+          "ItemCodeString": "tes",
+          "ItemLevel": 75,
+          "ItemSeed": 4180503588,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 6,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": 36,
+          "Durability": 7,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543648888,
+          "ItemCodeString": "xlg",
+          "ItemLevel": 78,
+          "ItemSeed": 2732244947,
+          "MaxDurability": 12,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 5,
+            "InvY": 0,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Unique",
+            "value": 7
+          },
+          "QualityData": {
+            "$type": "SetUniqueQualityData",
+            "FileIndex": 232,
+            "SetUniqueFileIndex": 232
+          },
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ArmorPercent",
+                "value": 16
+              },
+              "Layer": 0,
+              "Value": 138
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "ArmorClass",
+                "value": 31
+              },
+              "Layer": 0,
+              "Value": 19
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonResist",
+                "value": 45
+              },
+              "Layer": 0,
+              "Value": 30
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxPoisonResist",
+                "value": 46
+              },
+              "Layer": 0,
+              "Value": 5
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonMinDamage",
+                "value": 57
+              },
+              "Layer": 0,
+              "Value": 153
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonMaxDamage",
+                "value": 58
+              },
+              "Layer": 0,
+              "Value": 153
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonLength",
+                "value": 59
+              },
+              "Layer": 0,
+              "Value": 100
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "PoisonCount",
+                "value": 326
+              },
+              "Layer": 0,
+              "Value": 1
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "LifeSteal",
+                "value": 60
+              },
+              "Layer": 0,
+              "Value": 5
+            },
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "CrushingBlow",
+                "value": 136
+              },
+              "Layer": 0,
+              "Value": 5
+            }
+          ],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, JustSaved",
+            "value": 8388624
+          },
+          "GoldAmount": 0,
+          "ItemCode": 540241251,
+          "ItemCodeString": "cm3",
+          "ItemLevel": 62,
+          "ItemSeed": 722486770,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 0,
+            "InvY": 0,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Magic",
+            "value": 4
+          },
+          "QualityData": {
+            "$type": "MagicQualityData",
+            "FileIndex": null,
+            "PrefixId": 291,
+            "SuffixId": 0
+          },
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [
+            {
+              "$type": "Stat",
+              "Id": {
+                "name": "MaxMana",
+                "value": 9
+              },
+              "Layer": 0,
+              "Value": 12032
+            }
+          ],
+          "VariableGfxId": 0,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 540291698,
+          "ItemCodeString": "r24",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 3,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        }
+      ],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 1,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 99,
+      "Items": [
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544829543,
+          "ItemCodeString": "gpy",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 9,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544829543,
+          "ItemCodeString": "gpy",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 8,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544829543,
+          "ItemCodeString": "gpy",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 7,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544830311,
+          "ItemCodeString": "gsy",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 5,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543648871,
+          "ItemCodeString": "glg",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 4,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544369767,
+          "ItemCodeString": "glr",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 3,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544635495,
+          "ItemCodeString": "gzv",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 2,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544697447,
+          "ItemCodeString": "glw",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 1,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543321191,
+          "ItemCodeString": "glb",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 9,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544635495,
+          "ItemCodeString": "gzv",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 8,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543321191,
+          "ItemCodeString": "glb",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 7,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543321191,
+          "ItemCodeString": "glb",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 6,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544635495,
+          "ItemCodeString": "gzv",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 5,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543321191,
+          "ItemCodeString": "glb",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 4,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544697447,
+          "ItemCodeString": "glw",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 3,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544635495,
+          "ItemCodeString": "gzv",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 2,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544829543,
+          "ItemCodeString": "gpy",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 1,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544830311,
+          "ItemCodeString": "gsy",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 8,
+            "InvY": 0,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 543650663,
+          "ItemCodeString": "gsg",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 7,
+            "InvY": 9,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544369767,
+          "ItemCodeString": "glr",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 7,
+            "InvY": 7,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544697447,
+          "ItemCodeString": "glw",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 7,
+            "InvY": 6,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544828519,
+          "ItemCodeString": "gly",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 6,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544829543,
+          "ItemCodeString": "gpy",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 9,
+            "InvY": 0,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        },
+        {
+          "$type": "Item",
+          "AdvancedStashStackSize": null,
+          "AutoAffixId": null,
+          "ChronicleId": null,
+          "ChronicleRecipients": null,
+          "ChronicleTimestamp": null,
+          "Defense": null,
+          "Durability": null,
+          "EarFileIndex": 0,
+          "EarLevel": 0,
+          "EarName": "",
+          "Flags": {
+            "name": "Identified, CompactSave, JustSaved",
+            "value": 10485776
+          },
+          "GoldAmount": 0,
+          "ItemCode": 544828519,
+          "ItemCodeString": "gly",
+          "ItemLevel": 1,
+          "ItemSeed": 0,
+          "MaxDurability": null,
+          "PersonalizedName": "",
+          "PlayerGold": false,
+          "Position": {
+            "$type": "ItemPosition",
+            "BodyLocation": {
+              "name": "None",
+              "value": 0
+            },
+            "GroundX": 0,
+            "GroundY": 0,
+            "InvX": 7,
+            "InvY": 8,
+            "IsOnGround": false,
+            "Mode": {
+              "name": "Stored",
+              "value": 0
+            },
+            "StorePage": {
+              "name": "Stash",
+              "value": 4
+            }
+          },
+          "Quality": {
+            "name": "Normal",
+            "value": 2
+          },
+          "QualityData": null,
+          "Quantity": null,
+          "QuestDifficulty": null,
+          "RealmData": null,
+          "RunewordId": null,
+          "RunewordStats": null,
+          "SetBonusStats": [],
+          "SetItemMask": null,
+          "Sockets": [],
+          "Stats": [],
+          "VariableGfxId": null,
+          "Version": 101
+        }
+      ],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 1,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 99,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 1,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    }
+  ],
+  "roundTrip": {
+    "identical": true,
+    "writtenBytes": 710
+  },
+  "sha256": "37cc0b86852ee5f5472bfbc09fbac02b45569b5306c72ddc681047b87a46d8c0",
+  "status": "ok",
+  "tabs": [
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 347,
+      "gold": 0,
+      "index": 0,
+      "itemFormat": 99,
+      "items": 10,
+      "itemsWithSockets": 10,
+      "stashFormat": 1,
+      "tabType": "Normal"
+    },
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 295,
+      "gold": 0,
+      "index": 1,
+      "itemFormat": 99,
+      "items": 24,
+      "itemsWithSockets": 24,
+      "stashFormat": 1,
+      "tabType": "Normal"
+    },
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 68,
+      "gold": 0,
+      "index": 2,
+      "itemFormat": 99,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 1,
+      "tabType": "Normal"
+    }
+  ]
+}

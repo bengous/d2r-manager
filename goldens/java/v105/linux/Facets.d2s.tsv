@@ -1,0 +1,15 @@
+#status	ok
+#file	v105/linux/Facets.d2s
+#kind	character
+#formatVersion	105
+#character	Facets	1	BARBARIAN	false
+#itemGroups	items	7	deadBody	0	mercenary	0	golem	0
+#rows	7
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	jew	0	3	0	UNIQUE	0x64cdf767
+INVENTORY	jew	1	3	0	UNIQUE	0xc7970c84
+INVENTORY	jew	2	3	0	UNIQUE	0xff66c923

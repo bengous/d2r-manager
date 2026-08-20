@@ -1,0 +1,35 @@
+#status	ok
+#file	v105/linux/Runewords.d2s
+#kind	character
+#formatVersion	105
+#character	Runewords	1	AMAZON	false
+#itemGroups	items	9	deadBody	0	mercenary	0	golem	0
+#rows	27
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	7vo	0	0	0	NORMAL	0xacf34f66
+SOCKET	r08	0	0	0	NONE	null
+SOCKET	r03	1	0	0	NONE	null
+SOCKET	r07	2	0	0	NONE	null
+SOCKET	r12	3	0	0	NONE	null
+STASH	fla	8	7	0	SUPERIOR	0xc6985cd0
+SOCKET	r06	0	0	0	NONE	null
+SOCKET	r01	1	0	0	NONE	null
+SOCKET	r05	2	0	0	NONE	null
+STASH	crs	3	0	0	SUPERIOR	0x609941d
+SOCKET	r07	0	0	0	NONE	null
+SOCKET	r07	1	0	0	NONE	null
+SOCKET	r07	2	0	0	NONE	null
+SOCKET	r07	3	0	0	NONE	null
+SOCKET	r07	4	0	0	NONE	null
+STASH	kit	3	3	0	NORMAL	0xdc8ff6ae
+SOCKET	r08	0	0	0	NONE	null
+SOCKET	r09	1	0	0	NONE	null
+SOCKET	r07	2	0	0	NONE	null
+INVENTORY	uh9	0	0	0	NORMAL	0x734d1be2
+SOCKET	r04	0	0	0	NONE	null
+SOCKET	r21	1	0	0	NONE	null
+SOCKET	r26	2	0	0	NONE	null

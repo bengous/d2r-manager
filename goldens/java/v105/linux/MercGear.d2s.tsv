@@ -1,0 +1,22 @@
+#status	ok
+#file	v105/linux/MercGear.d2s
+#kind	character
+#formatVersion	105
+#character	MercGear	1	PALADIN	false
+#itemGroups	items	12	deadBody	0	mercenary	0	golem	0
+#rows	14
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	ula	2	0	0	NORMAL	0xde350ea7
+SOCKET	r07	0	0	0	NONE	null
+SOCKET	r05	1	0	0	NONE	null
+STASH	urs	4	0	0	UNIQUE	0x4236f3f5
+STASH	xhl	4	3	0	SET	0x903a9d8e
+STASH	upl	4	5	0	SET	0xab449d51
+STASH	xkp	0	4	0	UNIQUE	0x787bfa27
+STASH	scy	0	6	0	SUPERIOR	0xacfc6db7
+STASH	xsk	2	6	0	UNIQUE	0x70032748
+STASH	xap	4	8	0	SET	0x7749950f

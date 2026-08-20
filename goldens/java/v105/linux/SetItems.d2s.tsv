@@ -1,0 +1,35 @@
+#status	ok
+#file	v105/linux/SetItems.d2s
+#kind	character
+#formatVersion	105
+#character	SetItems	1	AMAZON	false
+#itemGroups	items	27	deadBody	0	mercenary	0	golem	0
+#rows	27
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	9mt	0	0	0	SET	0x8ee28806
+STASH	stu	2	7	0	SET	0x5add22d1
+STASH	xhg	0	6	0	SET	0xc2aeb5a5
+STASH	xh9	1	2	0	SET	0x3b7546a7
+STASH	xhb	0	8	0	SET	0xa8188688
+STASH	xhg	0	4	0	SET	0xe555ec29
+STASH	7m7	4	6	0	SET	0x772e9650
+STASH	vgl	1	0	0	SET	0x8baca8b4
+STASH	dr8	3	0	0	SET	0x47cdbcf1
+STASH	xul	7	0	0	SET	0xf14d3d27
+STASH	xtb	3	2	0	SET	0x69bda299
+STASH	uld	5	2	0	SET	0x63db0012
+STASH	xtg	7	3	0	SET	0xf2d23649
+STASH	zvb	2	4	0	SET	0x5211de53
+STASH	ci3	6	8	0	SET	0xbae10c3
+STASH	amc	8	6	0	SET	0x96672ee3
+STASH	ucl	6	5	0	SET	0xe57bcd56
+INVENTORY	xh9	0	0	0	SET	0xccae2983
+INVENTORY	xhm	0	2	0	SET	0xb18aa2d0
+INVENTORY	xtb	2	0	0	SET	0x808e814d
+INVENTORY	xsk	2	2	0	SET	0xb3410f76
+INVENTORY	xmb	4	0	0	SET	0x319c814
+INVENTORY	zmb	8	3	0	SET	0x44d95e3a

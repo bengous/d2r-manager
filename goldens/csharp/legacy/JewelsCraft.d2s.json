@@ -1,0 +1,8 @@
+{
+  "error": "InvalidOperationException: No txt data available for version 98. Available versions: 96, 97, 99, 105",
+  "file": "legacy/JewelsCraft.d2s",
+  "fileBytes": 1194,
+  "kind": "character",
+  "sha256": "25993df4f1e3c9c70be21728e783ccc02b48c9178417be744793b8a8d6cd636a",
+  "status": "error"
+}

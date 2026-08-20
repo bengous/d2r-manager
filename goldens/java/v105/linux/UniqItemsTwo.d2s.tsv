@@ -1,0 +1,33 @@
+#status	ok
+#file	v105/linux/UniqItemsTwo.d2s
+#kind	character
+#formatVersion	105
+#character	UniqItemsTwo	1	BARBARIAN	false
+#itemGroups	items	25	deadBody	0	mercenary	0	golem	0
+#rows	25
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	mgl	0	0	0	UNIQUE	0x794d9917
+STASH	umb	2	0	0	UNIQUE	0x7d6d3f1
+STASH	tbt	4	0	0	UNIQUE	0xe3c527db
+STASH	bae	6	0	0	UNIQUE	0x599916e9
+STASH	6sw	0	2	0	UNIQUE	0xb682805e
+STASH	lrg	2	2	0	UNIQUE	0x55ffc70c
+STASH	pa9	8	0	0	UNIQUE	0xeb6d7385
+STASH	9cr	4	2	0	UNIQUE	0xb1c082dc
+STASH	7cr	6	2	0	UNIQUE	0xba99c961
+STASH	xrn	0	5	0	UNIQUE	0x64539b9b
+STASH	7b8	0	7	270	UNIQUE	0xcac4847c
+STASH	xsk	8	4	0	UNIQUE	0x1cb3ef33
+STASH	uvg	2	5	0	UNIQUE	0x1b912a0
+STASH	7s8	8	6	0	UNIQUE	0x1b6503a8
+STASH	7b8	2	7	270	UNIQUE	0xda3e8385
+INVENTORY	9fc	0	0	0	UNIQUE	0xb7857337
+INVENTORY	7sm	1	0	0	UNIQUE	0xe62c7827
+INVENTORY	7ta	2	0	144	UNIQUE	0x3192fc5c
+INVENTORY	8lb	8	0	0	UNIQUE	0xe9087bec
+INVENTORY	7gl	7	0	120	UNIQUE	0x48e78b2e
+INVENTORY	uap	3	0	0	UNIQUE	0xad61ac19

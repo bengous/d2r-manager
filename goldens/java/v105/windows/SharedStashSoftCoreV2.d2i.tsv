@@ -1,0 +1,20 @@
+#status	ok
+#file	v105/windows/SharedStashSoftCoreV2.d2i
+#kind	stash
+#formatVersion	105
+#tabCount	3
+#tab	0	105	1370852	68	0
+#tab	1	105	1808810	68	0
+#tab	2	105	1181265	158	9
+#chronicle	none	io.github.paladijn.d2rsavegameparser.parser.ParseException: SharedStash did not contain seven tabs, but 3, unable to parse chronicle data
+#rows	9
+container	code	invX	invY	stack	quality	fingerprint
+TAB2:STASH	rvl	7	8	0	NONE	null
+TAB2:STASH	rvl	7	7	0	NONE	null
+TAB2:STASH	rvl	0	1	0	NONE	null
+TAB2:STASH	rvl	0	0	0	NONE	null
+TAB2:STASH	rvl	8	2	0	NONE	null
+TAB2:STASH	rvl	8	1	0	NONE	null
+TAB2:STASH	rvl	8	0	0	NONE	null
+TAB2:STASH	rvl	7	4	0	NONE	null
+TAB2:STASH	rvl	5	3	0	NONE	null

@@ -1,0 +1,18 @@
+#status	ok
+#file	v105/linux/MFitems.d2s
+#kind	character
+#formatVersion	105
+#character	MFitems	1	SORCERESS	false
+#itemGroups	items	7	deadBody	0	mercenary	0	golem	0
+#rows	10
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	uvb	0	0	0	RARE	0xd00b320c
+INVENTORY	crn	0	2	0	MAGIC	0x573dc1ac
+SOCKET	gpy	0	0	0	NONE	null
+SOCKET	gpy	1	0	0	NONE	null
+SOCKET	gpy	2	0	0	NONE	null
+INVENTORY	amu	9	3	0	MAGIC	0x54068348

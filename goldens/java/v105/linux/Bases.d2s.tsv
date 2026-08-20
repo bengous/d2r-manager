@@ -1,0 +1,29 @@
+#status	ok
+#file	v105/linux/Bases.d2s
+#kind	character
+#formatVersion	105
+#character	Bases	1	ASSASSIN	false
+#itemGroups	items	21	deadBody	0	mercenary	0	golem	0
+#rows	21
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	amc	0	0	0	SUPERIOR	0xee9a2a7e
+STASH	7vo	6	0	0	NORMAL	0xe61abcbd
+STASH	7cr	8	0	0	NORMAL	0x53fec219
+STASH	bsd	0	4	0	NORMAL	0x48e29ef2
+STASH	crs	8	3	0	NORMAL	0xe6b3aee2
+STASH	utu	4	3	0	SUPERIOR	0xf11d783b
+STASH	ula	4	6	0	NORMAL	0xad1b975
+STASH	uui	6	6	0	NORMAL	0x1d349d75
+STASH	7cr	8	6	0	NORMAL	0x608072ca
+STASH	uui	2	7	0	SUPERIOR	0x44bab600
+INVENTORY	7cr	0	0	0	SUPERIOR	0x91a68667
+INVENTORY	pa6	2	0	0	SUPERIOR	0xafec4beb
+STASH	uui	0	7	0	NORMAL	0x5fbfc578
+STASH	uui	4	0	0	SUPERIOR	0x2deb96ae
+STASH	7cr	2	4	0	NORMAL	0xa1ddff21
+INVENTORY	crs	8	0	0	SUPERIOR	0x348a753a
+INVENTORY	7wa	4	0	0	SUPERIOR	0xa3c88ebc

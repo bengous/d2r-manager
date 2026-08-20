@@ -1,0 +1,24 @@
+#status	ok
+#file	v105/linux/JewelsCraft.d2s
+#kind	character
+#formatVersion	105
+#character	JewelsCraft	1	DRUID	false
+#itemGroups	items	16	deadBody	0	mercenary	0	golem	0
+#rows	16
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	jew	9	1	0	MAGIC	0x8057c7d9
+INVENTORY	jew	9	0	0	MAGIC	0xb0c73c55
+INVENTORY	jew	8	3	0	MAGIC	0x3b236bf5
+INVENTORY	jew	8	2	0	MAGIC	0xfa69429f
+INVENTORY	jew	8	1	0	MAGIC	0xe5f86563
+INVENTORY	jew	8	0	0	MAGIC	0x195ad6e9
+INVENTORY	jew	7	3	0	MAGIC	0xc94026c5
+INVENTORY	jew	7	2	0	MAGIC	0x122d16f8
+INVENTORY	jew	7	1	0	MAGIC	0x56343684
+INVENTORY	jew	7	0	0	MAGIC	0x53b75611
+INVENTORY	jew	6	3	0	MAGIC	0x2eae8745
+INVENTORY	jew	6	2	0	MAGIC	0xa335673b

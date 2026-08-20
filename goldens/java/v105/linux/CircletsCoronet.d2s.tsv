@@ -1,0 +1,14 @@
+#status	ok
+#file	v105/linux/CircletsCoronet.d2s
+#kind	character
+#formatVersion	105
+#character	CircletsCoronet	1	BARBARIAN	false
+#itemGroups	items	6	deadBody	0	mercenary	0	golem	0
+#rows	6
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	ci2	0	0	0	RARE	0x27183b9d
+INVENTORY	ci1	0	2	0	RARE	0x6d66e7ad

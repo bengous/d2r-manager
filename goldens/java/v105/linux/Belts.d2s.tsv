@@ -1,0 +1,16 @@
+#status	ok
+#file	v105/linux/Belts.d2s
+#kind	character
+#formatVersion	105
+#character	Belts	1	DRUID	false
+#itemGroups	items	8	deadBody	0	mercenary	0	golem	0
+#rows	8
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	umc	8	0	0	SET	0x44dfb234
+INVENTORY	utc	8	1	0	SET	0x4f7d9de9
+INVENTORY	zhb	8	2	0	UNIQUE	0x46b273c8
+INVENTORY	zvb	8	3	0	UNIQUE	0x99d09331

@@ -1,0 +1,22 @@
+#status	ok
+#file	v105/linux/PalaDuper.d2s
+#kind	character
+#formatVersion	105
+#character	PalaDuper	1	BARBARIAN	false
+#itemGroups	items	10	deadBody	0	mercenary	0	golem	0
+#rows	14
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	cm1	8	3	0	MAGIC	0x43d54182
+INVENTORY	cm1	8	2	0	MAGIC	0x4957e99
+INVENTORY	cm1	7	3	0	MAGIC	0xafed7fa9
+INVENTORY	cm1	7	2	0	MAGIC	0x4f5c8c1
+INVENTORY	cm1	7	1	0	MAGIC	0x3888b458
+INVENTORY	pac	8	0	0	NORMAL	0x3160904d
+SOCKET	r07	0	0	0	NONE	null
+SOCKET	r10	1	0	0	NONE	null
+SOCKET	r09	2	0	0	NONE	null
+SOCKET	r11	3	0	0	NONE	null

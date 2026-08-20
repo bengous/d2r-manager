@@ -1,0 +1,22 @@
+#status	ok
+#file	v105/linux/SuperDupeuse.d2s
+#kind	character
+#formatVersion	105
+#character	SuperDupeuse	1	SORCERESS	false
+#itemGroups	items	6	deadBody	0	mercenary	0	golem	0
+#rows	14
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	urs	6	0	0	SUPERIOR	0x3ce354f
+SOCKET	r01	0	0	0	NONE	null
+SOCKET	r12	1	0	0	NONE	null
+SOCKET	r14	2	0	0	NONE	null
+SOCKET	r28	3	0	0	NONE	null
+INVENTORY	7vo	2	0	0	NORMAL	0x7e6c9925
+SOCKET	r08	0	0	0	NONE	null
+SOCKET	r03	1	0	0	NONE	null
+SOCKET	r07	2	0	0	NONE	null
+SOCKET	r12	3	0	0	NONE	null

@@ -1,0 +1,18 @@
+#status	ok
+#file	v105/linux/IAone.d2s
+#kind	character
+#formatVersion	105
+#character	IAone	2	PALADIN	false
+#itemGroups	items	10	deadBody	0	mercenary	0	golem	0
+#rows	10
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	tsc	9	3	0	NONE	null
+INVENTORY	isc	9	2	0	NONE	null
+BELT	hp2	0	0	0	NONE	null
+INVENTORY	hp1	9	1	0	NONE	null
+INVENTORY	gpm	9	0	6	NORMAL	0xf14a6c96
+EQUIPPED	ssd	4	0	0	NORMAL	0x6b7fc651
+EQUIPPED	buc	5	0	0	NORMAL	0x510ec3b4

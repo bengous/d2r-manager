@@ -1,0 +1,46 @@
+#status	ok
+#file	v105/linux/LevelingItems.d2s
+#kind	character
+#formatVersion	105
+#character	LevelingItems	1	AMAZON	false
+#itemGroups	items	32	deadBody	0	mercenary	0	golem	0
+#rows	38
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	xlm	0	6	0	UNIQUE	0x1afebc6
+STASH	tow	8	0	0	SET	0xa52ece4a
+STASH	ghm	0	8	0	SET	0x65e40221
+INVENTORY	hgl	4	2	0	UNIQUE	0xa852029f
+INVENTORY	cm1	9	2	0	MAGIC	0x1f0c61fc
+STASH	qui	0	0	0	SET	0x19ded460
+STASH	scm	2	0	0	UNIQUE	0x72740c2a
+INVENTORY	tbt	8	0	0	RARE	0x32d4f086
+STASH	vgl	2	8	0	UNIQUE	0xac7938c4
+STASH	ssd	4	7	0	UNIQUE	0x116abcfa
+STASH	mbl	5	9	0	UNIQUE	0x1a41d796
+STASH	hbl	5	8	0	SET	0xef26fcc6
+STASH	pa2	5	6	0	SUPERIOR	0xcdee9895
+STASH	tbl	0	5	0	UNIQUE	0xfa275ad5
+STASH	bwn	1	3	0	SET	0xd040c643
+STASH	sbr	2	5	0	SET	0x5caf0243
+STASH	9wn	0	3	0	UNIQUE	0x9a5f7561
+STASH	vbl	3	2	0	UNIQUE	0xe9136931
+STASH	lbl	3	6	0	SET	0x914a312c
+STASH	gts	6	0	0	UNIQUE	0x3241ff0
+STASH	hbw	8	7	0	SUPERIOR	0xec1a382c
+SOCKET	r08	0	0	0	NONE	null
+SOCKET	r08	1	0	0	NONE	null
+SOCKET	r08	2	0	0	NONE	null
+SOCKET	r08	3	0	0	NONE	null
+STASH	pab	8	3	0	NORMAL	0xe437dfc6
+SOCKET	r13	0	0	0	NONE	null
+SOCKET	r05	1	0	0	NONE	null
+INVENTORY	xap	6	0	0	SET	0xdff115d3
+INVENTORY	hbt	6	2	0	UNIQUE	0xc6a27267
+INVENTORY	rin	8	3	0	UNIQUE	0x9cb17414
+INVENTORY	amu	5	0	0	SET	0xb48cf6cf
+STASH	zlb	3	5	0	SET	0xbb15e8ca
+INVENTORY	rin	5	1	0	SET	0xb306e48b

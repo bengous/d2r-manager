@@ -1,0 +1,27 @@
+#status	ok
+#file	v105/linux/JewelsNice.d2s
+#kind	character
+#formatVersion	105
+#character	JewelsNice	1	PALADIN	false
+#itemGroups	items	19	deadBody	0	mercenary	0	golem	0
+#rows	19
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	jew	9	1	0	RARE	0x4ffd8fee
+INVENTORY	jew	9	0	0	MAGIC	0xe8ad3613
+INVENTORY	jew	0	3	0	UNIQUE	0x22c3fb25
+INVENTORY	jew	9	3	0	MAGIC	0x37757e61
+INVENTORY	jew	9	2	0	MAGIC	0x3e86addf
+INVENTORY	jew	8	3	0	MAGIC	0xbb38ea78
+INVENTORY	jew	8	2	0	MAGIC	0xa10d3c
+INVENTORY	jew	8	1	0	MAGIC	0xa69f71d6
+INVENTORY	jew	4	3	0	MAGIC	0x8944a2a1
+STASH	jew	0	0	0	UNIQUE	0x11f8eaac
+STASH	jew	4	0	0	MAGIC	0x24b8662d
+STASH	jew	0	2	0	UNIQUE	0xab41e52d
+STASH	jew	4	1	0	MAGIC	0x224dda70
+INVENTORY	jew	8	0	0	MAGIC	0xc6d51242
+INVENTORY	jew	7	0	0	MAGIC	0xcb3bfaa

@@ -1,0 +1,23 @@
+#status	ok
+#file	v105/linux/Firefox.d2s
+#kind	character
+#formatVersion	105
+#character	Firefox	1	DRUID	false
+#itemGroups	items	11	deadBody	0	mercenary	0	golem	0
+#rows	15
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	tsc	9	3	0	NONE	null
+INVENTORY	isc	9	2	0	NONE	null
+INVENTORY	dra	8	0	0	UNIQUE	0xad6f6192
+INVENTORY	cm2	8	2	0	UNIQUE	0xc2ae0496
+INVENTORY	uit	0	0	0	NORMAL	0x62661fe2
+SOCKET	r07	0	0	0	NONE	null
+SOCKET	r10	1	0	0	NONE	null
+SOCKET	r09	2	0	0	NONE	null
+SOCKET	r11	3	0	0	NONE	null
+EQUIPPED	clb	4	0	0	NORMAL	0x724d7b61
+EQUIPPED	buc	5	0	0	NORMAL	0xeb8b78a3

@@ -1,0 +1,32 @@
+#status	ok
+#file	v105/linux/BasesTwo.d2s
+#kind	character
+#formatVersion	105
+#character	BasesTwo	1	BARBARIAN	false
+#itemGroups	items	24	deadBody	0	mercenary	0	golem	0
+#rows	24
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+STASH	pa2	4	0	0	SUPERIOR	0x923ac41c
+STASH	9wa	8	0	0	SUPERIOR	0x9f14b2f3
+STASH	pac	6	0	0	NORMAL	0x95f6f175
+STASH	uth	8	3	0	NORMAL	0x53732d1e
+STASH	7wa	6	2	0	NORMAL	0xe2b9951d
+STASH	amc	8	6	0	SUPERIOR	0x93dec409
+STASH	ltp	0	0	0	SUPERIOR	0x9e79b892
+STASH	uui	0	3	0	SUPERIOR	0x6e6de251
+STASH	uar	2	4	0	NORMAL	0xd62f0b8e
+STASH	7gd	0	6	0	SUPERIOR	0x5fddc4ae
+STASH	7cr	2	7	0	SUPERIOR	0xcc300363
+STASH	pac	4	5	0	NORMAL	0xf8f27840
+INVENTORY	drd	4	0	0	NORMAL	0x7ccf64e6
+INVENTORY	xui	8	0	0	SUPERIOR	0xd98a100e
+INVENTORY	crs	6	0	0	NORMAL	0x2954318c
+STASH	7cr	4	7	0	SUPERIOR	0x7d6f2409
+STASH	utp	6	5	0	NORMAL	0x477e3ff
+STASH	amb	2	0	0	SUPERIOR	0xb476c501
+INVENTORY	7gd	0	0	0	NORMAL	0x137b1283
+INVENTORY	7vo	2	0	0	NORMAL	0x97c330e8

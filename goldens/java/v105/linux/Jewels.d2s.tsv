@@ -1,0 +1,24 @@
+#status	ok
+#file	v105/linux/Jewels.d2s
+#kind	character
+#formatVersion	105
+#character	Jewels	1	BARBARIAN	false
+#itemGroups	items	16	deadBody	0	mercenary	0	golem	0
+#rows	16
+container	code	invX	invY	stack	quality	fingerprint
+BELT	hp1	0	0	0	NONE	null
+BELT	hp1	1	0	0	NONE	null
+BELT	hp1	2	0	0	NONE	null
+BELT	hp1	3	0	0	NONE	null
+INVENTORY	jew	9	3	0	MAGIC	0x925c2645
+INVENTORY	jew	9	2	0	MAGIC	0x5bc31105
+INVENTORY	jew	9	1	0	MAGIC	0x4c381e25
+INVENTORY	jew	9	0	0	MAGIC	0x9e75942d
+INVENTORY	jew	8	3	0	MAGIC	0x8d9998db
+INVENTORY	jew	8	2	0	MAGIC	0xfeaafc93
+INVENTORY	jew	8	1	0	MAGIC	0xdf3069b3
+INVENTORY	jew	8	0	0	MAGIC	0xb8983ac5
+INVENTORY	jew	7	3	0	MAGIC	0x2b93e05c
+INVENTORY	jew	7	2	0	MAGIC	0x8deaf7ad
+INVENTORY	jew	7	1	0	MAGIC	0x3aec2ad8
+INVENTORY	jew	7	0	0	MAGIC	0x2b2f005a

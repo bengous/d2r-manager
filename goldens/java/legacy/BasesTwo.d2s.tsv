@@ -1,0 +1,6 @@
+#status	refused
+#file	legacy/BasesTwo.d2s
+#kind	character
+#error	io.github.paladijn.d2rsavegameparser.parser.ParseException: Unsupported version: 99
+#rows	0
+container	code	invX	invY	stack	quality	fingerprint

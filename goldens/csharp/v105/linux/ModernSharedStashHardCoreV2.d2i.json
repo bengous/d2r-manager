@@ -1,0 +1,210 @@
+{
+  "file": "v105/linux/ModernSharedStashHardCoreV2.d2i",
+  "fileBytes": 556,
+  "formatVersion": 105,
+  "itemCounts": {
+    "advancedStashStacks": 0,
+    "items": 0,
+    "itemsPlusAdvancedStashStacks": 0,
+    "total": 0,
+    "totalWithSockets": 0
+  },
+  "kind": "stash",
+  "model": [
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 105,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 2,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 105,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 2,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 105,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 2,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 105,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 2,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 105,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 2,
+      "TabType": {
+        "name": "Normal",
+        "value": 0
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": null,
+      "Gold": 0,
+      "ItemFormat": 105,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 2,
+      "TabType": {
+        "name": "AdvancedStash",
+        "value": 1
+      }
+    },
+    {
+      "$type": "D2StashTab",
+      "Chronicle": {
+        "$type": "ChronicleSection",
+        "Reserved": "0000000000000000",
+        "RunewordEntries": [],
+        "SetEntries": [],
+        "TrailingData": "ffff0000ffff0000ffff0000ffff0000ffff0000020000000801000002000000020100003c0101010115ff540202ffffffffffffffffffffffffffffffffffff",
+        "UniqueEntries": [],
+        "Version": 1
+      },
+      "Gold": 0,
+      "ItemFormat": 105,
+      "Items": [],
+      "Reserved": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "Season": 0,
+      "StashFormat": 2,
+      "TabType": {
+        "name": "Chronicle",
+        "value": 2
+      }
+    }
+  ],
+  "roundTrip": {
+    "identical": true,
+    "writtenBytes": 556
+  },
+  "sha256": "1266a3d9da400f13039b11d7481bef592844d1b26cc6022a09e3223abc147658",
+  "status": "ok",
+  "tabs": [
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 68,
+      "gold": 0,
+      "index": 0,
+      "itemFormat": 105,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 2,
+      "tabType": "Normal"
+    },
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 68,
+      "gold": 0,
+      "index": 1,
+      "itemFormat": 105,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 2,
+      "tabType": "Normal"
+    },
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 68,
+      "gold": 0,
+      "index": 2,
+      "itemFormat": 105,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 2,
+      "tabType": "Normal"
+    },
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 68,
+      "gold": 0,
+      "index": 3,
+      "itemFormat": 105,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 2,
+      "tabType": "Normal"
+    },
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 68,
+      "gold": 0,
+      "index": 4,
+      "itemFormat": 105,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 2,
+      "tabType": "Normal"
+    },
+    {
+      "advancedStashStacks": 0,
+      "fileTabBytes": 68,
+      "gold": 0,
+      "index": 5,
+      "itemFormat": 105,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 2,
+      "tabType": "AdvancedStash"
+    },
+    {
+      "advancedStashStacks": 0,
+      "chronicleRunewordEntries": 0,
+      "chronicleSetEntries": 0,
+      "chronicleTrailingBytes": 64,
+      "chronicleUniqueEntries": 0,
+      "fileTabBytes": 148,
+      "gold": 0,
+      "index": 6,
+      "itemFormat": 105,
+      "items": 0,
+      "itemsWithSockets": 0,
+      "stashFormat": 2,
+      "tabType": "Chronicle"
+    }
+  ]
+}

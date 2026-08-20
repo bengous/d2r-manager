@@ -1,0 +1,6 @@
+#status	refused
+#file	legacy/SharedStashHardCoreV2.d2i
+#kind	stash
+#error	io.github.paladijn.d2rsavegameparser.parser.ParseException: Unsupported shared stash version 99
+#rows	0
+container	code	invX	invY	stack	quality	fingerprint
