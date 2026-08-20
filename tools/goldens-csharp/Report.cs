@@ -100,6 +100,11 @@ internal static class Report
         text.AppendLine("et jamais commite. Il lit les tables du jeu dans");
         text.AppendLine("`reference/d2rsavegameparser/txt/`, en place et en lecture seule.");
         text.AppendLine();
+        text.AppendLine("Le parseur declare `org.slf4j:slf4j-api` en portee `provided` et ses classes ne");
+        text.AppendLine("se chargent pas sans lui. Le meme script telecharge donc slf4j-api 2.0.17,");
+        text.AppendLine("sha256 `7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832`.");
+        text.AppendLine("Aucun fournisseur de journalisation n'est ajoute : le parseur reste silencieux.");
+        text.AppendLine();
     }
 
     private static void WriteConventions(StringBuilder text, List<FixtureReport> fixtures)

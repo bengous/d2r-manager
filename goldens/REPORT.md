@@ -15,6 +15,11 @@ verifie par sha256 `0b2164f3c8219e390c42ccba3e2377dce2514561e1c32f5d0c1d4c962296
 et jamais commite. Il lit les tables du jeu dans
 `reference/d2rsavegameparser/txt/`, en place et en lecture seule.
 
+Le parseur declare `org.slf4j:slf4j-api` en portee `provided` et ses classes ne
+se chargent pas sans lui. Le meme script telecharge donc slf4j-api 2.0.17,
+sha256 `7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832`.
+Aucun fournisseur de journalisation n'est ajoute : le parseur reste silencieux.
+
 ## Conventions
 
 1. Axes. Le parseur Java expose `x()` = ligne et `y()` = colonne, soit l'inverse
