@@ -1,7 +1,9 @@
 # d2r-manager : plan de projet
 
-Ecrit et fige le 2026-08-20. Statut : **valide**. Ce document fait foi : l'agent
-d'implementation s'y conforme et s'arrete devant toute divergence.
+Ecrit et fige le 2026-08-20. Ce document est le brief complet du projet : un
+agent d'implementation le prend et construit l'outil en entier. Toute divergence
+avec ce document se regle par une question a l'utilisateur, pas par une
+initiative silencieuse.
 
 Binaire CLI : `d2r-manager`. Ne pas installer sous le nom `d2r`, pris par le
 lanceur `~/.local/bin/d2r`.
@@ -9,8 +11,8 @@ lanceur `~/.local/bin/d2r`.
 ## 1. But
 
 1. Sauvegarde et synchronisation des saves vers git (reprend le role du script
-   `~/.local/bin/d2r-backup` ; la bascule effective est une decision utilisateur
-   ulterieure, le script bash reste en place d'ici la).
+   `~/.local/bin/d2r-backup` ; la bascule effective est une decision utilisateur,
+   le script bash reste en place d'ici la).
 2. Exploration hors jeu des inventaires, coffres personnels et coffres partages,
    via CLI d'abord, API HTTP locale ensuite, GUI plus tard.
 3. Deplacement d'objets entre conteneurs (coffre partage, coffre personnel,
@@ -18,7 +20,8 @@ lanceur `~/.local/bin/d2r`.
 4. Duplication d'un objet possede d'un personnage vers un autre, tracee dans un
    registre de provenance.
 5. Transactions : un plan d'operations valide puis applique, adosse a git.
-6. Plus tard : lecture du Chronicle (Holy Grail) depuis l'onglet 7 du coffre moderne.
+6. Plus tard : lecture du Chronicle (Holy Grail) depuis l'onglet 7 du coffre
+   moderne. Hors perimetre de la premiere livraison.
 
 ## Non-buts
 
@@ -120,24 +123,55 @@ changement, jamais en silence.
    dependances Rust).
 3. Zero commentaire, sauf references a la spec de la forme `FORMAT.md §x.y`
    dans le code du bitstream (contrainte externe irremplacable).
-4. Regle d'or du depot : remplacer, ne pas accumuler. Pas de v2 sans suppression
-   de la v1 dans le meme changement.
+4. Remplacer, ne pas accumuler : pas de v2 sans suppression de la v1 dans le
+   meme changement.
 5. La qualite ne se mesure jamais aux compteurs (tests, LOC, couverture).
 
-## 6. Politique de tests
+## 6. Tests : le harnais differentiel
 
-Le harnais differentiel est la suite de tests de `format` :
+Le projet porte un parseur de bitstream depuis C# vers Rust. Un round-trip
+(`write(read(f)) == f`) ne prouve pas la comprehension : un champ lu au mauvais
+offset et reecrit au meme mauvais offset passe le test, et l'outil affiche
+ensuite des valeurs fausses. Les golden files sont le corrige : la comprehension
+des oracles, figee, contre laquelle les tests Rust comparent champ a champ.
 
-1. **Goldens C# (JSON)** : la verite de portage. Dump complet du modele D2SSharp
-   pour chacun des 55 fichiers v105. Les tests Rust comparent champ a champ.
-2. **Goldens Java (TSV)** : contre-verification independante sur les champs
-   communs : conteneur, code, position, pile, qualite, empreinte.
-   Attention : les axes x/y du parseur Java sont inverses par rapport a D2SSharp
-   (mesure le 2026-08-20, 135/135 objets concordants apres echange).
-3. **Round-trip** : `write(read(f)) == f` octet pour octet sur les 55 fichiers.
-4. **proptest** : sur le bitreader uniquement.
+Composants du harnais :
+
+1. `tools/goldens-csharp/` : projet .NET console. Entree, un fichier de save ;
+   sortie, un JSON canonique (cles triees, indente) du modele D2SSharp complet,
+   plus le verdict round-trip. Referencer
+   `reference/D2SSharp/src/D2SSharp/D2SSharp.csproj` par `ProjectReference`.
+2. `tools/goldens-java/` : lecture seule via le jar 3.2.0, telecharge par script
+   avec controle sha256 obligatoire (tableau §4), jamais commite. Le dossier
+   `txt/` vient de `reference/d2rsavegameparser/txt/`. Sortie TSV : conteneur,
+   code, position, pile, qualite, empreinte.
+3. `goldens/csharp/*.json` et `goldens/java/*.tsv` : un fichier par fixture,
+   commites. `goldens/REPORT.md` : par fixture, taille, version, nombre
+   d'objets, verdict round-trip C#, concordance C#/Java. Les desaccords sont
+   listes, jamais masques.
+4. Tests Rust de `format` : egalite champ a champ avec les goldens C# sur les
+   55 fichiers v105 ; round-trip octet pour octet 55/55 ; `proptest` sur le
+   bitreader uniquement ; `legacy/` produit l'erreur attendue.
 5. Regles de `domain` : tests par table. Ports : fakes ecrits main, aucun
-   framework de mock. Fixtures `legacy/` : verifient l'erreur propre.
+   framework de mock. Jamais d'objectif de couverture.
+
+Verites mesurees le 2026-08-20, a integrer sans les redecouvrir :
+
+- Les axes du parseur Java sont inverses par rapport a D2SSharp : 135/135
+  objets concordants apres echange de x et y. Normaliser toutes les sorties sur
+  la convention D2SSharp (`InvX` = colonne, `InvY` = ligne) et le documenter.
+- L'onglet `AdvancedStash` du coffre moderne n'est pas une grille : les fichiers
+  ecrits par le jeu y contiennent des positions qui se recouvrent. Ce n'est pas
+  une anomalie. On n'y invente jamais de position : on empile ou on ajoute.
+- Round-trip `.d2i` : prouve 4/4 sur les fichiers v105. Round-trip `.d2s` :
+  jamais mesure. Le mesurer via l'oracle C# et le documenter fichier par
+  fichier dans `REPORT.md` ; un echec partiel est une information, pas un
+  blocage.
+- Fixtures `legacy/` : l'oracle Java doit les refuser (v105 exclusif), D2SSharp
+  doit les lire (v96 a v105). Consigner les deux comportements.
+- Reperes anti-regression, fixture `v105/linux/ModernSharedStashSoftCoreV2.d2i` :
+  7 onglets (5 normaux, 1 `AdvancedStash`, 1 `Chronicle`), 1533 objets,
+  1 075 411 pieces d'or a l'onglet 1, onglet `Chronicle` de 2298 octets.
 
 ## 7. Transactions
 
@@ -146,46 +180,52 @@ Le harnais differentiel est la suite de tests de `format` :
 2. Validation : grille (dimensions par code objet, table extraite des .txt du
    jeu), capacites, plafond d'or 2 500 000 par onglet, objets limites a un par
    personnage (Annihilus, Hellfire Torch, Gheed's Fortune), piles max 99.
-   L'onglet specialise du coffre moderne n'est pas une grille : on n'y invente
-   jamais de position, on empile ou on ajoute.
 3. `apply` : jeu ferme (`pgrep D2R.exe`), timer en pause, commit git de point de
    retour, ecriture, relecture et verification d'invariant (le multiset d'objets
    est conserve hors operations explicites), commit final avec le plan dans le
    message, timer relance. Rollback = `git revert`.
 4. Registre de provenance : chaque duplication journalisee (empreinte, source,
-   cible, date) dans `d2r-saves:ledger/duplications.jsonl`, hors `saves/`,
-   commite par `apply` dans le meme commit que l'operation.
+   cible, date) dans `d2r-saves:ledger/duplications.jsonl`, hors du miroir
+   rsync, commite par `apply` dans le meme commit que l'operation.
 
-## 8. Phases et criteres d'acceptation
+## 8. Ordre de construction
 
-| Phase | Contenu | Fait quand |
+L'agent avance de bout en bout, sans validation intermediaire de l'utilisateur.
+L'ordre existe parce que chaque etape s'appuie sur la precedente. Les criteres
+sont la definition de « fait ».
+
+| Etape | Contenu | Fait quand |
 |---|---|---|
-| 0 | dumpers oracles, goldens, rapport round-trip .d2s de l'oracle | goldens commites pour les 58 fichiers ; REPORT.md donne le statut round-trip par fichier ; fetch du jar scripte avec controle sha256 |
-| 1 | spec `FORMAT.md` depuis le source D2SSharp + la recherche existante (`d2r-saves:docs/research/format-objet-v105.md`) | chaque champ du bitstream a sa largeur en bits et sa reference croisee |
-| 2 | `format` lecture | 55/55 fichiers v105 concordent avec les goldens C# ; legacy/ produit l'erreur attendue |
-| 3 | `format` ecriture | round-trip 55/55 octet pour octet ; checksum `.d2s` reproduit |
-| 4 | `domain` : grilles, regles, plans | tests par table verts ; la fusion de coffres du 2026-08-20 rejouee donne un resultat equivalent (reference : commit `2885c71` de d2r-saves) |
-| 5 | `cli` : sync, ls, find, diff | sync reproduit les gardes du script bash ; la bascule reste une decision utilisateur |
-| 6 | transactions plan/apply | scenario complet sur copie du corpus, rollback verifie |
-| 7 | API HTTP locale | contrat OpenAPI fige, memes cas d'usage que la CLI |
+| 1 | harnais : dumpers oracles, goldens, REPORT | goldens commites pour les 58 fixtures ; REPORT complet ; `just goldens` regenere tout |
+| 2 | spec `FORMAT.md` depuis le source D2SSharp + `d2r-saves:docs/research/format-objet-v105.md` | chaque champ du bitstream a sa largeur en bits et sa reference croisee |
+| 3 | `format` lecture | 55/55 v105 concordent avec les goldens C# ; legacy en erreur propre |
+| 4 | `format` ecriture | round-trip 55/55 octet pour octet ; checksum `.d2s` reproduit |
+| 5 | `domain` : grilles, regles, plans | tests par table verts ; la fusion de coffres du 2026-08-20 rejouee donne un resultat equivalent (reference : commit `2885c71` de d2r-saves) |
+| 6 | `cli` : sync, ls, find, diff | sync reproduit les gardes du script bash ; la bascule reste une decision utilisateur |
+| 7 | transactions plan/apply | scenario complet sur copie du corpus, rollback verifie |
+| 8 | API HTTP locale | contrat OpenAPI fige, memes cas d'usage que la CLI |
 
-Chaque phase se termine par : criteres verifies, resume, arret. Toute extension
-de perimetre se confirme avant execution.
+Le projet est livre quand tous les criteres passent. Fin = resume complet et
+honnete : ce qui passe, ce qui a ete decouvert, ce qui reste.
 
 ## 9. Consignes a l'agent d'implementation
 
 1. Lire ce plan et `fixtures/PROVENANCE.md` avant toute action.
 2. Interdictions absolues : ecrire dans `~/Games/`, dans `~/Work/d2r-saves/`,
-   dans `fixtures/` (lecture seule), dans `reference/` (submodules figes).
-3. Deux echecs sur la meme piste : arret, resume, reevaluation.
-4. Branches `feature/desc`, rebase, commits petits. Pas de push : le remote
+   dans `fixtures/` (lecture seule), dans `reference/` (submodules figes, ne pas
+   les mettre a jour).
+3. Ne jamais porter de code depuis `reference/d2rsavegameparser` (LGPL 2.1) :
+   oracle execute uniquement. D2SSharp et halbu sont MIT, portage permis.
+4. Deux echecs sur la meme piste : arret, resume, reevaluation.
+5. Branches `feature/desc`, rebase, commits petits. Pas de push : le remote
    n'existe pas encore.
-5. Divergence avec le plan = arret et question, pas d'initiative silencieuse.
+6. Blocage reel ou divergence avec le plan : question a l'utilisateur.
 
 ## 10. Etat du depot au moment du gel
 
 Commits : `9509293` init, `697db1c` submodules de reference, `f891ca9` corpus
-(55 fichiers v105 + 3 legacy, provenance d2r-saves `33162cd`).
+(55 fichiers v105 + 3 legacy, provenance d2r-saves `33162cd`), puis les commits
+de documentation dont ce plan.
 
 ## 11. Questions ouvertes
 
