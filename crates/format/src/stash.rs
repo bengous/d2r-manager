@@ -119,8 +119,28 @@ impl ChronicleSection {
 /// FORMAT.md §4.2
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TabBody {
-    Items(ItemList),
+    Normal(ItemList),
+    AdvancedStash(ItemList),
     Chronicle(ChronicleSection),
+}
+
+impl TabBody {
+    #[must_use]
+    pub const fn kind(&self) -> TabKind {
+        match self {
+            Self::Normal(_) => TabKind::Normal,
+            Self::AdvancedStash(_) => TabKind::AdvancedStash,
+            Self::Chronicle(_) => TabKind::Chronicle,
+        }
+    }
+
+    #[must_use]
+    pub const fn items(&self) -> Option<&ItemList> {
+        match self {
+            Self::Normal(items) | Self::AdvancedStash(items) => Some(items),
+            Self::Chronicle(_) => None,
+        }
+    }
 }
 
 /// FORMAT.md §4.1
@@ -130,10 +150,24 @@ pub struct StashTab {
     pub item_format: u32,
     pub gold: u32,
     pub season: u16,
-    pub kind: TabKind,
     pub reserved: [u8; 43],
     pub body: TabBody,
     pub trailing: Vec<u8>,
+    kind_byte: u8,
+}
+
+impl StashTab {
+    /// FORMAT.md §4.2
+    #[must_use]
+    pub const fn kind(&self) -> TabKind {
+        self.body.kind()
+    }
+
+    /// FORMAT.md §4.1
+    #[must_use]
+    pub const fn kind_byte(&self) -> u8 {
+        self.kind_byte
+    }
 }
 
 /// FORMAT.md §4
@@ -194,7 +228,7 @@ impl StashTab {
         let gold = reader.read_u32()?;
         let declared = usize::from(reader.read_u16()?);
         let season = reader.read_u16()?;
-        let kind = TabKind::from_code(reader.read_u8()?)?;
+        let kind_byte = reader.read_u8()?;
         let reserved = reader.read_array::<43>()?;
 
         if declared < TAB_HEADER_BYTES {
@@ -205,9 +239,15 @@ impl StashTab {
             });
         }
 
+        let kind = if stash_format < 2 {
+            TabKind::Normal
+        } else {
+            TabKind::from_code(kind_byte)?
+        };
         let body = match kind {
             TabKind::Chronicle => TabBody::Chronicle(ChronicleSection::read(reader)?),
-            TabKind::Normal | TabKind::AdvancedStash => TabBody::Items(ItemList::read(reader)?),
+            TabKind::Normal => TabBody::Normal(ItemList::read(reader)?),
+            TabKind::AdvancedStash => TabBody::AdvancedStash(ItemList::read(reader)?),
         };
 
         let consumed = reader.byte_position()? - start;
@@ -225,10 +265,10 @@ impl StashTab {
             item_format,
             gold,
             season,
-            kind,
             reserved,
             body,
             trailing,
+            kind_byte,
         })
     }
 
@@ -242,11 +282,11 @@ impl StashTab {
         let size_field = writer.byte_len();
         writer.write_u16(0)?;
         writer.write_u16(self.season)?;
-        writer.write_u8(self.kind.code())?;
+        writer.write_u8(self.kind_byte)?;
         writer.write_bytes(&self.reserved)?;
 
         match &self.body {
-            TabBody::Items(items) => items.write(writer)?,
+            TabBody::Normal(items) | TabBody::AdvancedStash(items) => items.write(writer)?,
             TabBody::Chronicle(chronicle) => chronicle.write(writer)?,
         }
         if !self.trailing.is_empty() {
@@ -254,14 +294,12 @@ impl StashTab {
         }
 
         let size = writer.byte_len() - start;
-        writer.patch_u16(
-            size_field,
-            u16::try_from(size).map_err(|_| FormatError::BadSectionSize {
-                section: "stash tab",
-                expected: usize::from(u16::MAX),
-                found: size,
-            })?,
-        );
+        let size = u16::try_from(size).map_err(|_| FormatError::BadSectionSize {
+            section: "stash tab",
+            expected: usize::from(u16::MAX),
+            found: size,
+        })?;
+        writer.patch(size_field, &size.to_le_bytes())?;
         Ok(())
     }
 }

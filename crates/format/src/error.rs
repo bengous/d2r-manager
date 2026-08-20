@@ -56,6 +56,9 @@ pub enum FormatError {
     #[error("game version {version} is not one of the four known values")]
     UnknownGameVersion { version: u8 },
 
+    #[error("item version {version} is not representable in the 3-bit field")]
+    UnknownItemVersion { version: u16 },
+
     #[error("item mode {mode} is not one of the seven known modes")]
     UnknownItemMode { mode: u32 },
 
@@ -94,6 +97,9 @@ pub enum FormatError {
     #[error("stash tab type {kind} is not one of Normal, AdvancedStash or Chronicle")]
     UnknownStashTabType { kind: u8 },
 
-    #[error("the file declares {declared} bytes but holds {actual}")]
-    FileSizeMismatch { declared: u32, actual: usize },
+    #[error("the file holds {actual} bytes, fewer than the {needed} of a header")]
+    TruncatedHeader { needed: usize, actual: usize },
+
+    #[error("the written file holds {bytes} bytes, more than a 32-bit size field carries")]
+    FileTooLarge { bytes: usize },
 }

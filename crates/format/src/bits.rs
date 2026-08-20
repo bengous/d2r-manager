@@ -351,11 +351,16 @@ impl BitWriter {
         Ok(())
     }
 
-    pub fn patch_u16(&mut self, byte_offset: usize, value: u16) {
-        self.data[byte_offset..byte_offset + 2].copy_from_slice(&value.to_le_bytes());
-    }
-
-    pub fn patch_u32(&mut self, byte_offset: usize, value: u32) {
-        self.data[byte_offset..byte_offset + 4].copy_from_slice(&value.to_le_bytes());
+    pub fn patch(&mut self, byte_offset: usize, bytes: &[u8]) -> Result<(), BitError> {
+        let end = byte_offset + bytes.len();
+        if end > self.data.len() {
+            return Err(BitError::EndOfData {
+                position: byte_offset * 8,
+                needed: u32::try_from(bytes.len() * 8).unwrap_or(u32::MAX),
+                available: self.data.len().saturating_sub(byte_offset) * 8,
+            });
+        }
+        self.data[byte_offset..end].copy_from_slice(bytes);
+        Ok(())
     }
 }

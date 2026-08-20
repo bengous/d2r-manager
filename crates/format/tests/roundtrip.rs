@@ -53,10 +53,12 @@ fn every_version_105_linux_fixture_survives_a_read_then_write() {
 #[test]
 fn the_checksum_of_every_character_fixture_is_reproduced() {
     let mut failures = Vec::new();
+    let mut checked = 0usize;
     for name in fixture_names(LINUX) {
         if is_stash(&name) {
             continue;
         }
+        checked += 1;
         let data = fixture_bytes(LINUX, &name);
         let stored = checksum::stored(&data).expect("checksum field");
         let computed = checksum::compute(&data);
@@ -67,6 +69,7 @@ fn the_checksum_of_every_character_fixture_is_reproduced() {
         }
     }
     assert!(failures.is_empty(), "{}", failures.join("\n"));
+    assert_eq!(checked, 53, "character fixtures covered");
 }
 
 #[test]

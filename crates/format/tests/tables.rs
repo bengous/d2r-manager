@@ -45,10 +45,15 @@ fn rows(content: &str) -> (HashMap<String, usize>, Vec<String>) {
     (header, body)
 }
 
-fn column<'a>(columns: &'a [&'a str], index: Option<usize>) -> &'a str {
-    index
-        .and_then(|index| columns.get(index))
-        .map_or("", |value| value.trim())
+fn column<'a>(columns: &'a [&'a str], index: usize) -> &'a str {
+    columns.get(index).map_or("", |value| value.trim())
+}
+
+fn required(header: &HashMap<String, usize>, name: &str) -> usize {
+    header
+        .get(name)
+        .copied()
+        .unwrap_or_else(|| panic!("column {name} is missing from the reference txt file"))
 }
 
 fn parse_u32(value: &str) -> u32 {
@@ -91,7 +96,7 @@ struct Stat {
 fn parse_stats() -> Vec<Stat> {
     let content = read_txt("itemstatcost.txt");
     let (header, body) = rows(&content);
-    let get = |name: &str| header.get(name).copied();
+    let get = |name: &str| required(&header, name);
     let (signed, bits, param) = (get("csvsigned"), get("csvbits"), get("csvparam"));
     let (save_bits, save_param, save_add, shift) = (
         get("save bits"),
@@ -146,7 +151,7 @@ struct ItemType {
 fn parse_item_types() -> Vec<ItemType> {
     let content = read_txt("itemtypes.txt");
     let (header, body) = rows(&content);
-    let get = |name: &str| header.get(name).copied();
+    let get = |name: &str| required(&header, name);
     let (code, equiv1, equiv2, gfx) = (get("code"), get("equiv1"), get("equiv2"), get("varinvgfx"));
 
     let mut types: Vec<ItemType> = Vec::new();
@@ -202,7 +207,7 @@ struct Item {
 fn parse_items(file: &str, type_names: &HashMap<String, usize>) -> Vec<Item> {
     let content = read_txt(file);
     let (header, body) = rows(&content);
-    let get = |name: &str| header.get(name).copied();
+    let get = |name: &str| required(&header, name);
     let (code, kind, compact, quest, diff) = (
         get("code"),
         get("type"),
@@ -224,7 +229,9 @@ fn parse_items(file: &str, type_names: &HashMap<String, usize>) -> Vec<Item> {
             let type_name = column(&columns, kind).to_lowercase();
             Some(Item {
                 code: make_code(code_text),
-                type_index: type_names.get(&type_name).copied().unwrap_or(0),
+                type_index: type_names.get(&type_name).copied().unwrap_or_else(|| {
+                    panic!("item {code_text} names the unknown item type {type_name}")
+                }),
                 compact_save: parse_u32(column(&columns, compact)) != 0,
                 quest: parse_u32(column(&columns, quest)) != 0,
                 quest_diff_check: parse_u32(column(&columns, diff)) != 0,

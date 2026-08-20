@@ -23,8 +23,8 @@ pub fn stored(data: &[u8]) -> Result<u32, FormatError> {
     data.get(FIELD_OFFSET..FIELD_OFFSET + 4)
         .and_then(|slice| <[u8; 4]>::try_from(slice).ok())
         .map(u32::from_le_bytes)
-        .ok_or(FormatError::FileSizeMismatch {
-            declared: 0,
+        .ok_or(FormatError::TruncatedHeader {
+            needed: FIELD_OFFSET + 4,
             actual: data.len(),
         })
 }

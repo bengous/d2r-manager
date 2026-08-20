@@ -63,6 +63,22 @@ pub struct ItemVersion {
 }
 
 impl ItemVersion {
+    /// FORMAT.md §5.3
+    pub const fn from_number(number: u16) -> Result<Self, FormatError> {
+        let (above_ninety_nine, offset) = match number {
+            0..=3 => (false, number),
+            99..=102 => (true, number - 99),
+            _ => return Err(FormatError::UnknownItemVersion { version: number }),
+        };
+        match Bits::<2>::new(offset as u32) {
+            Some(offset) => Ok(Self {
+                above_ninety_nine,
+                offset,
+            }),
+            None => Err(FormatError::UnknownItemVersion { version: number }),
+        }
+    }
+
     #[must_use]
     pub const fn number(self) -> u16 {
         #[expect(clippy::cast_possible_truncation, reason = "offset holds 2 bits")]
@@ -702,8 +718,7 @@ fn read_type_specific(
 ) -> Result<TypeSpecific, FormatError> {
     if info.is_armor() {
         let stat = stat_info(StatId::ARMOR_CLASS.get())?;
-        let defense = (i64::from(reader.read_bits(stat.save_bits)?) - i64::from(stat.save_add))
-            << stat.val_shift;
+        let defense = i64::from(reader.read_bits(stat.save_bits)?) - i64::from(stat.save_add);
         return Ok(TypeSpecific::Armor {
             defense,
             durability: read_durability(reader)?,
@@ -928,14 +943,12 @@ fn write_quality(writer: &mut BitWriter, quality: &ItemQuality) -> Result<(), Fo
 /// FORMAT.md §5.6
 fn read_durability(reader: &mut BitReader<'_>) -> Result<Durability, FormatError> {
     let max_stat = stat_info(StatId::MAX_DURABILITY.get())?;
-    let max = (i64::from(reader.read_bits(max_stat.save_bits)?) - i64::from(max_stat.save_add))
-        << max_stat.val_shift;
+    let max = i64::from(reader.read_bits(max_stat.save_bits)?) - i64::from(max_stat.save_add);
     if max <= 0 {
         return Ok(Durability::Indestructible);
     }
     let stat = stat_info(StatId::DURABILITY.get())?;
-    let current =
-        (i64::from(reader.read_bits(stat.save_bits)?) - i64::from(stat.save_add)) << stat.val_shift;
+    let current = i64::from(reader.read_bits(stat.save_bits)?) - i64::from(stat.save_add);
     Ok(Durability::Limited { max, current })
 }
 
@@ -951,7 +964,7 @@ fn write_durability(writer: &mut BitWriter, durability: Durability) -> Result<()
             StatId::MAX_DURABILITY,
             max,
             max_stat.save_add,
-            max_stat.val_shift,
+            0,
             max_stat.save_bits,
         )?,
         max_stat.save_bits,
@@ -963,7 +976,7 @@ fn write_durability(writer: &mut BitWriter, durability: Durability) -> Result<()
                 StatId::DURABILITY,
                 current,
                 stat.save_add,
-                stat.val_shift,
+                0,
                 stat.save_bits,
             )?,
             stat.save_bits,
@@ -1193,7 +1206,7 @@ fn write_complete(
                     StatId::ARMOR_CLASS,
                     defense,
                     stat.save_add,
-                    stat.val_shift,
+                    0,
                     stat.save_bits,
                 )?,
                 stat.save_bits,

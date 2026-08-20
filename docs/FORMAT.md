@@ -180,23 +180,25 @@ de la presence de la sous-section d'objets en §3.11.
 Donnees d'affichage de l'ecran de selection, lues sans parcourir le fichier
 entier. Disposition v104 et au-dela (`Model/PreviewData.cs:Read`).
 
-| Offset relatif | Bits | Champ |
+| Offset relatif | Taille | Champ |
 |---:|---:|---|
-| 0 | 6 x 64 | dates de sauvegarde, FILETIME Windows |
-| 48 | 6 x 32 | experiences totales |
-| 72 | 8 | couleur d'embleme de guilde |
-| 73 | 8 | version de jeu : 0 aucune, 1 classique, 2 extension, 3 Reign of the Warlock |
-| 74 | 16 | remplissage |
-| 76 | 12 | objet d'apercu, main gauche |
-| 88 | 12 | objet d'apercu, main droite |
-| 100 | 12 | objet d'apercu, torse |
-| 112 | 12 | objet d'apercu, tete |
+| 0 | 6 x 64 bits | dates de sauvegarde, FILETIME Windows |
+| 48 | 6 x 32 bits | experiences totales |
+| 72 | 8 bits | couleur d'embleme de guilde |
+| 73 | 8 bits | version de jeu : 0 aucune, 1 classique, 2 extension, 3 Reign of the Warlock |
+| 74 | 16 bits | remplissage |
+| 76 | 12 octets | objet d'apercu, main gauche |
+| 88 | 12 octets | objet d'apercu, main droite |
+| 100 | 12 octets | objet d'apercu, torse |
+| 112 | 12 octets | objet d'apercu, tete |
 | 124 | 96 octets | nom du personnage, chaine de taille fixe (§2.2) |
-| 220 | 64 | reserve, nul |
+| 220 | 64 bits | reserve, nul |
 
-L'offset 73 tombe a l'offset absolu 232 du fichier, ce que
+L'offset 73 tombe a l'offset 232 **dans la section Character**, soit 248
+depuis le debut du fichier. C'est exactement ce que
 `reference/halbu/src/character/v105.rs:OFFSET_MODE_MARKER` designe comme
-marqueur de mode avec les memes trois valeurs. Les deux lectures concordent.
+marqueur de mode, avec les memes trois valeurs ; halbu indexe la section,
+pas le fichier. Les deux lectures concordent.
 
 Un objet d'apercu, 12 octets (`Model/PreviewItem.cs:Read`) : code `u32`
 brut (non Huffman, 4 caracteres ASCII), transformation de couleur `u8`,
@@ -366,6 +368,11 @@ sans reste.
 | 20 | 8 | type d'onglet : 0 normal, 1 AdvancedStash, 2 Chronicle |
 | 21 | 43 octets | reserve |
 
+Quand le format de coffre vaut moins de 2, le jeu ignore l'octet de type et
+traite l'onglet comme normal (`Model/D2StashTab.cs:Read`). La crate suit
+cette regle : le type effectif choisit le corps, et l'octet lu est reecrit
+tel quel. Les cinq `.d2i` du corpus portent tous un format de coffre de 2.
+
 Le champ de taille sert a atteindre l'onglet suivant : la position repart a
 `debut + taille`. Les octets entre la fin du corps et cette borne sont
 conserves tels quels (§4.3).
@@ -391,15 +398,15 @@ opposer.
 `Model/ChronicleSection.cs:Read`. Suivi des objets uniques, de set et des
 runewords trouves.
 
-| Offset relatif | Bits | Champ |
+| Offset relatif | Taille | Champ |
 |---:|---:|---|
-| 0 | 32 | magic `0xC0EAEDC0` |
-| 4 | 16 | version, vaut 1 |
-| 6 | 16 | nombre d'entrees de set |
-| 8 | 16 | nombre d'entrees d'unique |
-| 10 | 16 | nombre d'entrees de runeword |
+| 0 | 32 bits | magic `0xC0EAEDC0` |
+| 4 | 16 bits | version, vaut 1 |
+| 6 | 16 bits | nombre d'entrees de set |
+| 8 | 16 bits | nombre d'entrees d'unique |
+| 10 | 16 bits | nombre d'entrees de runeword |
 | 12 | 8 octets | reserve |
-| 20 | n x 10 | entrees, sets puis uniques puis runewords |
+| 20 | n x 10 octets | entrees, sets puis uniques puis runewords |
 
 Une entree, 10 octets : id d'objet `u32` (index de ligne de `items.txt` pour
 un set ou un unique, index de chaine de runeword sinon), source `u16` (nulle
@@ -828,29 +835,40 @@ le corpus.
    crate ecrit la valeur lue et signale une erreur si elle ne tient pas dans
    son champ, plutot que de la tronquer en silence.
 
+   D2SSharp borne aussi **a la lecture** : un niveau d'objet nul devient 1
+   (`Model/Item.cs:ReadCompleteItem`). La crate garde la valeur lue, ce qui
+   preserve la reecriture. Le niveau minimal du corpus vaut 1 ; les deux
+   comportements coincident.
+
 4. **Stats a valeur nulle.** D2SSharp saute a l'ecriture toute stat dont la
    valeur decalee est nulle, ou dont `Save Bits` vaut zero. La crate ecrit
    la liste telle qu'elle l'a lue. Un fichier contenant une telle stat
    casserait la reecriture de D2SSharp ; le corpus n'en contient pas.
 
-5. **Destinataires Chronicle.** D2SSharp borne a 8 le nombre de
+5. **Donnees de royaume tout a zero.** D2SSharp derive le bit de presence
+   des donnees de royaume de leur contenu : un bloc de quatre zeros est
+   reecrit sans bit de presence, donc en octets differents. La crate ecrit
+   le bit tel qu'il a ete lu. Aucun objet du corpus ne porte de donnees de
+   royaume.
+
+6. **Destinataires Chronicle.** D2SSharp borne a 8 le nombre de
    destinataires lus, alors que le champ en compte 4 bits ; au-dela il
    desynchronise le flux. La crate lit exactement le nombre annonce. Aucun
    objet du corpus ne porte de bloc Chronicle.
 
-6. **Queue d'onglet de coffre.** D2SSharp ne conserve les octets entre la fin
+7. **Queue d'onglet de coffre.** D2SSharp ne conserve les octets entre la fin
    du corps et la taille declaree que pour les onglets Chronicle. La crate
    les conserve pour tous les types d'onglet, et conserve aussi les octets
    qui suivent le dernier onglet. Sur le corpus, ces deux queues sont vides
    hors onglet Chronicle.
 
-7. **Valeurs hors enumeration.** Mode d'objet 7, emplacement de corps 13 a
+8. **Valeurs hors enumeration.** Mode d'objet 7, emplacement de corps 13 a
    15, qualite 0 ou 10 a 15, classe de personnage au-dela de 7, version de
    jeu au-dela de 3 et type d'onglet au-dela de 2 produisent une erreur au
    lieu d'une valeur sans nom. Le corpus n'en contient aucune : les modes
    observes sont 0, 1, 2, 4 et 6, les emplacements 0 a 12, les qualites 2 a
    8, les pages brutes 0, 1, 4 et 5.
 
-8. **Lints de documentation.** `clippy::missing_errors_doc` et
+9. **Lints de documentation.** `clippy::missing_errors_doc` et
    `clippy::missing_panics_doc` sont desactives dans le workspace : ils
    exigent des commentaires de documentation, ce que PLAN §5.3 interdit.

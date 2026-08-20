@@ -1010,7 +1010,7 @@ fn tab_kind(kind: TabKind) -> Value {
 
 fn stash_tab(tab: &StashTab) -> Value {
     let (chronicle_value, items) = match &tab.body {
-        TabBody::Items(items) => (Value::Null, item_list(items)),
+        TabBody::Normal(items) | TabBody::AdvancedStash(items) => (Value::Null, item_list(items)),
         TabBody::Chronicle(section) => {
             (chronicle(section, &tab.trailing), Value::Array(Vec::new()))
         }
@@ -1023,7 +1023,7 @@ fn stash_tab(tab: &StashTab) -> Value {
         ("Reserved", hex(&tab.reserved)),
         ("Season", Value::from(i64::from(tab.season))),
         ("StashFormat", Value::from(i64::from(tab.stash_format))),
-        ("TabType", tab_kind(tab.kind)),
+        ("TabType", tab_kind(tab.kind())),
     ])
 }
 

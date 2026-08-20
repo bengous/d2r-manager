@@ -364,12 +364,9 @@ impl CharacterSave {
         }
 
         let written = writer.byte_len();
-        let size = u32::try_from(written).map_err(|_| FormatError::FileSizeMismatch {
-            declared: u32::MAX,
-            actual: written,
-        })?;
-        writer.patch_u32(8, size);
-        writer.patch_u32(12, 0);
+        let size =
+            u32::try_from(written).map_err(|_| FormatError::FileTooLarge { bytes: written })?;
+        writer.patch(8, &size.to_le_bytes())?;
         let mut data = writer.finish();
         let sum = checksum::compute(&data);
         data[12..16].copy_from_slice(&sum.to_le_bytes());

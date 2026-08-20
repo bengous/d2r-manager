@@ -205,3 +205,59 @@ fn the_fixed_sections_span_the_sizes_of_format_md_3_4_to_3_6() {
         .expect("skills section");
     assert_eq!(skills.levels.len(), 30, "thirty skills per class");
 }
+
+#[test]
+fn distinct_values_prove_the_slot_order_of_format_md_3_3() {
+    let mut data = fixture_bytes(LINUX, FIXTURE);
+    let base = HEADER_BYTES + 159;
+    for slot in 0..6u32 {
+        let index = slot as usize;
+        let time = 0x0011_2233_4400_0000u64 + u64::from(slot);
+        data[base + index * 8..base + index * 8 + 8].copy_from_slice(&time.to_le_bytes());
+        let experience = 0x5566_7700u32 + slot;
+        let offset = base + 48 + index * 4;
+        data[offset..offset + 4].copy_from_slice(&experience.to_le_bytes());
+    }
+
+    let mut reader = BitReader::new(&data);
+    reader.seek(HEADER_BYTES * 8);
+    let preview = Character::read(&mut reader).expect("character").preview;
+
+    for slot in 0..6u32 {
+        let index = slot as usize;
+        assert_eq!(
+            preview.save_times[index],
+            0x0011_2233_4400_0000u64 + u64::from(slot),
+            "save time slot {slot}"
+        );
+        assert_eq!(
+            preview.experiences[index],
+            0x5566_7700u32 + slot,
+            "experience slot {slot}"
+        );
+    }
+}
+
+#[test]
+fn each_mercenary_slot_alone_marks_a_hired_mercenary() {
+    let pristine = fixture_bytes(LINUX, FIXTURE);
+    let base = HEADER_BYTES + 143;
+
+    let hired = |seed: u32, name_index: u16, experience: u32| {
+        let mut data = pristine.clone();
+        data[base + 4..base + 8].copy_from_slice(&seed.to_le_bytes());
+        data[base + 8..base + 10].copy_from_slice(&name_index.to_le_bytes());
+        data[base + 12..base + 16].copy_from_slice(&experience.to_le_bytes());
+        let mut reader = BitReader::new(&data);
+        reader.seek(HEADER_BYTES * 8);
+        Character::read(&mut reader)
+            .expect("character")
+            .merc
+            .is_hired()
+    };
+
+    assert!(!hired(0, 0, 0), "no seed, no name, no experience");
+    assert!(hired(1, 0, 0), "offset 147, seed alone");
+    assert!(hired(0, 1, 0), "offset 151, name index alone");
+    assert!(hired(0, 0, 1), "offset 155, experience alone");
+}

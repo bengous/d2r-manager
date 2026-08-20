@@ -115,7 +115,11 @@ fn the_anti_regression_markers_of_the_modern_shared_stash_hold() {
     let save = StashSave::read(&fixture_bytes(LINUX, name)).expect("stash");
 
     assert_eq!(save.tabs.len(), 7, "tab count");
-    let kinds: Vec<_> = save.tabs.iter().map(|tab| tab.kind).collect();
+    let kinds: Vec<_> = save
+        .tabs
+        .iter()
+        .map(format::stash::StashTab::kind)
+        .collect();
     assert_eq!(
         kinds,
         vec![
@@ -132,13 +136,14 @@ fn the_anti_regression_markers_of_the_modern_shared_stash_hold() {
 
     let mut entries = 0usize;
     let mut stacks = 0u32;
-    for (index, tab) in save.tabs.iter().enumerate() {
-        if let format::stash::TabBody::Items(items) = &tab.body {
-            entries += items.0.len();
-            if index == 5 {
-                for item in &items.0 {
-                    stacks += advanced_stash_stack(item);
-                }
+    for tab in &save.tabs {
+        let Some(items) = tab.body.items() else {
+            continue;
+        };
+        entries += items.0.len();
+        if tab.kind() == format::stash::TabKind::AdvancedStash {
+            for item in &items.0 {
+                stacks += advanced_stash_stack(item);
             }
         }
     }
