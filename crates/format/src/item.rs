@@ -569,14 +569,14 @@ pub struct CompleteBody {
     pub advanced_stash_stack: Option<Bits<8>>,
 }
 
-/// FORMAT.md §5.5
+/// FORMAT.md §5.6
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CompactContent {
     Ear(EarData),
     Code { code: ItemCode, gold: Option<Gold> },
 }
 
-/// FORMAT.md §5.5
+/// FORMAT.md §5.6
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CompactBody {
     pub content: CompactContent,
@@ -733,7 +733,7 @@ fn read_type_specific(
     Ok(TypeSpecific::Absent)
 }
 
-/// FORMAT.md §5.5
+/// FORMAT.md §5.6
 fn quest_difficulty_info(code: ItemCode) -> Result<Option<(u32, i32, u32)>, FormatError> {
     let info = item_info(code)?;
     if !info.is_quest() || !info.quest_diff_check() {
@@ -743,7 +743,7 @@ fn quest_difficulty_info(code: ItemCode) -> Result<Option<(u32, i32, u32)>, Form
     Ok(Some((stat.save_bits, stat.save_add, stat.val_shift)))
 }
 
-/// FORMAT.md §5.5
+/// FORMAT.md §5.6
 fn read_compact(reader: &mut BitReader<'_>, flags: ItemFlags) -> Result<CompactBody, FormatError> {
     let content = if flags.has(ItemFlags::IS_EAR) {
         CompactContent::Ear(EarData::read(reader)?)
@@ -778,7 +778,7 @@ fn read_compact(reader: &mut BitReader<'_>, flags: ItemFlags) -> Result<CompactB
     })
 }
 
-/// FORMAT.md §5.5
+/// FORMAT.md §5.6
 fn write_compact(
     writer: &mut BitWriter,
     flags: ItemFlags,

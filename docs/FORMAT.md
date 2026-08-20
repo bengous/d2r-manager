@@ -436,7 +436,7 @@ objet : ce prefixe n'existe qu'en version 96 et anterieures.
 | 32 | drapeaux | §5.2 |
 | 3 | version d'objet | §5.3 |
 | 3 | mode | §5.5 |
-| 16 ou 32 | position, selon le mode | §5.5 |
+| 15 ou 32 | position, selon le mode | §5.5 |
 | var. | corps compact ou complet, selon le drapeau `CompactSave` | §5.6, §5.7 |
 
 L'enregistrement se termine par un alignement sur l'octet : le jeu serialise
@@ -563,8 +563,10 @@ Emplacement, 15 bits :
 
 La page brute vaut la page interne plus un : 0 signifie aucune page (objets
 sertis notamment), 1 inventaire, 2 equipement, 3 echange, 4 cube, 5 coffre,
-6 ceinture. C'est le seul champ de position a reecrire pour deplacer un
-objet entre conteneurs.
+6 ceinture. La huitieme valeur du champ, la page brute 7, n'a pas de nom :
+D2SSharp la lit comme une page interne 6 hors enumeration et la reecrit a 7.
+La crate la porte sous un nom propre et la reecrit de meme. C'est le seul
+champ de position a reecrire pour deplacer un objet entre conteneurs.
 
 Un objet non equipe doit porter un emplacement de corps nul, sinon le jeu
 refuse le fichier (`Model/D2StashTab.cs:Convert114ToD2R`).
@@ -871,9 +873,10 @@ le corpus.
 8. **Valeurs hors enumeration.** Mode d'objet 7, emplacement de corps 13 a
    15, qualite 0 ou 10 a 15, classe de personnage au-dela de 7, version de
    jeu au-dela de 3 et type d'onglet au-dela de 2 produisent une erreur au
-   lieu d'une valeur sans nom. Le corpus n'en contient aucune : les modes
-   observes sont 0, 1, 2, 4 et 6, les emplacements 0 a 12, les qualites 2 a
-   8, les pages brutes 0, 1, 4 et 5.
+   lieu d'une valeur sans nom. Le corpus n'en contient aucune. Mesure sur les
+   2404 objets de `v105/linux` : les modes observes sont 0, 1, 2 et 6, les
+   emplacements 0 a 12, les qualites 2 a 8, les pages brutes 0, 1, 4 et 5. Le
+   mode 4 n'apparait que dans les deux fichiers `v105/windows`, sur 5 objets.
 
 9. **Lints de documentation.** `clippy::missing_errors_doc` et
    `clippy::missing_panics_doc` sont desactives dans le workspace : ils
