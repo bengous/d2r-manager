@@ -1,0 +1,5 @@
+[tools]
+dotnet = "10.0.400"
+java = "25.0.1"
+just = "1.44.0"
+lefthook = "2.1.4"
