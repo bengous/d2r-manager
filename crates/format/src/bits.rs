@@ -191,7 +191,7 @@ impl<'a> BitReader<'a> {
         if end > self.data.len() {
             return Err(BitError::EndOfData {
                 position: self.position,
-                needed: u32::try_from(count * 8).unwrap_or(u32::MAX),
+                needed: u32::try_from(count.saturating_mul(8)).unwrap_or(u32::MAX),
                 available: self.bits_left(),
             });
         }
@@ -352,14 +352,18 @@ impl BitWriter {
     }
 
     pub fn patch(&mut self, byte_offset: usize, bytes: &[u8]) -> Result<(), BitError> {
-        let end = byte_offset + bytes.len();
-        if end > self.data.len() {
+        let end = byte_offset.checked_add(bytes.len());
+        let Some(end) = end.filter(|end| *end <= self.data.len()) else {
             return Err(BitError::EndOfData {
-                position: byte_offset * 8,
-                needed: u32::try_from(bytes.len() * 8).unwrap_or(u32::MAX),
-                available: self.data.len().saturating_sub(byte_offset) * 8,
+                position: byte_offset.saturating_mul(8),
+                needed: u32::try_from(bytes.len().saturating_mul(8)).unwrap_or(u32::MAX),
+                available: self
+                    .data
+                    .len()
+                    .saturating_sub(byte_offset)
+                    .saturating_mul(8),
             });
-        }
+        };
         self.data[byte_offset..end].copy_from_slice(bytes);
         Ok(())
     }

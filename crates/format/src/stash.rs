@@ -282,6 +282,12 @@ impl StashTab {
         let size_field = writer.byte_len();
         writer.write_u16(0)?;
         writer.write_u16(self.season)?;
+        if self.stash_format >= 2 && self.kind_byte != self.body.kind().code() {
+            return Err(FormatError::StashTabKindMismatch {
+                declared: self.kind_byte,
+                body: self.body.kind().code(),
+            });
+        }
         writer.write_u8(self.kind_byte)?;
         writer.write_bytes(&self.reserved)?;
 

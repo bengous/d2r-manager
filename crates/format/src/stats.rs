@@ -80,7 +80,13 @@ pub(crate) fn encode_value(
     val_shift: u32,
     bits: u32,
 ) -> Result<u32, FormatError> {
-    let raw = (value >> val_shift) + i64::from(save_add);
+    let raw = (value >> val_shift)
+        .checked_add(i64::from(save_add))
+        .ok_or(FormatError::StatValueOutOfRange {
+            id: id.get(),
+            value,
+            bits,
+        })?;
     u32::try_from(raw)
         .ok()
         .filter(|raw| bits == 32 || u64::from(*raw) < 1u64 << bits)

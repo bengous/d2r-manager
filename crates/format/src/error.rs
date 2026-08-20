@@ -97,6 +97,9 @@ pub enum FormatError {
     #[error("stash tab type {kind} is not one of Normal, AdvancedStash or Chronicle")]
     UnknownStashTabType { kind: u8 },
 
+    #[error("stash tab declares type {declared} but carries a type {body} body")]
+    StashTabKindMismatch { declared: u8, body: u8 },
+
     #[error("the file holds {actual} bytes, fewer than the {needed} of a header")]
     TruncatedHeader { needed: usize, actual: usize },
 

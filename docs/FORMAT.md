@@ -371,7 +371,13 @@ sans reste.
 Quand le format de coffre vaut moins de 2, le jeu ignore l'octet de type et
 traite l'onglet comme normal (`Model/D2StashTab.cs:Read`). La crate suit
 cette regle : le type effectif choisit le corps, et l'octet lu est reecrit
-tel quel. Les cinq `.d2i` du corpus portent tous un format de coffre de 2.
+tel quel.
+
+Quatre des cinq `.d2i` du corpus portent un format de coffre de 2. Le
+cinquieme, `legacy/SharedStashHardCoreV2.d2i`, porte un format de coffre de 1
+et un format d'objet de 99 ; la crate le refuse sur le format d'objet avant
+d'atteindre la regle. Cette regle n'a donc aucune couverture par fixture :
+elle repose sur le seul source C#.
 
 Le champ de taille sert a atteindre l'onglet suivant : la position repart a
 `debut + taille`. Les octets entre la fin du corps et cette borne sont
