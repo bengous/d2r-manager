@@ -15,7 +15,7 @@ build-oracles:
 goldens: build-oracles
     #!/usr/bin/env bash
     set -euo pipefail
-    mapfile -t corpus < <(awk '{print substr($2, 3)}' "{{ root }}/fixtures/sha256sums.txt" | sort)
+    mapfile -t corpus < <(sed 's|^[0-9a-f]\{64\}  \./||' "{{ root }}/fixtures/sha256sums.txt" | sort)
     rm -rf "{{ root }}/goldens/csharp" "{{ root }}/goldens/java"
     "{{ oracle }}" dump "{{ root }}/fixtures" "{{ root }}/goldens/csharp" "${corpus[@]}"
     cd "{{ root }}/reference/d2rsavegameparser"

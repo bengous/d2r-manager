@@ -44,13 +44,25 @@ internal static class SaveDump
                 document["itemCounts"] = StashItemCounts(stash);
                 document["model"] = ModelDumper.Dump(stash);
             }
-
-            document["roundTrip"] = RoundTrip(kind, bytes);
         }
         catch (Exception failure)
         {
             document["status"] = "error";
             document["error"] = $"{failure.GetType().Name}: {failure.Message}";
+            return document;
+        }
+
+        try
+        {
+            document["roundTrip"] = RoundTrip(kind, bytes);
+        }
+        catch (Exception failure)
+        {
+            document["roundTrip"] = new JsonObject
+            {
+                ["identical"] = false,
+                ["error"] = $"{failure.GetType().Name}: {failure.Message}",
+            };
         }
 
         return document;

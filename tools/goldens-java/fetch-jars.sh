@@ -14,7 +14,10 @@ fetch() {
     fi
 
     mkdir -p "$destination"
-    curl --fail --silent --show-error --location --output "$target.part" "$url"
+    if ! curl --fail --silent --show-error --location --output "$target.part" "$url"; then
+        rm -f "$target.part"
+        exit 1
+    fi
 
     local actual
     actual="$(sha256sum "$target.part" | cut -d ' ' -f 1)"

@@ -44,7 +44,53 @@ internal static class Report
 
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
         File.WriteAllText(outputPath, text.ToString());
-        return 0;
+        return Regressions(fixtures);
+    }
+
+    private static int Regressions(List<FixtureReport> fixtures)
+    {
+        var failures = new List<string>();
+        foreach (FixtureReport fixture in fixtures)
+        {
+            if (fixture.Concordance is { Differences.Count: > 0 })
+            {
+                failures.Add($"{fixture.RelativePath}: {fixture.Concordance.Differences.Count} desaccords C#/Java");
+            }
+
+            if (fixture.Group == "legacy/")
+            {
+                continue;
+            }
+
+            if (fixture.Status != "ok")
+            {
+                failures.Add($"{fixture.RelativePath}: lecture C# refusee, {fixture.Error}");
+                continue;
+            }
+
+            if (!(bool)fixture.Document["roundTrip"]!["identical"]!)
+            {
+                failures.Add($"{fixture.RelativePath}: round-trip C# {RoundTripCell(fixture)}");
+            }
+
+            if (fixture.Java.Status != "ok")
+            {
+                failures.Add($"{fixture.RelativePath}: lecture Java refusee, {fixture.Java.Error}");
+            }
+        }
+
+        if (failures.Count == 0)
+        {
+            return 0;
+        }
+
+        Console.Error.WriteLine("regression sur le corpus v105 :");
+        foreach (string failure in failures)
+        {
+            Console.Error.WriteLine($"  {failure}");
+        }
+
+        return 1;
     }
 
     private static FixtureReport Load(string csharpDirectory, string javaDirectory, string relativePath)
@@ -112,6 +158,7 @@ internal static class Report
         int compared = fixtures.Count(fixture => fixture.Concordance is not null);
         int rows = fixtures.Sum(fixture => fixture.Concordance?.CsharpRows ?? 0);
         int matched = fixtures.Sum(fixture => fixture.Concordance?.Matched ?? 0);
+        int strict = fixtures.Sum(fixture => fixture.Concordance?.Strict ?? 0);
         int compactQuality = fixtures.Sum(fixture => fixture.Concordance?.CompactQualityEquivalences ?? 0);
         int cursorTransit = fixtures.Sum(fixture => fixture.Concordance?.CursorTransitEquivalences ?? 0);
 
@@ -140,12 +187,19 @@ internal static class Report
         text.AppendLine($"   - objet compact (`ItemFlags.CompactSave`) : C# `NORMAL`, Java `NONE` ({compactQuality} lignes) ;");
         text.AppendLine($"   - C# `ItemMode.OnCursor`, Java `ItemLocation.TRANSIT` ({cursorTransit} lignes).");
         text.AppendLine("   Ces deux regles nomment differemment une meme valeur lue ; tout autre ecart");
-        text.AppendLine("   est un desaccord et figure dans la section dediee.");
+        text.AppendLine("   est un desaccord et figure dans la section dediee. Une ligne peut relever");
+        text.AppendLine("   des deux regles a la fois, les deux comptes ne s'additionnent donc pas.");
         text.AppendLine("5. Format TSV : lignes de metadonnees `#cle<TAB>valeur`, puis l'entete de");
         text.AppendLine("   colonnes `container code invX invY stack quality fingerprint`, puis un objet");
         text.AppendLine("   par ligne. `fingerprint` est l'empreinte calculee par l'oracle Java ; D2SSharp");
         text.AppendLine("   n'a pas d'equivalent, elle n'entre pas dans la comparaison.");
-        text.AppendLine($"6. Concordance globale : {matched}/{rows} lignes identiques champ a champ.");
+        text.AppendLine($"6. Concordance globale : {matched}/{rows} lignes concordantes, dont {strict} identiques");
+        text.AppendLine($"   champ a champ sans aucune regle, et {matched - strict} ramenees par les equivalences");
+        text.AppendLine("   du point 4. La colonne `concordance` des tableaux donne le meme detail.");
+        text.AppendLine("7. Garde-fou : `goldens-csharp report` sort en erreur si un fichier `v105/` est");
+        text.AppendLine("   refuse par un oracle, si son round-trip C# n'est plus identique, ou si un");
+        text.AppendLine("   desaccord apparait. Une regression de lecture ou d'ecriture arrete donc");
+        text.AppendLine("   `just goldens` au lieu de passer inapercue dans un diff.");
         text.AppendLine();
     }
 
@@ -181,6 +235,11 @@ internal static class Report
             return "identique";
         }
 
+        if (verdict["error"] is { } failure)
+        {
+            return $"ecriture en erreur ({(string)failure!})";
+        }
+
         return $"differe (offset {(int)verdict["firstDifferenceOffset"]!}, {(int)verdict["differingBytes"]!} octets)";
     }
 
@@ -202,8 +261,15 @@ internal static class Report
         }
 
         ConcordanceResult result = fixture.Concordance!;
-        string cell = $"{result.Matched}/{result.CsharpRows}";
-        return result.Differences.Count == 0 ? cell : cell + " (desaccords)";
+        if (result.Differences.Count > 0)
+        {
+            return $"{result.Matched}/{result.CsharpRows} (desaccords)";
+        }
+
+        int equivalences = result.Matched - result.Strict;
+        return equivalences == 0
+            ? $"{result.Matched}/{result.CsharpRows} strictes"
+            : $"{result.Matched}/{result.CsharpRows} dont {equivalences} par equivalence";
     }
 
     private static void WriteRoundTrip(StringBuilder text, List<FixtureReport> fixtures)
@@ -274,8 +340,17 @@ internal static class Report
         {
             int compared = fixtures.Count(fixture => fixture.Concordance is not null);
             int rows = fixtures.Sum(fixture => fixture.Concordance?.CsharpRows ?? 0);
+            int strict = fixtures.Sum(fixture => fixture.Concordance?.Strict ?? 0);
+            int compactQuality = fixtures.Sum(fixture => fixture.Concordance?.CompactQualityEquivalences ?? 0);
+            int cursorTransit = fixtures.Sum(fixture => fixture.Concordance?.CursorTransitEquivalences ?? 0);
             text.AppendLine($"Aucun. Les {compared} fichiers lus par les deux oracles donnent {rows} lignes");
-            text.AppendLine("identiques champ a champ : conteneur, code, position, pile, qualite.");
+            text.AppendLine("concordantes sur conteneur, code, position, pile et qualite. Le detail :");
+            text.AppendLine();
+            int matched = fixtures.Sum(fixture => fixture.Concordance?.Matched ?? 0);
+            text.AppendLine($"- {strict} lignes identiques champ a champ, sans aucune regle ;");
+            text.AppendLine($"- {matched - strict} lignes ramenees par au moins une equivalence, dont {compactQuality} par la");
+            text.AppendLine($"  regle de qualite des objets compacts et {cursorTransit} par la regle `OnCursor` / `TRANSIT`");
+            text.AppendLine("  (une meme ligne peut relever des deux).");
             text.AppendLine();
         }
         else

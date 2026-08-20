@@ -39,79 +39,86 @@ Aucun fournisseur de journalisation n'est ajoute : le parseur reste silencieux.
    - objet compact (`ItemFlags.CompactSave`) : C# `NORMAL`, Java `NONE` (1142 lignes) ;
    - C# `ItemMode.OnCursor`, Java `ItemLocation.TRANSIT` (5 lignes).
    Ces deux regles nomment differemment une meme valeur lue ; tout autre ecart
-   est un desaccord et figure dans la section dediee.
+   est un desaccord et figure dans la section dediee. Une ligne peut relever
+   des deux regles a la fois, les deux comptes ne s'additionnent donc pas.
 5. Format TSV : lignes de metadonnees `#cle<TAB>valeur`, puis l'entete de
    colonnes `container code invX invY stack quality fingerprint`, puis un objet
    par ligne. `fingerprint` est l'empreinte calculee par l'oracle Java ; D2SSharp
    n'a pas d'equivalent, elle n'entre pas dans la comparaison.
-6. Concordance globale : 2564/2564 lignes identiques champ a champ.
+6. Concordance globale : 2564/2564 lignes concordantes, dont 1422 identiques
+   champ a champ sans aucune regle, et 1142 ramenees par les equivalences
+   du point 4. La colonne `concordance` des tableaux donne le meme detail.
+7. Garde-fou : `goldens-csharp report` sort en erreur si un fichier `v105/` est
+   refuse par un oracle, si son round-trip C# n'est plus identique, ou si un
+   desaccord apparait. Une regression de lecture ou d'ecriture arrete donc
+   `just goldens` au lieu de passer inapercue dans un diff.
 
 ## Corpus v105/linux (55 fichiers)
 
 | fixture | octets | version | objets | lignes | round-trip C# | concordance C#/Java |
 |---|---:|---:|---:|---:|---|---|
-| Armageddon.d2s | 1962 | 105 | 62 | 68 | identique | 68/68 |
-| Bases.d2s | 1343 | 105 | 21 | 21 | identique | 21/21 |
-| BasesTwo.d2s | 1446 | 105 | 24 | 24 | identique | 24/24 |
-| Belts.d2s | 1123 | 105 | 8 | 8 | identique | 8/8 |
-| Ber.d2s | 3971 | 105 | 101 | 130 | identique | 130/130 |
-| BigSets.d2s | 1227 | 105 | 10 | 10 | identique | 10/10 |
-| Charmed.d2s | 2583 | 105 | 67 | 67 | identique | 67/67 |
-| CharmedTwo.d2s | 1384 | 105 | 20 | 20 | identique | 20/20 |
-| Cica.d2s | 3005 | 105 | 65 | 88 | identique | 88/88 |
-| CicaLinux.d2s | 2315 | 105 | 42 | 58 | identique | 58/58 |
-| Circlets.d2s | 1054 | 105 | 6 | 6 | identique | 6/6 |
-| CircletsCoronet.d2s | 1060 | 105 | 6 | 6 | identique | 6/6 |
-| Crafts.d2s | 1111 | 105 | 12 | 12 | identique | 12/12 |
-| Crameuse.d2s | 2502 | 105 | 55 | 75 | identique | 75/75 |
-| Elektra.d2s | 3779 | 105 | 86 | 122 | identique | 122/122 |
-| Facets.d2s | 1057 | 105 | 7 | 7 | identique | 7/7 |
-| Fire.d2s | 962 | 105 | 4 | 4 | identique | 4/4 |
-| Firefox.d2s | 1199 | 105 | 11 | 15 | identique | 15/15 |
-| Gous.d2s | 3174 | 105 | 66 | 101 | identique | 101/101 |
-| GousDeux.d2s | 1409 | 105 | 31 | 31 | identique | 31/31 |
-| Hammer.d2s | 3334 | 105 | 81 | 110 | identique | 110/110 |
-| IAone.d2s | 1055 | 105 | 10 | 10 | identique | 10/10 |
-| Javazon.d2s | 3386 | 105 | 75 | 107 | identique | 107/107 |
-| Jewels.d2s | 1259 | 105 | 16 | 16 | identique | 16/16 |
-| JewelsCraft.d2s | 1271 | 105 | 16 | 16 | identique | 16/16 |
-| JewelsNice.d2s | 1377 | 105 | 19 | 19 | identique | 19/19 |
-| LevelingItems.d2s | 2018 | 105 | 32 | 38 | identique | 38/38 |
-| MFitems.d2s | 1086 | 105 | 7 | 10 | identique | 10/10 |
-| MercGear.d2s | 1256 | 105 | 12 | 14 | identique | 14/14 |
-| Merco.d2s | 962 | 105 | 4 | 4 | identique | 4/4 |
-| ModernSharedStashHardCoreV2.d2i | 556 | 105 | 0 | 0 | identique | 0/0 |
-| ModernSharedStashSoftCoreV2.d2i | 8729 | 105 | 227 | 251 | identique | 251/251 |
-| Mosaic.d2s | 1020 | 105 | 8 | 8 | identique | 8/8 |
-| Nova.d2s | 3260 | 105 | 72 | 95 | identique | 95/95 |
-| PalaDuper.d2s | 1171 | 105 | 10 | 14 | identique | 14/14 |
-| RingAmys.d2s | 2157 | 105 | 38 | 38 | identique | 38/38 |
-| Runewords.d2s | 1340 | 105 | 9 | 27 | identique | 27/27 |
-| SCSeptMf.d2s | 962 | 105 | 4 | 4 | identique | 4/4 |
-| SetItems.d2s | 1944 | 105 | 27 | 27 | identique | 27/27 |
-| Shay.d2s | 3419 | 105 | 70 | 105 | identique | 105/105 |
-| Skillers.d2s | 1949 | 105 | 44 | 44 | identique | 44/44 |
-| Spirit.d2s | 962 | 105 | 4 | 4 | identique | 4/4 |
-| StarterItems.d2s | 962 | 105 | 4 | 4 | identique | 4/4 |
-| Sunderer.d2s | 985 | 105 | 5 | 5 | identique | 5/5 |
-| SuperDuper.d2s | 1452 | 105 | 13 | 27 | identique | 27/27 |
-| SuperDupeuse.d2s | 1148 | 105 | 6 | 14 | identique | 14/14 |
-| TCEightySeven.d2s | 1111 | 105 | 8 | 8 | identique | 8/8 |
-| TransferOne.d2s | 1001 | 105 | 6 | 6 | identique | 6/6 |
-| Trapper.d2s | 2773 | 105 | 61 | 97 | identique | 97/97 |
-| UberEats.d2s | 2019 | 105 | 35 | 44 | identique | 44/44 |
-| UniqItemsTwo.d2s | 1757 | 105 | 25 | 25 | identique | 25/25 |
-| UniqueItems.d2s | 2147 | 105 | 35 | 35 | identique | 35/35 |
-| Zealer.d2s | 3044 | 105 | 119 | 132 | identique | 132/132 |
-| Zonya.d2s | 2406 | 105 | 54 | 66 | identique | 66/66 |
-| tHrap.d2s | 2852 | 105 | 88 | 107 | identique | 107/107 |
+| Armageddon.d2s | 1962 | 105 | 62 | 68 | identique | 68/68 dont 49 par equivalence |
+| Bases.d2s | 1343 | 105 | 21 | 21 | identique | 21/21 dont 4 par equivalence |
+| BasesTwo.d2s | 1446 | 105 | 24 | 24 | identique | 24/24 dont 4 par equivalence |
+| Belts.d2s | 1123 | 105 | 8 | 8 | identique | 8/8 dont 4 par equivalence |
+| Ber.d2s | 3971 | 105 | 101 | 130 | identique | 130/130 dont 45 par equivalence |
+| BigSets.d2s | 1227 | 105 | 10 | 10 | identique | 10/10 dont 4 par equivalence |
+| Charmed.d2s | 2583 | 105 | 67 | 67 | identique | 67/67 strictes |
+| CharmedTwo.d2s | 1384 | 105 | 20 | 20 | identique | 20/20 dont 4 par equivalence |
+| Cica.d2s | 3005 | 105 | 65 | 88 | identique | 88/88 dont 37 par equivalence |
+| CicaLinux.d2s | 2315 | 105 | 42 | 58 | identique | 58/58 dont 25 par equivalence |
+| Circlets.d2s | 1054 | 105 | 6 | 6 | identique | 6/6 dont 4 par equivalence |
+| CircletsCoronet.d2s | 1060 | 105 | 6 | 6 | identique | 6/6 dont 4 par equivalence |
+| Crafts.d2s | 1111 | 105 | 12 | 12 | identique | 12/12 dont 4 par equivalence |
+| Crameuse.d2s | 2502 | 105 | 55 | 75 | identique | 75/75 dont 40 par equivalence |
+| Elektra.d2s | 3779 | 105 | 86 | 122 | identique | 122/122 dont 48 par equivalence |
+| Facets.d2s | 1057 | 105 | 7 | 7 | identique | 7/7 dont 4 par equivalence |
+| Fire.d2s | 962 | 105 | 4 | 4 | identique | 4/4 dont 4 par equivalence |
+| Firefox.d2s | 1199 | 105 | 11 | 15 | identique | 15/15 dont 10 par equivalence |
+| Gous.d2s | 3174 | 105 | 66 | 101 | identique | 101/101 dont 56 par equivalence |
+| GousDeux.d2s | 1409 | 105 | 31 | 31 | identique | 31/31 dont 17 par equivalence |
+| Hammer.d2s | 3334 | 105 | 81 | 110 | identique | 110/110 dont 50 par equivalence |
+| IAone.d2s | 1055 | 105 | 10 | 10 | identique | 10/10 dont 7 par equivalence |
+| Javazon.d2s | 3386 | 105 | 75 | 107 | identique | 107/107 dont 47 par equivalence |
+| Jewels.d2s | 1259 | 105 | 16 | 16 | identique | 16/16 dont 4 par equivalence |
+| JewelsCraft.d2s | 1271 | 105 | 16 | 16 | identique | 16/16 dont 4 par equivalence |
+| JewelsNice.d2s | 1377 | 105 | 19 | 19 | identique | 19/19 dont 4 par equivalence |
+| LevelingItems.d2s | 2018 | 105 | 32 | 38 | identique | 38/38 dont 10 par equivalence |
+| MFitems.d2s | 1086 | 105 | 7 | 10 | identique | 10/10 dont 7 par equivalence |
+| MercGear.d2s | 1256 | 105 | 12 | 14 | identique | 14/14 dont 6 par equivalence |
+| Merco.d2s | 962 | 105 | 4 | 4 | identique | 4/4 dont 4 par equivalence |
+| ModernSharedStashHardCoreV2.d2i | 556 | 105 | 0 | 0 | identique | 0/0 strictes |
+| ModernSharedStashSoftCoreV2.d2i | 8729 | 105 | 227 | 251 | identique | 251/251 dont 86 par equivalence |
+| Mosaic.d2s | 1020 | 105 | 8 | 8 | identique | 8/8 dont 6 par equivalence |
+| Nova.d2s | 3260 | 105 | 72 | 95 | identique | 95/95 dont 33 par equivalence |
+| PalaDuper.d2s | 1171 | 105 | 10 | 14 | identique | 14/14 dont 8 par equivalence |
+| RingAmys.d2s | 2157 | 105 | 38 | 38 | identique | 38/38 dont 4 par equivalence |
+| Runewords.d2s | 1340 | 105 | 9 | 27 | identique | 27/27 dont 22 par equivalence |
+| SCSeptMf.d2s | 962 | 105 | 4 | 4 | identique | 4/4 dont 4 par equivalence |
+| SetItems.d2s | 1944 | 105 | 27 | 27 | identique | 27/27 dont 4 par equivalence |
+| Shay.d2s | 3419 | 105 | 70 | 105 | identique | 105/105 dont 50 par equivalence |
+| Skillers.d2s | 1949 | 105 | 44 | 44 | identique | 44/44 dont 4 par equivalence |
+| Spirit.d2s | 962 | 105 | 4 | 4 | identique | 4/4 dont 4 par equivalence |
+| StarterItems.d2s | 962 | 105 | 4 | 4 | identique | 4/4 dont 4 par equivalence |
+| Sunderer.d2s | 985 | 105 | 5 | 5 | identique | 5/5 dont 4 par equivalence |
+| SuperDuper.d2s | 1452 | 105 | 13 | 27 | identique | 27/27 dont 18 par equivalence |
+| SuperDupeuse.d2s | 1148 | 105 | 6 | 14 | identique | 14/14 dont 12 par equivalence |
+| TCEightySeven.d2s | 1111 | 105 | 8 | 8 | identique | 8/8 dont 4 par equivalence |
+| TransferOne.d2s | 1001 | 105 | 6 | 6 | identique | 6/6 dont 4 par equivalence |
+| Trapper.d2s | 2773 | 105 | 61 | 97 | identique | 97/97 dont 62 par equivalence |
+| UberEats.d2s | 2019 | 105 | 35 | 44 | identique | 44/44 dont 11 par equivalence |
+| UniqItemsTwo.d2s | 1757 | 105 | 25 | 25 | identique | 25/25 dont 4 par equivalence |
+| UniqueItems.d2s | 2147 | 105 | 35 | 35 | identique | 35/35 dont 4 par equivalence |
+| Zealer.d2s | 3044 | 105 | 119 | 132 | identique | 132/132 dont 100 par equivalence |
+| Zonya.d2s | 2406 | 105 | 54 | 66 | identique | 66/66 dont 28 par equivalence |
+| tHrap.d2s | 2852 | 105 | 88 | 107 | identique | 107/107 dont 64 par equivalence |
 
 ## Corpus v105/windows (2 fichiers)
 
 | fixture | octets | version | objets | lignes | round-trip C# | concordance C#/Java |
 |---|---:|---:|---:|---:|---|---|
-| ModernSharedStashSoftCoreV2.d2i | 4229 | 105 | 135 | 151 | identique | 151/151 |
-| SharedStashSoftCoreV2.d2i | 294 | 105 | 9 | 9 | identique | 9/9 |
+| ModernSharedStashSoftCoreV2.d2i | 4229 | 105 | 135 | 151 | identique | 151/151 dont 79 par equivalence |
+| SharedStashSoftCoreV2.d2i | 294 | 105 | 9 | 9 | identique | 9/9 dont 9 par equivalence |
 
 ## Corpus legacy (3 fichiers)
 
@@ -138,7 +145,12 @@ Fichiers refuses par l'oracle C# :
 ## Desaccords C#/Java
 
 Aucun. Les 57 fichiers lus par les deux oracles donnent 2564 lignes
-identiques champ a champ : conteneur, code, position, pile, qualite.
+concordantes sur conteneur, code, position, pile et qualite. Le detail :
+
+- 1422 lignes identiques champ a champ, sans aucune regle ;
+- 1142 lignes ramenees par au moins une equivalence, dont 1142 par la
+  regle de qualite des objets compacts et 5 par la regle `OnCursor` / `TRANSIT`
+  (une meme ligne peut relever des deux).
 
 Fichiers refuses par l'oracle Java (v105 exclusif) :
 

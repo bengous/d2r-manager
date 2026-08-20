@@ -6,6 +6,7 @@ internal sealed record ConcordanceResult(
     int CsharpRows,
     int JavaRows,
     int Matched,
+    int Strict,
     int CompactQualityEquivalences,
     int CursorTransitEquivalences,
     IReadOnlyList<Difference> Differences);
@@ -19,6 +20,7 @@ internal static class Concordance
     {
         var differences = new List<Difference>();
         int matched = 0;
+        int strict = 0;
         int compactQuality = 0;
         int cursorTransit = 0;
 
@@ -28,12 +30,14 @@ internal static class Concordance
             OracleRow left = csharp[index];
             OracleRow right = java[index];
             int before = differences.Count;
+            bool equivalent = false;
 
             if (left.Container != right.Container)
             {
                 if (NormalizeContainer(left.Container) == right.Container)
                 {
                     cursorTransit++;
+                    equivalent = true;
                 }
                 else
                 {
@@ -63,6 +67,7 @@ internal static class Concordance
                 if (left.Compact && left.Quality == "NORMAL" && right.Quality == "NONE")
                 {
                     compactQuality++;
+                    equivalent = true;
                 }
                 else
                 {
@@ -70,9 +75,15 @@ internal static class Concordance
                 }
             }
 
-            if (differences.Count == before)
+            if (differences.Count != before)
             {
-                matched++;
+                continue;
+            }
+
+            matched++;
+            if (!equivalent)
+            {
+                strict++;
             }
         }
 
@@ -82,7 +93,7 @@ internal static class Concordance
                 csharp.Count.ToString(), java.Count.ToString()));
         }
 
-        return new ConcordanceResult(csharp.Count, java.Count, matched, compactQuality, cursorTransit, differences);
+        return new ConcordanceResult(csharp.Count, java.Count, matched, strict, compactQuality, cursorTransit, differences);
     }
 
     private static string NormalizeContainer(string container) =>
