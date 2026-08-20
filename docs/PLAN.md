@@ -150,7 +150,8 @@ Le harnais differentiel est la suite de tests de `format` :
    est conserve hors operations explicites), commit final avec le plan dans le
    message, timer relance. Rollback = `git revert`.
 4. Registre de provenance : chaque duplication journalisee (empreinte, source,
-   cible, date). Emplacement a decider (question ouverte 2).
+   cible, date) dans `d2r-saves:ledger/duplications.jsonl`, hors `saves/`,
+   commite par `apply` dans le meme commit que l'operation.
 
 ## 8. Phases et criteres d'acceptation
 
@@ -186,5 +187,5 @@ Commits : `9509293` init, `697db1c` submodules de reference, `f891ca9` corpus
 ## 11. Questions ouvertes
 
 1. **Nom du binaire CLI.** `d2r` est pris par le lanceur `~/.local/bin/d2r`.
-2. **Emplacement du registre de provenance** des duplications.
-3. Remote GitHub prive : a creer quand l'utilisateur le decide.
+   L'utilisateur choisit un nom de bapteme, en attente.
+2. Remote GitHub prive : a creer quand l'utilisateur le decide.
