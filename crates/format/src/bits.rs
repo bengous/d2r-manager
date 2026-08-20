@@ -28,6 +28,8 @@ impl<const N: u32> Bits<N> {
         if N == 32 { u32::MAX } else { (1u32 << N) - 1 }
     };
 
+    pub const ZERO: Self = Self(0);
+
     #[must_use]
     pub const fn new(value: u32) -> Option<Self> {
         if value <= Self::MAX {
@@ -195,6 +197,14 @@ impl<'a> BitReader<'a> {
         }
         self.position = end * 8;
         Ok(&self.data[start..end])
+    }
+
+    pub fn read_u32_array<const N: usize>(&mut self) -> Result<[u32; N], BitError> {
+        let mut out = [0u32; N];
+        for slot in &mut out {
+            *slot = self.read_u32()?;
+        }
+        Ok(out)
     }
 
     pub fn read_array<const N: usize>(&mut self) -> Result<[u8; N], BitError> {

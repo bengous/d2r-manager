@@ -7,6 +7,8 @@ use crate::error::FormatError;
 pub struct ItemCode([u8; 4]);
 
 impl ItemCode {
+    pub const EAR: Self = Self(*b"ear ");
+
     #[must_use]
     pub const fn is_writable(byte: u8) -> bool {
         byte == b' ' || byte.is_ascii_digit() || byte.is_ascii_lowercase()

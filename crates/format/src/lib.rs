@@ -1,5 +1,13 @@
 pub mod bits;
+pub mod character;
+pub mod checksum;
 pub mod code;
 pub mod error;
 pub mod huffman;
+pub mod item;
+pub mod save;
+pub mod sections;
+pub mod stash;
+pub mod stats;
 pub mod tables;
+pub mod text;

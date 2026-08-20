@@ -44,8 +44,23 @@ pub enum FormatError {
     #[error("stat id {id} is the list terminator and cannot name a stat")]
     StatIdIsTerminator { id: u16 },
 
+    #[error("stat {id} value {value} does not fit in its {bits}-bit field")]
+    StatValueOutOfRange { id: u16, value: i64, bits: u32 },
+
+    #[error("flag {flag} and its payload disagree")]
+    FlagPayloadMismatch { flag: &'static str },
+
+    #[error("character class {class} is not one of the eight known classes")]
+    UnknownCharacterClass { class: u8 },
+
+    #[error("game version {version} is not one of the four known values")]
+    UnknownGameVersion { version: u8 },
+
     #[error("item mode {mode} is not one of the seven known modes")]
     UnknownItemMode { mode: u32 },
+
+    #[error("body location {location} is not one of the thirteen known slots")]
+    UnknownBodyLocation { location: u32 },
 
     #[error("item quality {quality} is not one of the nine known qualities")]
     UnknownItemQuality { quality: u32 },
