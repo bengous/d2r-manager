@@ -1,7 +1,10 @@
-# d2r-tool : plan de projet
+# d2r-manager : plan de projet
 
-Ecrit le 2026-08-20. Statut : **brouillon a valider**. Une fois valide, ce document
-fait foi : l'agent d'implementation s'y conforme et s'arrete devant toute divergence.
+Ecrit et fige le 2026-08-20. Statut : **valide**. Ce document fait foi : l'agent
+d'implementation s'y conforme et s'arrete devant toute divergence.
+
+Binaire CLI : `d2r-manager`. Ne pas installer sous le nom `d2r`, pris par le
+lanceur `~/.local/bin/d2r`.
 
 ## 1. But
 
@@ -64,7 +67,7 @@ Regles :
 Arborescence cible :
 
 ```
-d2r-tool/
+d2r-manager/
   Cargo.toml            # workspace
   rust-toolchain.toml   # 1.97.1
   justfile              # check, test, goldens
@@ -186,6 +189,4 @@ Commits : `9509293` init, `697db1c` submodules de reference, `f891ca9` corpus
 
 ## 11. Questions ouvertes
 
-1. **Nom du binaire CLI.** `d2r` est pris par le lanceur `~/.local/bin/d2r`.
-   L'utilisateur choisit un nom de bapteme, en attente.
-2. Remote GitHub prive : a creer quand l'utilisateur le decide.
+1. Remote GitHub prive : a creer quand l'utilisateur le decide.
