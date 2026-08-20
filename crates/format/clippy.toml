@@ -1,0 +1,8 @@
+disallowed-types = [
+    { path = "std::fs::File", reason = "PLAN 3.1: format is pure, zero I/O" },
+    { path = "std::fs::OpenOptions", reason = "PLAN 3.1: format is pure, zero I/O" },
+    { path = "std::fs::DirBuilder", reason = "PLAN 3.1: format is pure, zero I/O" },
+    { path = "std::process::Command", reason = "PLAN 3.1: format spawns no process" },
+    { path = "std::time::SystemTime", reason = "PLAN 3.1: format reads no clock" },
+    { path = "std::time::Instant", reason = "PLAN 3.1: format reads no clock" },
+]

@@ -6,6 +6,16 @@ default:
 
 check:
     cd {{ root }}/fixtures && sha256sum -c sha256sums.txt
+    cargo fmt --all --check
+    cargo clippy --workspace --all-targets --all-features -- -D warnings
+    cargo machete
+    cargo deny --all-features check
+
+test:
+    cargo test --workspace --all-features
+
+tables:
+    UPDATE_TABLES=1 cargo test -p format --test tables
 
 build-oracles:
     dotnet build {{ root }}/tools/goldens-csharp/GoldensCsharp.csproj -c Release \
