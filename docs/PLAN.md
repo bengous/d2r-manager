@@ -103,6 +103,7 @@ Mesurees sur la machine le 2026-08-20, installees via mise.
 | .NET SDK | 10.0.400 | oracle D2SSharp (tools/ seulement) |
 | OpenJDK | 25.0.1 | oracle Java (tools/ seulement) |
 | d2rsavegameparser.jar | 3.2.0, sha256 `0b2164f3c8219e390c42ccba3e2377dce2514561e1c32f5d0c1d4c9622960f89` | oracle Java, telecharge par script |
+| slf4j-api | 2.0.17, sha256 `7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832` | dependance `provided` de l'oracle Java, telechargee par script |
 
 Dependances Rust : `clap`, `serde`, `serde_json`, `thiserror`, `anyhow` (cli),
 `proptest` (dev). Versions prises au `cargo add` initial et figees par le
@@ -171,11 +172,13 @@ Verites mesurees le 2026-08-20, a integrer sans les redecouvrir :
   jamais mesure. Le mesurer via l'oracle C# et le documenter fichier par
   fichier dans `REPORT.md` ; un echec partiel est une information, pas un
   blocage.
-- Fixtures `legacy/` : l'oracle Java doit les refuser (v105 exclusif), D2SSharp
-  doit les lire (v96 a v105). Consigner les deux comportements.
+- Fixtures `legacy/` : l'oracle Java doit les refuser (v105 exclusif). D2SSharp
+  les lit sauf la v98 (`JewelsCraft.d2s`), refusee faute de donnees txt v98
+  dans l'oracle (mesure 2026-08-20). Consigner les comportements mesures.
 - Reperes anti-regression, fixture `v105/linux/ModernSharedStashSoftCoreV2.d2i` :
-  7 onglets (5 normaux, 1 `AdvancedStash`, 1 `Chronicle`), 1533 objets,
-  1 075 411 pieces d'or a l'onglet 1, onglet `Chronicle` de 2298 octets.
+  7 onglets (5 normaux, 1 `AdvancedStash`, 1 `Chronicle`), 1533 objets en
+  comptant les piles (227 entrees d'objet, somme des piles `AdvancedStash`
+  1306), 1 075 411 pieces d'or a l'onglet 1, onglet `Chronicle` de 2298 octets.
 
 ## 7. Transactions
 
