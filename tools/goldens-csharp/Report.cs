@@ -284,7 +284,7 @@ internal static class Report
             List<FixtureReport> readable = selected.Where(fixture => fixture.Status == "ok").ToList();
             int identical = readable.Count(fixture => (bool)fixture.Document["roundTrip"]!["identical"]!);
             text.AppendLine($"- `{extension}` : {identical}/{readable.Count} identiques parmi les fichiers lus, "
-                + $"sur {selected.Count} fichiers du corpus dont {selected.Count - readable.Count} refuses en lecture.");
+                + $"sur {selected.Count} fichiers du corpus, avec {selected.Count - readable.Count} refus en lecture.");
         }
 
         foreach (string group in (string[])["v105/linux/", "v105/windows/", "legacy/"])

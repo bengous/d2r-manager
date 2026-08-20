@@ -130,8 +130,8 @@ Aucun fournisseur de journalisation n'est ajoute : le parseur reste silencieux.
 
 ## Round-trip C# (`write(read(f)) == f`, octet a octet)
 
-- `.d2s` : 54/54 identiques parmi les fichiers lus, sur 55 fichiers du corpus dont 1 refuses en lecture.
-- `.d2i` : 5/5 identiques parmi les fichiers lus, sur 5 fichiers du corpus dont 0 refuses en lecture.
+- `.d2s` : 54/54 identiques parmi les fichiers lus, sur 55 fichiers du corpus, avec 1 refus en lecture.
+- `.d2i` : 5/5 identiques parmi les fichiers lus, sur 5 fichiers du corpus, avec 0 refus en lecture.
 - `v105/linux/` : 55/55 identiques sur les fichiers lus.
 - `v105/windows/` : 2/2 identiques sur les fichiers lus.
 - `legacy/` : 2/2 identiques sur les fichiers lus.
