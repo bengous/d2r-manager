@@ -16,6 +16,7 @@ test:
 
 tables:
     UPDATE_TABLES=1 cargo test -p format --test tables
+    UPDATE_TABLES=1 cargo test -p domain --test tables
 
 build-oracles:
     dotnet build {{ root }}/tools/goldens-csharp/GoldensCsharp.csproj -c Release \

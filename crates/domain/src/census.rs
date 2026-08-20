@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::container::ContainerId;
 use crate::object::Fingerprint;
-use crate::vault::{Container, Vault};
+use crate::vault::{ContainerRef, Vault};
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct Census {
@@ -15,14 +15,14 @@ impl Census {
         let mut units: BTreeMap<(ContainerId, Fingerprint), u32> = BTreeMap::new();
         for (id, container) in vault.containers() {
             match container {
-                Container::Grid(grid) => {
+                ContainerRef::Grid(grid) => {
                     for slot in grid.slots() {
                         *units
                             .entry((id.clone(), slot.object().fingerprint()))
                             .or_default() += 1;
                     }
                 }
-                Container::Pile(pile) => {
+                ContainerRef::Pile(pile) => {
                     for entry in pile.entries() {
                         *units
                             .entry((id.clone(), entry.object().fingerprint()))

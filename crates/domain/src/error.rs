@@ -148,12 +148,6 @@ pub enum RuleViolation {
         group: CarryGroup,
         count: u16,
     },
-
-    #[error("{container} is a grid, not a pile")]
-    NotAPile { container: ContainerId },
-
-    #[error("{container} is a pile, not a grid")]
-    NotAGrid { container: ContainerId },
 }
 
 #[derive(Debug, Error, Clone, PartialEq, Eq)]

@@ -3,11 +3,12 @@ use std::collections::BTreeMap;
 use crate::census::{Census, Conservation};
 use crate::container::{CharacterName, ContainerId, GridId, PileId};
 use crate::error::{ApplyError, PileError, PlanError, RuleViolation};
+use crate::gold::Gold;
 use crate::grid::{Grid, GridPosition};
 use crate::object::{Fingerprint, Object};
 use crate::pile::{Pile, PileUnits};
 use crate::tables::CarryGroup;
-use crate::vault::{Container, Vault};
+use crate::vault::Vault;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Source {
@@ -235,7 +236,7 @@ impl ValidatedPlan {
         let seen = Census::of(observed);
 
         for (container, fingerprint, count) in expected.entries() {
-            if observed.container(container).is_none() {
+            if !observed.holds(container) {
                 return Err(ApplyError::ContainerMissing {
                     container: container.clone(),
                 });
@@ -251,7 +252,7 @@ impl ValidatedPlan {
             }
         }
         for (container, fingerprint, count) in seen.entries() {
-            if self.outcome.container(container).is_none() {
+            if !self.outcome.holds(container) {
                 return Err(ApplyError::ContainerUnexpected {
                     container: container.clone(),
                 });
@@ -267,13 +268,13 @@ impl ValidatedPlan {
             }
         }
         for (container, _) in self.outcome.containers() {
-            let wanted = self.outcome.gold(container);
-            let held = observed.gold(container);
+            let wanted = self.outcome.gold(&container);
+            let held = observed.gold(&container);
             if wanted != held {
                 return Err(ApplyError::GoldDiffers {
-                    container: container.clone(),
-                    expected: wanted.unwrap_or(crate::gold::Gold::ZERO),
-                    observed: held.unwrap_or(crate::gold::Gold::ZERO),
+                    container,
+                    expected: wanted.unwrap_or(Gold::ZERO),
+                    observed: held.unwrap_or(Gold::ZERO),
                 });
             }
         }
@@ -334,8 +335,11 @@ fn run(vault: &mut Vault, operation: &Operation) -> Result<Realized, RuleViolati
 fn take(vault: &mut Vault, source: &Source, transfer: Transfer) -> Result<Object, RuleViolation> {
     let id = source.container();
     match source {
-        Source::Grid { fingerprint, .. } => {
-            let grid = grid_mut(vault, &id)?;
+        Source::Grid {
+            container,
+            fingerprint,
+        } => {
+            let grid = grid_mut(vault, container)?;
             match transfer {
                 Transfer::Move => grid.take(*fingerprint),
                 Transfer::Duplicate => grid.find(*fingerprint).cloned(),
@@ -346,9 +350,11 @@ fn take(vault: &mut Vault, source: &Source, transfer: Transfer) -> Result<Object
             })
         }
         Source::Pile {
-            fingerprint, units, ..
+            container,
+            fingerprint,
+            units,
         } => {
-            let pile = pile_mut(vault, &id)?;
+            let pile = pile_mut(vault, container)?;
             let held = pile.units(*fingerprint);
             match transfer {
                 Transfer::Move => pile
@@ -394,7 +400,6 @@ fn put(
     object: Object,
     units: PileUnits,
 ) -> Result<Landing, RuleViolation> {
-    let id = destination.container();
     match destination {
         Destination::Grid { container, cell } => {
             if units.get() > 1 {
@@ -403,7 +408,7 @@ fn put(
                     asked: units,
                 });
             }
-            let grid = grid_mut(vault, &id)?;
+            let grid = grid_mut(vault, container)?;
             match cell {
                 Some(cell) => {
                     grid.place(container, object, *cell)?;
@@ -412,61 +417,40 @@ fn put(
                 None => grid.append(container, object).map(Landing::Cell),
             }
         }
-        Destination::Pile { .. } => {
-            let pile = pile_mut(vault, &id)?;
+        Destination::Pile { container } => {
+            let pile = pile_mut(vault, container)?;
             pile.add(object, units);
             Ok(Landing::Pile(units))
         }
     }
 }
 
-fn grid_mut<'a>(vault: &'a mut Vault, id: &ContainerId) -> Result<&'a mut Grid, RuleViolation> {
-    match vault.container_mut(id) {
-        Some(Container::Grid(grid)) => Ok(grid),
-        Some(Container::Pile(_)) => Err(RuleViolation::NotAGrid {
-            container: id.clone(),
-        }),
-        None => Err(RuleViolation::UnknownContainer {
-            container: id.clone(),
-        }),
-    }
+fn grid_mut<'a>(vault: &'a mut Vault, id: &GridId) -> Result<&'a mut Grid, RuleViolation> {
+    vault
+        .grid_mut(id)
+        .ok_or_else(|| RuleViolation::UnknownContainer {
+            container: ContainerId::Grid(id.clone()),
+        })
 }
 
-fn pile_mut<'a>(vault: &'a mut Vault, id: &ContainerId) -> Result<&'a mut Pile, RuleViolation> {
-    match vault.container_mut(id) {
-        Some(Container::Pile(pile)) => Ok(pile),
-        Some(Container::Grid(_)) => Err(RuleViolation::NotAPile {
-            container: id.clone(),
-        }),
-        None => Err(RuleViolation::UnknownContainer {
-            container: id.clone(),
-        }),
-    }
+fn pile_mut<'a>(vault: &'a mut Vault, id: &PileId) -> Result<&'a mut Pile, RuleViolation> {
+    vault
+        .pile_mut(id)
+        .ok_or_else(|| RuleViolation::UnknownContainer {
+            container: ContainerId::Pile(id.clone()),
+        })
 }
 
 fn carried(vault: &Vault, character: &CharacterName, group: CarryGroup) -> u16 {
-    let mut held = 0;
-    for (id, container) in vault.containers() {
-        if id.character() != Some(character) {
-            continue;
-        }
-        match container {
-            Container::Grid(grid) => {
-                held += grid
-                    .slots()
-                    .iter()
-                    .filter(|slot| slot.object().carry_group() == Some(group))
-                    .count();
-            }
-            Container::Pile(pile) => {
-                held += pile
-                    .entries()
-                    .iter()
-                    .filter(|entry| entry.object().carry_group() == Some(group))
-                    .map(|entry| usize::from(entry.count().get()))
-                    .sum::<usize>();
-            }
-        }
-    }
+    let held: usize = vault
+        .grids()
+        .filter(|(id, _)| id.character() == Some(character))
+        .map(|(_, grid)| {
+            grid.slots()
+                .iter()
+                .filter(|slot| slot.object().carry_group() == Some(group))
+                .count()
+        })
+        .sum();
     u16::try_from(held).unwrap_or(u16::MAX)
 }
