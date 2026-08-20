@@ -32,3 +32,4 @@ integrite du corpus : `cd fixtures && sha256sum -c sha256sums.txt`.
 - `.claude/rules/oracles.md` : outils goldens et licences.
 - `.claude/rules/adapters.md` : `app`, `cli`, adaptateurs.
 - `.claude/rules/review.md` : protocole de review des lots.
+- `.claude/rules/rust.md` : qualite Rust, types d'abord.
