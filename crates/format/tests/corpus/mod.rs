@@ -1,3 +1,8 @@
+#![allow(
+    dead_code,
+    reason = "each test binary uses a subset of this shared helper"
+)]
+
 use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
 

@@ -18,7 +18,7 @@ pub const SKILLS_MAGIC: u16 = 0x6669;
 /// FORMAT.md §3.7
 pub const STATS_MAGIC: u16 = 0x6667;
 
-fn expect_magic_u16(
+pub(crate) fn expect_magic_u16(
     reader: &mut BitReader<'_>,
     section: &'static str,
     expected: u16,
@@ -279,8 +279,4 @@ impl SkillsSection {
         writer.write_bytes(&self.levels)?;
         Ok(())
     }
-}
-
-pub(crate) fn read_stats_magic(reader: &mut BitReader<'_>) -> Result<(), FormatError> {
-    expect_magic_u16(reader, "stats", STATS_MAGIC)
 }

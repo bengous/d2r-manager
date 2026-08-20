@@ -3,9 +3,7 @@ use crate::character::Character;
 use crate::checksum;
 use crate::error::{FormatError, SUPPORTED_VERSION};
 use crate::item::Item;
-use crate::sections::{
-    IntroSection, QuestSection, SkillsSection, WaypointSection, read_stats_magic,
-};
+use crate::sections::{IntroSection, QuestSection, SkillsSection, WaypointSection};
 use crate::stats::{DemonStats, PlayerStats};
 
 /// FORMAT.md §3.1
@@ -206,11 +204,7 @@ impl DemonSection {
             return Ok(());
         };
 
-        let mut blob = BitWriter::new();
-        blob.write_u16(crate::sections::STATS_MAGIC)?;
-        demon.stats.write(&mut blob)?;
-        blob.align();
-        let blob = blob.finish();
+        let blob = demon.stats.write_blob()?;
 
         writer.write_u16(u16::try_from(blob.len()).map_err(|_| {
             FormatError::BadSectionSize {
@@ -291,9 +285,7 @@ impl CharacterSave {
         let waypoints = WaypointSection::read(&mut reader)?;
         let intro = IntroSection::read(&mut reader)?;
 
-        read_stats_magic(&mut reader)?;
-        let stats = PlayerStats::read(&mut reader)?;
-        reader.align();
+        let stats = PlayerStats::read_section(&mut reader)?;
 
         let skills = SkillsSection::read(&mut reader, usize::from(character.skill_count))?;
         let items = ItemList::read(&mut reader)?;
@@ -345,9 +337,7 @@ impl CharacterSave {
         self.waypoints.write(&mut writer)?;
         self.intro.write(&mut writer)?;
 
-        writer.write_u16(crate::sections::STATS_MAGIC)?;
-        self.stats.write(&mut writer)?;
-        writer.align();
+        self.stats.write_section(&mut writer)?;
 
         self.skills.write(&mut writer)?;
         self.items.write(&mut writer)?;
@@ -395,10 +385,7 @@ fn read_demon_stats(
     if stat_bytes == 0 {
         return Ok(DemonStats::default());
     }
-    let blob = reader.read_bytes(stat_bytes)?;
-    let mut blob_reader = BitReader::new(blob);
-    read_stats_magic(&mut blob_reader)?;
-    DemonStats::read(&mut blob_reader)
+    DemonStats::read_blob(reader.read_bytes(stat_bytes)?)
 }
 
 /// FORMAT.md §3.11

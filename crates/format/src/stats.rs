@@ -1,5 +1,6 @@
 use crate::bits::{BitReader, BitWriter};
 use crate::error::FormatError;
+use crate::sections::{STATS_MAGIC, expect_magic_u16};
 use crate::tables::stat_info;
 
 /// FORMAT.md §5.8
@@ -198,6 +199,22 @@ pub struct PlayerStats(pub Vec<PlayerStat>);
 
 impl PlayerStats {
     /// FORMAT.md §3.7
+    pub fn read_section(reader: &mut BitReader<'_>) -> Result<Self, FormatError> {
+        expect_magic_u16(reader, "stats", STATS_MAGIC)?;
+        let stats = Self::read(reader)?;
+        reader.align();
+        Ok(stats)
+    }
+
+    /// FORMAT.md §3.7
+    pub fn write_section(&self, writer: &mut BitWriter) -> Result<(), FormatError> {
+        writer.write_u16(STATS_MAGIC)?;
+        self.write(writer)?;
+        writer.align();
+        Ok(())
+    }
+
+    /// FORMAT.md §3.7
     pub fn read(reader: &mut BitReader<'_>) -> Result<Self, FormatError> {
         let mut stats = Vec::new();
         loop {
@@ -254,6 +271,22 @@ impl PlayerStats {
 pub struct DemonStats(pub Vec<PlayerStat>);
 
 impl DemonStats {
+    /// FORMAT.md §3.13
+    pub fn read_blob(blob: &[u8]) -> Result<Self, FormatError> {
+        let mut reader = BitReader::new(blob);
+        expect_magic_u16(&mut reader, "demon stats", STATS_MAGIC)?;
+        Self::read(&mut reader)
+    }
+
+    /// FORMAT.md §3.13
+    pub fn write_blob(&self) -> Result<Vec<u8>, FormatError> {
+        let mut writer = BitWriter::new();
+        writer.write_u16(STATS_MAGIC)?;
+        self.write(&mut writer)?;
+        writer.align();
+        Ok(writer.finish())
+    }
+
     /// FORMAT.md §3.13
     pub fn read(reader: &mut BitReader<'_>) -> Result<Self, FormatError> {
         let mut stats = Vec::new();
