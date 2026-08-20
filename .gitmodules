@@ -1,0 +1,9 @@
+[submodule "reference/D2SSharp"]
+	path = reference/D2SSharp
+	url = https://github.com/ResurrectedTrader/D2SSharp
+[submodule "reference/d2rsavegameparser"]
+	path = reference/d2rsavegameparser
+	url = https://github.com/Paladijn/d2rsavegameparser
+[submodule "reference/halbu"]
+	path = reference/halbu
+	url = https://github.com/feored/halbu
