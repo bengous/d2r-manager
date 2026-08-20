@@ -146,12 +146,16 @@ Composants du harnais :
    `txt/` vient de `reference/d2rsavegameparser/txt/`. Sortie TSV : conteneur,
    code, position, pile, qualite, empreinte.
 3. `goldens/csharp/*.json` et `goldens/java/*.tsv` : un fichier par fixture,
-   commites. `goldens/REPORT.md` : par fixture, taille, version, nombre
-   d'objets, verdict round-trip C#, concordance C#/Java. Les desaccords sont
-   listes, jamais masques.
+   commites, pour les 60 fichiers du corpus (55 `v105/linux/`,
+   2 `v105/windows/`, 3 `legacy/` ; `Settings.json` hors corpus).
+   `goldens/REPORT.md` : par fixture, taille, version, nombre d'objets,
+   verdict round-trip C#, concordance C#/Java ; les fichiers `v105/windows/`
+   dans une section a part. Les desaccords sont listes, jamais masques.
 4. Tests Rust de `format` : egalite champ a champ avec les goldens C# sur les
-   55 fichiers v105 ; round-trip octet pour octet 55/55 ; `proptest` sur le
-   bitreader uniquement ; `legacy/` produit l'erreur attendue.
+   55 fichiers `v105/linux/` ; round-trip octet pour octet 55/55 ; `proptest`
+   sur le bitreader uniquement ; `legacy/` produit l'erreur attendue. Les
+   2 fichiers `v105/windows/` sont hors criteres 55/55, couverts par les
+   goldens et le REPORT.
 5. Regles de `domain` : tests par table. Ports : fakes ecrits main, aucun
    framework de mock. Jamais d'objectif de couverture.
 
@@ -196,9 +200,9 @@ sont la definition de « fait ».
 
 | Etape | Contenu | Fait quand |
 |---|---|---|
-| 1 | harnais : dumpers oracles, goldens, REPORT | goldens commites pour les 58 fixtures ; REPORT complet ; `just goldens` regenere tout |
+| 1 | harnais : dumpers oracles, goldens, REPORT | goldens commites pour les 60 fichiers du corpus ; REPORT complet ; `just goldens` regenere tout |
 | 2 | spec `FORMAT.md` depuis le source D2SSharp + `d2r-saves:docs/research/format-objet-v105.md` | chaque champ du bitstream a sa largeur en bits et sa reference croisee |
-| 3 | `format` lecture | 55/55 v105 concordent avec les goldens C# ; legacy en erreur propre |
+| 3 | `format` lecture | 55/55 `v105/linux/` concordent avec les goldens C# ; legacy en erreur propre |
 | 4 | `format` ecriture | round-trip 55/55 octet pour octet ; checksum `.d2s` reproduit |
 | 5 | `domain` : grilles, regles, plans | tests par table verts ; la fusion de coffres du 2026-08-20 rejouee donne un resultat equivalent (reference : commit `2885c71` de d2r-saves) |
 | 6 | `cli` : sync, ls, find, diff | sync reproduit les gardes du script bash ; la bascule reste une decision utilisateur |
