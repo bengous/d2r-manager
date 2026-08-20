@@ -167,7 +167,7 @@ internal static class Report
         text.AppendLine("1. Axes. Le parseur Java expose `x()` = ligne et `y()` = colonne, soit l'inverse");
         text.AppendLine("   de D2SSharp. Les TSV sont ecrits dans la convention D2SSharp : colonne");
         text.AppendLine($"   `invX` = `y()` Java = `InvX` C#, ligne `invY` = `x()` Java = `InvY` C#. Sur les {compared}");
-        text.AppendLine($"   fichiers lus par les deux oracles, {rows} objets ont la meme position apres cet echange.");
+        text.AppendLine($"   fichiers lus par les deux oracles, {rows} lignes ont la meme position apres cet echange.");
         FixtureReport? axes = fixtures.FirstOrDefault(candidate =>
             candidate.RelativePath == "v105/windows/ModernSharedStashSoftCoreV2.d2i");
         if (axes?.Concordance is not null)
@@ -409,7 +409,7 @@ internal static class Report
         text.AppendLine("|---|---|---|");
         text.AppendLine($"| onglets | 7 (5 normaux, 1 AdvancedStash, 1 Chronicle) | {tabs.Count} ({normal} normaux, {advanced} AdvancedStash, {chronicle} Chronicle) |");
         text.AppendLine($"| objets | 1533 | {(int)counts["items"]!} objets, {(int)counts["advancedStashStacks"]!} unites empilees dans l'onglet AdvancedStash, somme {(int)counts["itemsPlusAdvancedStashStacks"]!} |");
-        text.AppendLine($"| or, onglet 1 | 1075411 | {(long)tabs[0]!["gold"]!} |");
+        text.AppendLine($"| or, premier onglet (index 0) | 1075411 | {(long)tabs[0]!["gold"]!} |");
         text.AppendLine($"| onglet Chronicle | 2298 octets | {(chronicleTab is null ? 0 : (int)chronicleTab["fileTabBytes"]!)} octets |");
         text.AppendLine();
         text.AppendLine("Le repere « 1533 objets » ne correspond pas au nombre d'objets du fichier : il");
@@ -448,7 +448,7 @@ internal static class Report
                     }
                 }
 
-                overlaps.Add($"- `{fixture.RelativePath}`, onglet {index} : {items} objets, {collisions} positions deja occupees.");
+                overlaps.Add($"- `{fixture.RelativePath}`, onglet d'index {index} : {items} objets, {collisions} positions deja occupees.");
             }
         }
 

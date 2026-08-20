@@ -25,7 +25,7 @@ Aucun fournisseur de journalisation n'est ajoute : le parseur reste silencieux.
 1. Axes. Le parseur Java expose `x()` = ligne et `y()` = colonne, soit l'inverse
    de D2SSharp. Les TSV sont ecrits dans la convention D2SSharp : colonne
    `invX` = `y()` Java = `InvX` C#, ligne `invY` = `x()` Java = `InvY` C#. Sur les 57
-   fichiers lus par les deux oracles, 2564 objets ont la meme position apres cet echange.
+   fichiers lus par les deux oracles, 2564 lignes ont la meme position apres cet echange.
    La mesure de PLAN section 6 porte sur `v105/windows/ModernSharedStashSoftCoreV2.d2i` :
    135 objets de premier niveau, 151 lignes concordantes objets sertis inclus.
 2. Conteneurs. Vocabulaire commun : `INVENTORY`, `CUBE`, `STASH`, `EQUIPPED`,
@@ -166,7 +166,7 @@ Fixture `v105/linux/ModernSharedStashSoftCoreV2.d2i`.
 |---|---|---|
 | onglets | 7 (5 normaux, 1 AdvancedStash, 1 Chronicle) | 7 (5 normaux, 1 AdvancedStash, 1 Chronicle) |
 | objets | 1533 | 227 objets, 1306 unites empilees dans l'onglet AdvancedStash, somme 1533 |
-| or, onglet 1 | 1075411 | 1075411 |
+| or, premier onglet (index 0) | 1075411 | 1075411 |
 | onglet Chronicle | 2298 octets | 2298 octets |
 
 Le repere « 1533 objets » ne correspond pas au nombre d'objets du fichier : il
@@ -179,9 +179,9 @@ L'onglet `AdvancedStash` n'est pas une grille : les fichiers ecrits par le jeu
 y contiennent des positions qui se recouvrent. Les deux oracles lisent les memes
 valeurs ; ce n'est pas un desaccord.
 
-- `v105/linux/ModernSharedStashHardCoreV2.d2i`, onglet 5 : 0 objets, 0 positions deja occupees.
-- `v105/linux/ModernSharedStashSoftCoreV2.d2i`, onglet 5 : 81 objets, 43 positions deja occupees.
-- `v105/windows/ModernSharedStashSoftCoreV2.d2i`, onglet 5 : 68 objets, 41 positions deja occupees.
+- `v105/linux/ModernSharedStashHardCoreV2.d2i`, onglet d'index 5 : 0 objets, 0 positions deja occupees.
+- `v105/linux/ModernSharedStashSoftCoreV2.d2i`, onglet d'index 5 : 81 objets, 43 positions deja occupees.
+- `v105/windows/ModernSharedStashSoftCoreV2.d2i`, onglet d'index 5 : 68 objets, 41 positions deja occupees.
 
 Comportement des oracles sur `legacy/` (versions 98 et 99, hors perimetre v105) :
 
