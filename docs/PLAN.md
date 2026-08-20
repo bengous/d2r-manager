@@ -75,7 +75,7 @@ d2r-manager/
   rust-toolchain.toml   # 1.97.1
   justfile              # check, test, goldens
   lefthook.yml          # pre-commit = just check
-  deny.toml             # licences MIT/Apache-2.0 seules, advisories
+  deny.toml             # licences permissives : MIT/Apache-2.0 + exceptions nommees (Unicode-3.0), advisories
   crates/
     format/  domain/  app/  cli/
   tools/
