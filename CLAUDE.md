@@ -67,9 +67,12 @@ faire passer un test.
 
 ## Regles
 
+- `.claude/rules/rust.md` : qualite Rust, types d'abord, purete des crates.
 - `.claude/rules/bitstream.md` : spec FORMAT.md et crate `format`.
-- `.claude/rules/purity.md` : purete de `format` et `domain`.
+- `.claude/rules/domain.md` : regles du domaine mesurees sur le corpus.
+- `.claude/rules/adapters.md` : `app`, `infra`, `cli`.
+- `.claude/rules/server.md` : API HTTP et contrat OpenAPI.
 - `.claude/rules/oracles.md` : outils goldens et licences.
-- `.claude/rules/adapters.md` : `app`, `infra`, `cli`, `server`.
-- `.claude/rules/review.md` : protocole de review a contexte frais.
-- `.claude/rules/rust.md` : qualite Rust, types d'abord.
+
+Un lot delegue passe par une review a contexte frais avant merge : protocole
+dans `plans/HANDOFF.md`.

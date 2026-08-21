@@ -39,7 +39,12 @@ Sonnet. Plan d'orchestration complet :
 1. Il ne code jamais, ne lit ni code ni diffs ; commandes a sortie courte.
 2. Un echec de gate repart au sous-agent avec le constat exact.
 3. Chaque implementeur spawne lui-meme son reviewer Opus a contexte frais
-   (protocole : `.claude/rules/review.md`) avant de se declarer fini.
+   avant de se declarer fini. Protocole : lui donner le brief verbatim, les §
+   de PLAN.md concernes, le diff et les criteres, jamais l'auto-evaluation ;
+   mandat de verifier en executant, pas en lisant ; verdict par critere plus
+   findings bloquant / majeur / mineur, chacun avec sa preuve ; bloquants et
+   majeurs corriges puis gates re-passes ; une review sans finding dit ce
+   qu'elle a verifie empiriquement, sinon elle est refaite.
 4. Escalade utilisateur : uniquement blocage reel ou divergence avec
    docs/PLAN.md. Tout le reste s'arbitre ici et se note dans ce fichier.
 5. Agents parfois idle sans rapport : relancer par SendMessage (demander le
@@ -127,6 +132,13 @@ Sinon : constat exact, l'agent corrige avant de continuer.
     (assertion interne, pas un chemin d'erreur) ; `into_outcome(self)` et
     `apply(self)` s'excluent. Le second point est traite par une autorisation
     nommee dans le brief du lot 4 ci-dessous.
+
+## Briefs historiques
+
+Les deux briefs qui suivent ont ete executes et livres. Ils sont gardes comme
+modele pour une delegation future, pas comme travail a faire. Ils citent
+`.claude/rules/review.md`, supprime depuis : son protocole est repris au point
+3 des regles de l'orchestrateur ci-dessus.
 
 ## Brief lot 4 (passer verbatim au spawn de `lot4-app-cli`)
 

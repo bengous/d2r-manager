@@ -15,4 +15,9 @@ paths:
   multiples. Usage selon la tache.
 - Propriete et emprunts precis : les API prennent ce qu'elles consomment ;
   pas de clone de confort.
-- Erreurs `thiserror` a variantes precises, contexte propage (PLAN §3.4).
+- `thiserror` a variantes precises dans les bibliotheques ; `anyhow` seulement
+  dans les binaires `cli` et `server` (PLAN §3.4).
+- `format`, `domain` et `app` restent purs : zero I/O, horloge, processus.
+  Chaque crate pure porte son propre `clippy.toml` `disallowed-types` ; une
+  nouvelle crate pure sans ce fichier n'est gardee par rien.
+- `dead_code` en deny : une API publique sans appelant se supprime.
