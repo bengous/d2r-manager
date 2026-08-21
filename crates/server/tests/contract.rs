@@ -239,11 +239,11 @@ impl Contract {
     }
 
     fn confront(&self, answer: &Answer) {
-        let method = answer.call.method.to_ascii_lowercase();
-        let declared = ROUTES.iter().any(|route| {
-            route.path() == answer.call.path && route.method().as_str() == answer.call.method
-        });
-        let schema = if declared {
+        let served = ROUTES
+            .iter()
+            .find(|route| route.path() == answer.call.path)
+            .map(|route| route.method().as_str().to_ascii_lowercase());
+        let schema = if let Some(method) = served {
             let responses = self.at(&["paths", answer.call.path, &method, "responses"]);
             let response = responses.get(answer.status.to_string()).unwrap_or_else(|| {
                 panic!(
@@ -1240,6 +1240,27 @@ fn the_reading_routes_answer_the_schemas_the_contract_declares() {
     confrontation.holds(&answer, 200);
 
     confrontation.answered(&["/items", "/diff"], 200);
+}
+
+#[test]
+fn every_route_refuses_a_foreign_origin_a_wrong_method_and_a_body_too_large() {
+    let mut confrontation = Confrontation::new();
+    let rig = Rig::new("contract-refusals");
+    let large = "x".repeat(server::BODY_LIMIT + 1);
+
+    for route in ROUTES {
+        let path = route.path();
+        let (call, other) = match route.method() {
+            Method::Get => (Call::get(path, ""), "PUT"),
+            Method::Post => (Call::post(path, "{}"), "GET"),
+        };
+        confrontation.holds(
+            &rig.ask(call.clone().with_origin("https://example.invalid")),
+            403,
+        );
+        confrontation.holds(&rig.ask(call.clone().spoken_by(other)), 405);
+        confrontation.holds(&rig.ask(call.with_body(&large)), 413);
+    }
 }
 
 #[test]

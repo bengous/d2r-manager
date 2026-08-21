@@ -259,6 +259,11 @@ impl Call {
         }
     }
 
+    pub(crate) fn with_body(mut self, body: &str) -> Self {
+        self.body = Some(body.to_owned());
+        self
+    }
+
     pub(crate) fn spoken_by(mut self, method: &'static str) -> Self {
         self.method = method;
         self
