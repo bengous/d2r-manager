@@ -139,6 +139,8 @@ pub fn describe(plan: &Plan) -> PlanDocument {
     }
 }
 
+pub const DEFAULT_TIMER: &str = "d2r-backup.timer";
+
 const CHECKPOINT_PREFIX: &str = "checkpoint";
 const APPLY_PREFIX: &str = "apply";
 

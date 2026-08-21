@@ -1,5 +1,6 @@
 mod support;
 
+use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
 
 use clap::CommandFactory;
@@ -11,6 +12,7 @@ use cli::options::Options;
 use support::{TempTree, copy_fixture, git, repository};
 
 const ABSENT_TIMER: &str = "d2r-manager-tests-no-such.timer";
+const CONTRACT: &str = include_str!("../../../docs/openapi.json");
 
 fn fingerprints(directory: &Path) -> Vec<(String, u64)> {
     let mut prints: Vec<(String, u64)> = std::fs::read_dir(directory)
@@ -78,12 +80,67 @@ fn the_command_tree_is_well_formed() {
 }
 
 #[test]
+fn the_api_contract_serves_every_task_of_the_command_line_and_no_other() {
+    let contract: serde_json::Value =
+        serde_json::from_str(CONTRACT).expect("the contract reads as JSON");
+    let served: BTreeSet<String> = contract["paths"]
+        .as_object()
+        .expect("the paths of the contract")
+        .values()
+        .flat_map(|operations| {
+            operations
+                .as_object()
+                .expect("the operations of a path")
+                .values()
+                .flat_map(|operation| {
+                    operation["x-cli"]
+                        .as_array()
+                        .expect("the tasks an operation serves")
+                        .iter()
+                        .map(|task| task.as_str().expect("a task name").to_owned())
+                })
+        })
+        .collect();
+    let asked: BTreeSet<String> = Options::command()
+        .get_subcommands()
+        .map(|task| task.get_name().to_owned())
+        .filter(|task| task != "help" && task != "serve")
+        .collect();
+
+    assert_eq!(served, asked);
+}
+
+#[test]
 fn the_help_names_every_task_the_lot_delivers() {
     let help = Options::command().render_long_help().to_string();
-    for task in ["sync", "ls", "find", "diff", "plan", "apply"] {
+    for task in ["sync", "ls", "find", "diff", "plan", "apply", "serve"] {
         assert!(help.contains(task), "{task} is missing from the help");
     }
     assert!(help.contains("d2r-manager"));
+}
+
+#[test]
+fn the_serve_task_takes_a_port_and_never_a_host() {
+    let mut serve = Options::command()
+        .find_subcommand("serve")
+        .cloned()
+        .expect("the serve task");
+    let arguments: Vec<String> = serve
+        .get_arguments()
+        .map(|argument| argument.get_id().to_string())
+        .collect();
+
+    assert!(arguments.contains(&"port".to_owned()), "{arguments:?}");
+    assert!(
+        arguments
+            .iter()
+            .all(|argument| !["host", "address", "bind", "interface"].contains(&argument.as_str())),
+        "{arguments:?}"
+    );
+    assert!(
+        serve.render_long_help().to_string().contains("127.0.0.1"),
+        "the help of serve names no address"
+    );
 }
 
 #[test]

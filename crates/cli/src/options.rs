@@ -3,8 +3,8 @@ use std::path::PathBuf;
 use clap::{Args, Parser, Subcommand};
 
 use app::sync::MIRROR_DIRECTORY;
-
-pub const DEFAULT_TIMER: &str = "d2r-backup.timer";
+use app::transaction::DEFAULT_TIMER;
+use server::DEFAULT_PORT;
 
 const SAVES_HELP: &str = "Directory holding the .d2s and .d2i files";
 const CONTAINER_HELP: &str =
@@ -40,6 +40,9 @@ pub enum Task {
 
     #[command(about = "Apply a plan to the saves of a git repository")]
     Apply(ApplyOptions),
+
+    #[command(about = "Serve the same tasks over HTTP, on the loopback of this machine only")]
+    Serve(ServeOptions),
 }
 
 #[derive(Debug, Args)]
@@ -139,6 +142,16 @@ impl ApplyOptions {
             .clone()
             .unwrap_or_else(|| self.repo.join(MIRROR_DIRECTORY))
     }
+}
+
+#[derive(Debug, Args)]
+pub struct ServeOptions {
+    #[arg(
+        long,
+        default_value_t = DEFAULT_PORT,
+        help = "Port the API listens on, 127.0.0.1 only; 0 takes any free port"
+    )]
+    pub port: u16,
 }
 
 const OPERATION_HELP: &str = concat!(

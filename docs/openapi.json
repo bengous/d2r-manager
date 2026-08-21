@@ -1,0 +1,634 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "d2r-manager local API",
+    "version": "1.0.0",
+    "summary": "Offline Diablo II Resurrected saves: backup, exploration and transactions.",
+    "description": "The API serves the tasks of the d2r-manager command line, and nothing more: it never creates an item, never edits a stat, and never reaches an item the saves do not already hold. Every task goes through the same rules as the command line. The server listens on the loopback of one machine only. A request that carries an Origin header from another machine is refused. Paths in requests are read as this machine reads them; the caller and the server share one filesystem.",
+    "license": {
+      "name": "MIT",
+      "identifier": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:7105",
+      "description": "The loopback of this machine, on the port d2r-manager serve takes by default."
+    }
+  ],
+  "x-kind-status": {
+    "bad_request": 400,
+    "forbidden_origin": 403,
+    "no_such_route": 404,
+    "not_found": 404,
+    "method_not_allowed": 405,
+    "game_running": 409,
+    "path_refused": 409,
+    "repository_state": 409,
+    "payload_too_large": 413,
+    "rule_refused": 422,
+    "projection_refused": 422,
+    "unsupported_save": 422,
+    "internal": 500
+  },
+  "x-request-body-limit-bytes": 1048576,
+  "paths": {
+    "/sync": {
+      "post": {
+        "operationId": "sync",
+        "summary": "Mirror the game saves into the backup repository and commit the change.",
+        "description": "Takes the lock, refuses to mirror while the game runs, mirrors the saves with rsync, reads the game again, then commits when the mirror changed. The push to a remote stays outside this API.",
+        "x-cli": ["sync"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SyncRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The outcome of the mirror; every outcome below is a normal end, refusals included.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SyncAnswer" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "403": { "$ref": "#/components/responses/ForbiddenOrigin" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "413": { "$ref": "#/components/responses/PayloadTooLarge" },
+          "500": { "$ref": "#/components/responses/Internal" }
+        }
+      }
+    },
+    "/items": {
+      "get": {
+        "operationId": "items",
+        "summary": "List the items the saves hold, container by container.",
+        "description": "Without a filter the answer holds every item, which is the ls command. With one filter or more it is the find command. The order is stable: container, then row, then column, then fingerprint.",
+        "x-cli": ["ls", "find"],
+        "parameters": [
+          {
+            "name": "saves",
+            "in": "query",
+            "required": true,
+            "description": "Directory holding the .d2s and .d2i files.",
+            "schema": { "$ref": "#/components/schemas/Path" }
+          },
+          {
+            "name": "container",
+            "in": "query",
+            "required": false,
+            "description": "Keep one container only.",
+            "schema": { "$ref": "#/components/schemas/Container" }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "description": "Keep one item code only, such as jew or cm1.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "quality",
+            "in": "query",
+            "required": false,
+            "description": "Keep one quality only.",
+            "schema": { "$ref": "#/components/schemas/Quality" }
+          },
+          {
+            "name": "fingerprint",
+            "in": "query",
+            "required": false,
+            "description": "Keep the fingerprints starting with these hexadecimal digits.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The items the filters keep.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Items" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "403": { "$ref": "#/components/responses/ForbiddenOrigin" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "413": { "$ref": "#/components/responses/PayloadTooLarge" },
+          "422": { "$ref": "#/components/responses/Unprocessable" },
+          "500": { "$ref": "#/components/responses/Internal" }
+        }
+      }
+    },
+    "/diff": {
+      "get": {
+        "operationId": "diff",
+        "summary": "Compare two save directories, container by container.",
+        "description": "Answers one line per fingerprint whose count differs between the two directories.",
+        "x-cli": ["diff"],
+        "parameters": [
+          {
+            "name": "saves",
+            "in": "query",
+            "required": true,
+            "description": "Directory read as the state before.",
+            "schema": { "$ref": "#/components/schemas/Path" }
+          },
+          {
+            "name": "against",
+            "in": "query",
+            "required": true,
+            "description": "Directory read as the state after.",
+            "schema": { "$ref": "#/components/schemas/Path" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The counts that differ; an empty list means the two directories hold the same items.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Differences" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "403": { "$ref": "#/components/responses/ForbiddenOrigin" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "413": { "$ref": "#/components/responses/PayloadTooLarge" },
+          "422": { "$ref": "#/components/responses/Unprocessable" },
+          "500": { "$ref": "#/components/responses/Internal" }
+        }
+      }
+    },
+    "/plan": {
+      "post": {
+        "operationId": "plan",
+        "summary": "Read a plan against the saves and answer it in its normal form.",
+        "description": "Resolves every operation against the saves, then runs the rules over it. Writes nothing, whatever the answer. A plan the rules refuse answers 422. The answer is the document the apply task takes.",
+        "x-cli": ["plan"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PlanRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The plan in the form the apply task reads.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PlanAnswer" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "403": { "$ref": "#/components/responses/ForbiddenOrigin" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "413": { "$ref": "#/components/responses/PayloadTooLarge" },
+          "422": { "$ref": "#/components/responses/Unprocessable" },
+          "500": { "$ref": "#/components/responses/Internal" }
+        }
+      }
+    },
+    "/apply": {
+      "post": {
+        "operationId": "apply",
+        "summary": "Apply a plan to the saves a git repository holds.",
+        "description": "Refuses while the game runs, pauses the backup timer, commits a return point, writes the saves, reads them back, checks that no item appeared or left outside the plan, then commits the plan with the duplications it recorded. A rollback is a git revert of that commit. A move from a grid to an advanced stash tab is refused before any byte is written.",
+        "x-cli": ["apply"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ApplyRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The return point, the commit, and what the plan realized.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApplyAnswer" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "403": { "$ref": "#/components/responses/ForbiddenOrigin" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "413": { "$ref": "#/components/responses/PayloadTooLarge" },
+          "422": { "$ref": "#/components/responses/Unprocessable" },
+          "500": { "$ref": "#/components/responses/Internal" }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "description": "The request itself is unreadable: a parameter is missing, given twice, or holds no value the task reads.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "ForbiddenOrigin": {
+        "description": "The request carries an Origin header from outside this machine.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "NotFound": {
+        "description": "The route is absent from this API, or a path the request names holds no directory.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "The route answers another method.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "Conflict": {
+        "description": "The machine refuses the task now: the game runs, a path is unsafe, or the repository is not on main with an origin remote.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "PayloadTooLarge": {
+        "description": "The request body is above the limit x-request-body-limit-bytes names.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "Unprocessable": {
+        "description": "The request reads, and the rules refuse it: a rule of the game world, a projection the save format cannot hold, or a save file the version 105 reader refuses.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      },
+      "Internal": {
+        "description": "The machine failed under the task: a command, a file, or a read back that does not hold the plan.",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "description": "Every answer above 399 carries this shape and nothing else.",
+        "properties": {
+          "error": { "$ref": "#/components/schemas/ErrorDetail" }
+        },
+        "required": ["error"],
+        "additionalProperties": false
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "The family of the refusal. x-kind-status gives the status each family carries.",
+            "enum": [
+              "bad_request",
+              "forbidden_origin",
+              "no_such_route",
+              "not_found",
+              "method_not_allowed",
+              "game_running",
+              "path_refused",
+              "repository_state",
+              "payload_too_large",
+              "rule_refused",
+              "projection_refused",
+              "unsupported_save",
+              "internal"
+            ]
+          },
+          "message": { "type": "string" }
+        },
+        "required": ["kind", "message"],
+        "additionalProperties": false
+      },
+      "Path": {
+        "type": "string",
+        "description": "A path this machine reads, absolute or read from the directory the server runs in."
+      },
+      "Container": {
+        "type": "string",
+        "description": "shared/<stash>/<tab> for a shared stash tab, char/<character>/<inventory|stash|cube> for a character page."
+      },
+      "Fingerprint": {
+        "type": "string",
+        "description": "The 32 hexadecimal digits that name one item by its bits."
+      },
+      "Commit": {
+        "type": "string",
+        "description": "The 40 hexadecimal digits of a git commit."
+      },
+      "Timestamp": {
+        "type": "string",
+        "description": "The local time of the machine, ISO 8601 with its offset."
+      },
+      "Quality": {
+        "type": "string",
+        "enum": [
+          "simple",
+          "inferior",
+          "normal",
+          "superior",
+          "magic",
+          "set",
+          "rare",
+          "unique",
+          "craft",
+          "tempered"
+        ]
+      },
+      "Transfer": {
+        "type": "string",
+        "description": "move takes the item out of its container; duplicate leaves it and writes a line in the provenance ledger.",
+        "enum": ["move", "duplicate"]
+      },
+      "Cell": {
+        "type": "object",
+        "description": "A cell of a grid, column first, both counted from zero.",
+        "properties": {
+          "column": { "type": "integer", "minimum": 0, "maximum": 255 },
+          "row": { "type": "integer", "minimum": 0, "maximum": 255 }
+        },
+        "required": ["column", "row"],
+        "additionalProperties": false
+      },
+      "Placement": {
+        "description": "A grid holds an item at a cell; an advanced stash tab holds a count of units.",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": { "cell": { "$ref": "#/components/schemas/Cell" } },
+            "required": ["cell"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "units": { "type": "integer", "minimum": 0, "maximum": 255 }
+            },
+            "required": ["units"],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "container": { "$ref": "#/components/schemas/Container" },
+          "placement": { "$ref": "#/components/schemas/Placement" },
+          "code": {
+            "type": "string",
+            "description": "The item code of the version 105 tables. Absent when the item carries none, as an ear does."
+          },
+          "quality": { "$ref": "#/components/schemas/Quality" },
+          "fingerprint": { "$ref": "#/components/schemas/Fingerprint" }
+        },
+        "required": ["container", "placement", "quality", "fingerprint"],
+        "additionalProperties": false
+      },
+      "Items": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Item" }
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "Difference": {
+        "type": "object",
+        "properties": {
+          "container": { "$ref": "#/components/schemas/Container" },
+          "fingerprint": { "$ref": "#/components/schemas/Fingerprint" },
+          "before": { "type": "integer", "minimum": 0 },
+          "after": { "type": "integer", "minimum": 0 }
+        },
+        "required": ["container", "fingerprint", "before", "after"],
+        "additionalProperties": false
+      },
+      "Differences": {
+        "type": "object",
+        "properties": {
+          "differences": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Difference" }
+          }
+        },
+        "required": ["differences"],
+        "additionalProperties": false
+      },
+      "Source": {
+        "type": "object",
+        "description": "The item an operation takes, named by its container and its fingerprint. units belongs to an advanced stash tab only.",
+        "properties": {
+          "container": { "$ref": "#/components/schemas/Container" },
+          "fingerprint": { "$ref": "#/components/schemas/Fingerprint" },
+          "units": { "type": "integer", "minimum": 1, "maximum": 99 }
+        },
+        "required": ["container", "fingerprint"],
+        "additionalProperties": false
+      },
+      "Destination": {
+        "type": "object",
+        "description": "Where the item lands. Without a cell the grid takes the first free space; an advanced stash tab takes no cell.",
+        "properties": {
+          "container": { "$ref": "#/components/schemas/Container" },
+          "cell": { "$ref": "#/components/schemas/Cell" }
+        },
+        "required": ["container"],
+        "additionalProperties": false
+      },
+      "Operation": {
+        "type": "object",
+        "properties": {
+          "transfer": { "$ref": "#/components/schemas/Transfer" },
+          "from": { "$ref": "#/components/schemas/Source" },
+          "to": { "$ref": "#/components/schemas/Destination" }
+        },
+        "required": ["transfer", "from", "to"],
+        "additionalProperties": false
+      },
+      "Plan": {
+        "type": "object",
+        "description": "The operations, in the order the apply task runs them.",
+        "properties": {
+          "operations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Operation" }
+          }
+        },
+        "required": ["operations"],
+        "additionalProperties": false
+      },
+      "SyncRequest": {
+        "type": "object",
+        "properties": {
+          "source": { "$ref": "#/components/schemas/Path" },
+          "repo": { "$ref": "#/components/schemas/Path" },
+          "lock": { "$ref": "#/components/schemas/Path" }
+        },
+        "required": ["source", "repo", "lock"],
+        "additionalProperties": false
+      },
+      "SyncAnswer": {
+        "description": "committed carries the commit and the time of the backup; the other outcomes carry nothing else.",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "outcome": {
+                "type": "string",
+                "enum": [
+                  "lock_held_elsewhere",
+                  "game_running",
+                  "game_started_during_sync",
+                  "nothing_changed"
+                ]
+              }
+            },
+            "required": ["outcome"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "outcome": { "const": "committed" },
+              "commit": { "$ref": "#/components/schemas/Commit" },
+              "at": { "$ref": "#/components/schemas/Timestamp" }
+            },
+            "required": ["outcome", "commit", "at"],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "PlanRequest": {
+        "type": "object",
+        "properties": {
+          "saves": { "$ref": "#/components/schemas/Path" },
+          "plan": { "$ref": "#/components/schemas/Plan" }
+        },
+        "required": ["saves", "plan"],
+        "additionalProperties": false
+      },
+      "PlanAnswer": {
+        "type": "object",
+        "properties": {
+          "plan": { "$ref": "#/components/schemas/Plan" }
+        },
+        "required": ["plan"],
+        "additionalProperties": false
+      },
+      "ApplyRequest": {
+        "type": "object",
+        "properties": {
+          "repo": { "$ref": "#/components/schemas/Path" },
+          "saves": {
+            "$ref": "#/components/schemas/Path",
+            "description": "The saves inside the repository. Absent, the task takes the saves directory of the repository."
+          },
+          "plan": { "$ref": "#/components/schemas/Plan" },
+          "timer": {
+            "type": "string",
+            "description": "The systemd user timer the task pauses. Absent, the task takes d2r-backup.timer."
+          }
+        },
+        "required": ["repo", "plan"],
+        "additionalProperties": false
+      },
+      "Record": {
+        "description": "What the apply task wrote in git.",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": { "outcome": { "const": "nothing_changed" } },
+            "required": ["outcome"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "outcome": { "const": "committed" },
+              "commit": { "$ref": "#/components/schemas/Commit" },
+              "at": { "$ref": "#/components/schemas/Timestamp" }
+            },
+            "required": ["outcome", "commit", "at"],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "Realized": {
+        "type": "object",
+        "description": "One operation as the rules realized it, with the place the item took.",
+        "properties": {
+          "transfer": { "$ref": "#/components/schemas/Transfer" },
+          "fingerprint": { "$ref": "#/components/schemas/Fingerprint" },
+          "from": { "$ref": "#/components/schemas/Container" },
+          "to": { "$ref": "#/components/schemas/Container" },
+          "landing": { "$ref": "#/components/schemas/Placement" }
+        },
+        "required": ["transfer", "fingerprint", "from", "to", "landing"],
+        "additionalProperties": false
+      },
+      "Duplication": {
+        "type": "object",
+        "description": "One line of the provenance ledger, as the apply task committed it.",
+        "properties": {
+          "at": { "$ref": "#/components/schemas/Timestamp" },
+          "fingerprint": { "$ref": "#/components/schemas/Fingerprint" },
+          "from": { "$ref": "#/components/schemas/Container" },
+          "to": { "$ref": "#/components/schemas/Container" },
+          "units": { "type": "integer", "minimum": 1, "maximum": 99 }
+        },
+        "required": ["at", "fingerprint", "from", "to", "units"],
+        "additionalProperties": false
+      },
+      "ApplyAnswer": {
+        "type": "object",
+        "properties": {
+          "checkpoint": { "$ref": "#/components/schemas/Commit" },
+          "record": { "$ref": "#/components/schemas/Record" },
+          "realized": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Realized" }
+          },
+          "duplications": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Duplication" }
+          },
+          "written": {
+            "type": "array",
+            "description": "The save files the task wrote.",
+            "items": { "$ref": "#/components/schemas/Path" }
+          }
+        },
+        "required": ["checkpoint", "record", "realized", "duplications", "written"],
+        "additionalProperties": false
+      }
+    }
+  }
+}

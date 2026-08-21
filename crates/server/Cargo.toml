@@ -1,0 +1,22 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+app = { path = "../app", version = "0.1.0" }
+domain = { path = "../domain", version = "0.1.0" }
+format = { path = "../format", version = "0.1.0" }
+serde = { workspace = true }
+serde_json.workspace = true
+thiserror.workspace = true
+tiny_http.workspace = true
+
+[dev-dependencies]
+infra = { path = "../infra", version = "0.1.0" }
+
+[lints]
+workspace = true

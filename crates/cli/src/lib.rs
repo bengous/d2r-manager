@@ -20,8 +20,10 @@ use infra::files::{FileLock, RealFiles};
 use infra::git::GitCommands;
 use infra::system::{Rsync, SystemClock, SystemProcesses, SystemdTimers};
 use options::{
-    ApplyOptions, DiffOptions, FindOptions, LsOptions, Options, PlanOptions, SyncOptions, Task,
+    ApplyOptions, DiffOptions, FindOptions, LsOptions, Options, PlanOptions, ServeOptions,
+    SyncOptions, Task,
 };
+use server::{Server, Services};
 
 pub fn run(options: &Options, out: &mut dyn Write) -> Result<()> {
     match &options.task {
@@ -31,12 +33,13 @@ pub fn run(options: &Options, out: &mut dyn Write) -> Result<()> {
         Task::Diff(options) => diff(options, out),
         Task::Plan(options) => plan(options, out),
         Task::Apply(options) => apply(options, out),
+        Task::Serve(options) => serve(options, out),
     }
 }
 
 fn sync(options: &SyncOptions, out: &mut dyn Write) -> Result<()> {
     let files = RealFiles;
-    let locks = FileLock::default();
+    let locks = FileLock;
     let processes = SystemProcesses;
     let mirrors = Rsync;
     let repository = GitCommands;
@@ -139,6 +142,29 @@ fn apply(options: &ApplyOptions, out: &mut dyn Write) -> Result<()> {
     )?;
     writeln!(out, "{}", render::applied(&applied))?;
     Ok(())
+}
+
+fn serve(options: &ServeOptions, out: &mut dyn Write) -> Result<()> {
+    let files = RealFiles;
+    let locks = FileLock;
+    let processes = SystemProcesses;
+    let mirrors = Rsync;
+    let repository = GitCommands;
+    let timers = SystemdTimers;
+    let clock = SystemClock;
+    let services = Services {
+        files: &files,
+        locks: &locks,
+        processes: &processes,
+        mirrors: &mirrors,
+        repository: &repository,
+        timers: &timers,
+        clock: &clock,
+    };
+    let server = Server::bind(options.port)?;
+    writeln!(out, "serve: http://{}", server.address())?;
+    out.flush()?;
+    Err(server.serve(&services).into())
 }
 
 fn world(directory: &Path) -> Result<Vault> {

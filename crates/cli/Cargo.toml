@@ -18,6 +18,7 @@ domain = { path = "../domain", version = "0.1.0" }
 format = { path = "../format", version = "0.1.0" }
 infra = { path = "../infra", version = "0.1.0" }
 serde_json.workspace = true
+server = { path = "../server", version = "0.1.0" }
 
 [lints]
 workspace = true
