@@ -11,8 +11,19 @@ Sonnet. Plan d'orchestration complet :
 
 ## Etat au moment du handoff
 
-- main : lots 0, 1, 2, 3, 4 integres. 154 tests. Il reste le lot 5 (brief
-  pret plus bas), puis la livraison (etape 7 ci-dessous).
+- PROJET LIVRE le 2026-08-21. Les 8 etapes de PLAN §8 passent. 206 tests,
+  `just check` vert, `just goldens` idempotent, corpus 60/60, submodules
+  figes. Six crates : format, domain, app, infra, cli, server.
+- Restes assumes, tous documentes dans les rapports de lot : la parite
+  plan/apply repose sur une convention partagee (`app::transaction::prepare`)
+  et non sur un typestate ; `apply` ne prend aucun verrou (PLAN §11.3) ;
+  bornes de `Cell` non adossees a une constante ; retrait d'un statut
+  atteignable non detecte par le contrat ; liste de schemas tenue a la main.
+- Branche `fix/plan-gate` non supprimee : squashee dans main, sa suppression
+  demande `git branch -D`, refuse par les permissions.
+- Scratchpad : 8,8 Go sous le repertoire de session, suppression refusee par
+  les permissions, a faire par l'utilisateur.
+- Historique precedent : lots 0 a 4 integres a 154 tests.
 - Questions ouvertes remontees a l'utilisateur, notees en PLAN §11, aucune
   bloquante : retour des fichiers vers `~/Games/`, verrou d'`apply`, transfert
   d'or.
