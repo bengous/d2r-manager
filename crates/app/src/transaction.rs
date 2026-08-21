@@ -13,7 +13,8 @@ use domain::vault::Vault;
 
 use crate::ledger::{LEDGER_DIRECTORY, LEDGER_FILE, LedgerEntry, duplications};
 use crate::ports::{
-    Clock, CommandError, FileError, Files, Processes, Repository, Staged, TimerState, Timers,
+    Clock, CommandError, FileError, Files, PathState, Processes, Repository, Staged, TimerState,
+    Timers,
 };
 use crate::selector::{ContainerSelector, SelectorError};
 use crate::sync::{GameState, game};
@@ -223,7 +224,6 @@ enum Pause {
 #[derive(Debug, Clone, Copy)]
 struct Written<'a> {
     saves: &'a Path,
-    specs: &'a [&'a Path],
     ledger: &'a Path,
 }
 
@@ -261,7 +261,6 @@ impl Transaction<'_> {
             })?
             .to_owned();
         let ledger = root.join(LEDGER_DIRECTORY).join(LEDGER_FILE);
-        let specs: [&Path; 2] = [&inside, Path::new(LEDGER_DIRECTORY)];
 
         let mut tree = SaveTree::read(self.files, &saves)?;
         let vault = tree.vault()?;
@@ -271,9 +270,8 @@ impl Transaction<'_> {
         let pause = self.pause(&paths.timer)?;
         let outcome = self.write(
             &paths.repo,
-            &Written {
+            Written {
                 saves: &inside,
-                specs: &specs,
                 ledger: &ledger,
             },
             &mut tree,
@@ -286,17 +284,13 @@ impl Transaction<'_> {
     fn write(
         &self,
         repo: &Path,
-        target: &Written<'_>,
+        target: Written<'_>,
         tree: &mut SaveTree,
         validated: ValidatedPlan,
         document: &PlanDocument,
     ) -> Result<Applied, TransactionError> {
-        let Written {
-            saves,
-            specs,
-            ledger,
-        } = *target;
-        let checkpoint = self.checkpoint(repo, specs)?;
+        let Written { saves, ledger } = target;
+        let checkpoint = self.checkpoint(repo, &self.specs(target)?)?;
         let written = tree.flush(self.files)?;
 
         let verified = SaveTree::read(self.files, tree.directory())
@@ -324,8 +318,9 @@ impl Transaction<'_> {
             }
         }
 
-        self.repository.stage(repo, specs)?;
-        let record = if self.repository.staged(repo, specs)? == Staged::Nothing {
+        let specs = self.specs(target)?;
+        self.repository.stage(repo, &specs)?;
+        let record = if self.repository.staged(repo, &specs)? == Staged::Nothing {
             Record::NothingChanged
         } else {
             let message = format!(
@@ -333,7 +328,7 @@ impl Transaction<'_> {
                 serde_json::to_string_pretty(document)?
             );
             Record::Committed {
-                commit: self.repository.commit(repo, &message, specs)?,
+                commit: self.repository.commit(repo, &message, &specs)?,
                 at,
             }
         };
@@ -345,6 +340,14 @@ impl Transaction<'_> {
             duplications,
             written,
         })
+    }
+
+    fn specs<'a>(&self, target: Written<'a>) -> Result<Vec<&'a Path>, TransactionError> {
+        let mut specs = vec![target.saves];
+        if self.files.probe(target.ledger)? != PathState::Missing {
+            specs.push(Path::new(LEDGER_DIRECTORY));
+        }
+        Ok(specs)
     }
 
     fn checkpoint(&self, repo: &Path, specs: &[&Path]) -> Result<CommitId, TransactionError> {

@@ -297,7 +297,12 @@ fn a_game_that_starts_during_the_mirror_defers_the_commit() {
         SyncOutcome::GameStartedDuringSync
     );
     assert_eq!(rig.mirrors.runs.borrow().len(), 1);
-    assert!(!rig.git.called().contains(&"commit".to_owned()));
+    assert!(
+        !rig.git
+            .called()
+            .iter()
+            .any(|call| call.starts_with("commit"))
+    );
 }
 
 #[test]
@@ -310,8 +315,18 @@ fn a_mirror_that_changed_nothing_leaves_no_commit() {
         rig.run().expect("the backup runs"),
         SyncOutcome::NothingChanged
     );
-    assert!(rig.git.called().contains(&"stage".to_owned()));
-    assert!(!rig.git.called().contains(&"commit".to_owned()));
+    assert!(
+        rig.git
+            .called()
+            .iter()
+            .any(|call| call.starts_with("stage"))
+    );
+    assert!(
+        !rig.git
+            .called()
+            .iter()
+            .any(|call| call.starts_with("commit"))
+    );
 }
 
 #[test]

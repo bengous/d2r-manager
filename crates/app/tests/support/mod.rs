@@ -5,7 +5,7 @@
 )]
 
 use std::cell::RefCell;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeMap, BTreeSet, VecDeque};
 use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 
@@ -321,7 +321,8 @@ pub(crate) struct FakeGit {
     pub(crate) root: PathBuf,
     pub(crate) branch: Option<Branch>,
     pub(crate) remote: Availability,
-    pub(crate) staged: RefCell<Staged>,
+    answers: RefCell<VecDeque<Staged>>,
+    otherwise: Staged,
     pub(crate) head: RefCell<CommitId>,
     pub(crate) calls: RefCell<Vec<String>>,
     pub(crate) messages: RefCell<Vec<String>>,
@@ -334,11 +335,18 @@ impl FakeGit {
             root: root.as_ref().to_owned(),
             branch: Some(Branch::new("main").expect("branch")),
             remote: Availability::Present,
-            staged: RefCell::new(Staged::Changes),
+            answers: RefCell::new(VecDeque::new()),
+            otherwise: Staged::Changes,
             head: RefCell::new(CommitId::new(HEAD).expect("commit")),
             calls: RefCell::new(Vec::new()),
             messages: RefCell::new(Vec::new()),
         }
+    }
+
+    #[must_use]
+    pub(crate) fn answering(self, answers: &[Staged]) -> Self {
+        *self.answers.borrow_mut() = answers.iter().copied().collect();
+        self
     }
 
     #[must_use]
@@ -354,8 +362,8 @@ impl FakeGit {
     }
 
     #[must_use]
-    pub(crate) fn clean(self) -> Self {
-        *self.staged.borrow_mut() = Staged::Nothing;
+    pub(crate) fn clean(mut self) -> Self {
+        self.otherwise = Staged::Nothing;
         self
     }
 
@@ -366,6 +374,16 @@ impl FakeGit {
 
     fn note(&self, call: &str) {
         self.calls.borrow_mut().push(call.to_owned());
+    }
+
+    fn note_paths(&self, call: &str, paths: &[&Path]) {
+        let listed: Vec<String> = paths
+            .iter()
+            .map(|path| path.to_string_lossy().into_owned())
+            .collect();
+        self.calls
+            .borrow_mut()
+            .push(format!("{call} {}", listed.join(",")));
     }
 }
 
@@ -390,37 +408,40 @@ impl Repository for FakeGit {
         Ok(self.head.borrow().clone())
     }
 
-    fn stage(&self, _repo: &Path, _paths: &[&Path]) -> Result<(), CommandError> {
-        self.note("stage");
+    fn stage(&self, _repo: &Path, paths: &[&Path]) -> Result<(), CommandError> {
+        self.note_paths("stage", paths);
         Ok(())
     }
 
     fn staged(&self, _repo: &Path, _paths: &[&Path]) -> Result<Staged, CommandError> {
         self.note("staged");
-        Ok(*self.staged.borrow())
+        Ok(self
+            .answers
+            .borrow_mut()
+            .pop_front()
+            .unwrap_or(self.otherwise))
     }
 
     fn commit(
         &self,
         _repo: &Path,
         message: &str,
-        _paths: &[&Path],
+        paths: &[&Path],
     ) -> Result<CommitId, CommandError> {
-        self.note("commit");
+        self.note_paths("commit", paths);
         self.messages.borrow_mut().push(message.to_owned());
         let commit = CommitId::new(NEXT).expect("commit");
         *self.head.borrow_mut() = commit.clone();
-        *self.staged.borrow_mut() = Staged::Nothing;
         Ok(commit)
     }
 
     fn restore(
         &self,
         _repo: &Path,
-        _commit: &CommitId,
-        _paths: &[&Path],
+        commit: &CommitId,
+        paths: &[&Path],
     ) -> Result<(), CommandError> {
-        self.note("restore");
+        self.note_paths(&format!("restore {commit}"), paths);
         Ok(())
     }
 }
