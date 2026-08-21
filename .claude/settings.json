@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(shellcheck *)",
+      "Bash(cargo clippy *)",
+      "Bash(cargo test *)",
+      "Bash(cargo fmt --check)",
+      "Bash(cargo fmt --all --check)",
+      "Bash(cargo doc --no-deps *)",
+      "Bash(just check)",
+      "Bash(just test)",
+      "Bash(playwright-cli screenshot *)",
+      "Bash(playwright-cli snapshot *)",
+      "mcp__exa__get_code_context_exa",
+      "mcp__exa__web_search_exa",
+      "mcp__exa__crawling_exa"
+    ]
+  }
+}
