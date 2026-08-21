@@ -11,7 +11,12 @@ Sonnet. Plan d'orchestration complet :
 
 ## Etat au moment du handoff
 
-- main = `476d83e` : lots 0, 1, 2, 3 integres. Harnais goldens (60 fichiers),
+- main : lots 0, 1, 2, 3, 4 integres. 154 tests. Il reste le lot 5 (brief
+  pret plus bas), puis la livraison (etape 7 ci-dessous).
+- Questions ouvertes remontees a l'utilisateur, notees en PLAN §11, aucune
+  bloquante : retour des fichiers vers `~/Games/`, verrou d'`apply`, transfert
+  d'or.
+- Etat precedent (lot 3) : main = `476d83e`. Harnais goldens (60 fichiers),
   crate `format` (55/55 concordance, 55/55 round-trip), crate `domain`
   (grilles, regles, typestate de plan, fusion 2026-08-20 rejouee). 73 tests.
 - Prochaine etape : lot 4 (`lot4-app-cli`), brief pret plus bas.

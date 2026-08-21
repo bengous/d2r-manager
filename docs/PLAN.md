@@ -106,6 +106,7 @@ Mesurees sur la machine le 2026-08-20, installees via mise.
 | slf4j-api | 2.0.17, sha256 `7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832` | dependance `provided` de l'oracle Java, telechargee par script |
 
 Dependances Rust : `clap`, `serde`, `serde_json`, `thiserror`, `anyhow` (cli),
+`jiff` 0.2.32 (cli, horodatage ISO-8601 local du commit de sauvegarde),
 `proptest` (dev). Versions prises au `cargo add` initial et figees par le
 `Cargo.lock` commite.
 
@@ -168,6 +169,12 @@ Verites mesurees le 2026-08-20, a integrer sans les redecouvrir :
 - L'onglet `AdvancedStash` du coffre moderne n'est pas une grille : les fichiers
   ecrits par le jeu y contiennent des positions qui se recouvrent. Ce n'est pas
   une anomalie. On n'y invente jamais de position : on empile ou on ajoute.
+- Le champ de pile `AdvancedStash` est un bit optionnel par objet et entre dans
+  l'empreinte : les objets de grille le portent absent, ceux de l'onglet le
+  portent present (mesure 2026-08-21). Un deplacement d'une grille vers un
+  onglet `AdvancedStash` changerait donc l'identite de l'objet : il est refuse
+  a la projection, avant toute ecriture. Les sens pile vers pile, pile vers
+  grille et grille vers grille restent permis.
 - Round-trip `.d2i` : prouve 4/4 sur les fichiers v105. Round-trip `.d2s` :
   jamais mesure. Le mesurer via l'oracle C# et le documenter fichier par
   fichier dans `REPORT.md` ; un echec partiel est une information, pas un
@@ -237,7 +244,13 @@ de documentation dont ce plan.
 ## 11. Questions ouvertes
 
 1. Remote GitHub prive : a creer quand l'utilisateur le decide.
-2. Transfert d'or entre onglets : §7.1 ne prevoit que `move` et `duplicate`,
+2. `apply` ecrit dans le miroir du depot de sauvegarde, pas dans `~/Games/`.
+   Le retour des fichiers vers le repertoire du jeu reste a decider, comme la
+   bascule du script bash.
+3. Verrou d'`apply` : la sequence §7.3 met le timer en pause mais ne prend
+   aucun verrou, donc une sauvegarde deja en vol peut ecraser une ecriture.
+   Le port de verrou existe deja ; l'ajout est une decision utilisateur.
+4. Transfert d'or entre onglets : §7.1 ne prevoit que `move` et `duplicate`,
    donc aucun plan ne deplace d'or. La fusion du 2026-08-20 en a pourtant
    deplace 940 000. Une troisieme operation reste a decider par l'utilisateur ;
    hors perimetre tant qu'elle n'est pas decidee. Le plafond de 2 500 000 par
