@@ -37,31 +37,24 @@ l'etat courant.
 Six crates, dependances a sens unique, violation = erreur de compilation :
 `format` <- `domain` <- `app` <- `infra` <- {`cli`, `server`}.
 
-- `format` : octets vers modele et retour, v105 seul, pur. Chaque champ du
-  bitstream a sa largeur en bits dans `docs/FORMAT.md`, citee dans le code par
-  `FORMAT.md §x.y`, seule forme de commentaire autorisee du depot.
+- `format` : octets vers modele et retour, v105 seul, pur. Le bitstream est
+  specifie champ par champ dans `docs/FORMAT.md`.
 - `domain` : grilles, regles, empreintes d'objet, typestate
   `Plan` -> `ValidatedPlan` -> `AppliedPlan`. Pur.
 - `app` : ports (traits) et cas d'usage : sync, inspection, transactions. Pur.
 - `infra` : les adaptateurs (fs, verrous, git par sous-processus, pgrep,
-  systemctl, horloge). `cli` et `server` n'en portent aucun.
-- `server` : API locale, loopback seul. Toute route est declaree dans
-  `docs/openapi.json` ; `crates/server/tests/contract.rs` oppose le contrat au
-  serveur, noms, types, requiredness et statuts compris.
+  systemctl, horloge).
+- `server` : API locale, loopback seul, contrat `docs/openapi.json`.
 
 Le harnais differentiel est le coeur des tests : `goldens/csharp/*.json` est le
-corrige produit par l'oracle D2SSharp, `goldens/java/*.tsv` la contre-mesure.
-Un round-trip octet a octet ne prouve rien seul, un champ lu au mauvais offset
-et reecrit au meme offset le passe ; la concordance champ a champ avec les
-goldens est ce qui prouve la comprehension. Un golden ne s'ajuste jamais pour
-faire passer un test.
+corrige de l'oracle D2SSharp, `goldens/java/*.tsv` la contre-mesure. Un golden
+ne s'ajuste jamais pour faire passer un test.
 
 ## Workflow
 
-- Branches `feature/desc`, rebase, commits petits. Pas de push : pas de remote.
+- Commits petits. Pas de push : pas de remote.
 - `docs/PLAN.md`, `CLAUDE.md` et `.claude/rules/` ne se modifient pas sans
   demande explicite de l'utilisateur.
-- Deux echecs sur la meme piste : arret, resume, remontee.
 - Changement de regle metier ou de perimetre : question a l'utilisateur, jamais
   d'initiative silencieuse.
 - Questions ouvertes en attente de decision : `docs/DECISIONS.md`. Un agent ne
@@ -75,6 +68,3 @@ faire passer un test.
 - `.claude/rules/adapters.md` : `app`, `infra`, `cli`.
 - `.claude/rules/server.md` : API HTTP et contrat OpenAPI.
 - `.claude/rules/oracles.md` : outils goldens et licences.
-
-Un lot delegue passe par une review a contexte frais avant merge : protocole
-dans `plans/HANDOFF.md`.
