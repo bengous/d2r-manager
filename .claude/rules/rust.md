@@ -16,7 +16,7 @@ paths:
 - Propriete et emprunts precis : les API prennent ce qu'elles consomment ;
   pas de clone de confort.
 - `thiserror` a variantes precises dans les bibliotheques ; `anyhow` seulement
-  dans les binaires `cli` et `server` (PLAN §3.4).
+  dans les binaires `cli` et `server`.
 - `format`, `domain` et `app` restent purs : zero I/O, horloge, processus.
   Chaque crate pure porte son propre `clippy.toml` `disallowed-types` ; une
   nouvelle crate pure sans ce fichier n'est gardee par rien.
