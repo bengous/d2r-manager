@@ -6,12 +6,15 @@ use app::sync::MIRROR_DIRECTORY;
 
 pub const DEFAULT_TIMER: &str = "d2r-backup.timer";
 
+const SAVES_HELP: &str = "Directory holding the .d2s and .d2i files";
+const CONTAINER_HELP: &str =
+    "Keep one container only, as shared/<stash>/<tab> or char/<name>/<page>";
+
 #[derive(Debug, Parser)]
 #[command(
     name = "d2r-manager",
     version,
-    about = "Diablo II Resurrected offline saves: backup, exploration and transactions",
-    long_about = None
+    about = "Diablo II Resurrected offline saves: backup, exploration and transactions"
 )]
 pub struct Options {
     #[command(subcommand)]
@@ -20,96 +23,112 @@ pub struct Options {
 
 #[derive(Debug, Subcommand)]
 pub enum Task {
-    /// Mirror the game saves into the backup repository and commit the change
+    #[command(about = "Mirror the game saves into the backup repository and commit the change")]
     Sync(SyncOptions),
-    /// List every item the saves hold, container by container
+
+    #[command(about = "List every item the saves hold, container by container")]
     Ls(LsOptions),
-    /// List the items a filter keeps
+
+    #[command(about = "List the items a filter keeps")]
     Find(FindOptions),
-    /// Compare two save directories, container by container
+
+    #[command(about = "Compare two save directories, container by container")]
     Diff(DiffOptions),
-    /// Print the JSON of a plan, without writing anything
+
+    #[command(about = "Print the JSON of a plan, without writing anything")]
     Plan(PlanOptions),
-    /// Apply a plan to the saves of a git repository
+
+    #[command(about = "Apply a plan to the saves of a git repository")]
     Apply(ApplyOptions),
 }
 
 #[derive(Debug, Args)]
 pub struct SyncOptions {
-    /// Directory the game writes its saves in
-    #[arg(long)]
+    #[arg(long, help = "Directory the game writes its saves in")]
     pub source: PathBuf,
-    /// Backup repository, on main, with an origin remote
-    #[arg(long)]
+
+    #[arg(long, help = "Backup repository, on main, with an origin remote")]
     pub repo: PathBuf,
-    /// Lock file that keeps two runs from mirroring at once
-    #[arg(long)]
+
+    #[arg(long, help = "Lock file that keeps two runs from mirroring at once")]
     pub lock: PathBuf,
 }
 
 #[derive(Debug, Args)]
 pub struct LsOptions {
-    /// Directory holding the .d2s and .d2i files
-    #[arg(long)]
+    #[arg(long, help = SAVES_HELP)]
     pub saves: PathBuf,
-    /// Keep one container only, as shared/<stash>/<tab> or char/<name>/<page>
-    #[arg(long)]
+
+    #[arg(long, help = CONTAINER_HELP)]
     pub container: Option<String>,
 }
 
 #[derive(Debug, Args)]
 pub struct FindOptions {
-    /// Directory holding the .d2s and .d2i files
-    #[arg(long)]
+    #[arg(long, help = SAVES_HELP)]
     pub saves: PathBuf,
-    /// Keep one container only, as shared/<stash>/<tab> or char/<name>/<page>
-    #[arg(long)]
+
+    #[arg(long, help = CONTAINER_HELP)]
     pub container: Option<String>,
-    /// Keep one item code only, such as jew or cm1
-    #[arg(long)]
+
+    #[arg(long, help = "Keep one item code only, such as jew or cm1")]
     pub code: Option<String>,
-    /// Keep one quality only, such as unique or rare
-    #[arg(long)]
+
+    #[arg(long, help = "Keep one quality only, such as unique or rare")]
     pub quality: Option<String>,
-    /// Keep the fingerprints starting with these hexadecimal digits
-    #[arg(long)]
+
+    #[arg(
+        long,
+        help = "Keep the fingerprints starting with these hexadecimal digits"
+    )]
     pub fingerprint: Option<String>,
 }
 
 #[derive(Debug, Args)]
 pub struct DiffOptions {
-    /// Directory read as the state before
-    #[arg(long)]
+    #[arg(long, help = "Directory read as the state before")]
     pub saves: PathBuf,
-    /// Directory read as the state after
-    #[arg(long)]
+
+    #[arg(long, help = "Directory read as the state after")]
     pub against: PathBuf,
 }
 
 #[derive(Debug, Args)]
 #[command(after_help = OPERATION_HELP)]
 pub struct PlanOptions {
-    /// Directory holding the .d2s and .d2i files
-    #[arg(long)]
+    #[arg(long, help = SAVES_HELP)]
     pub saves: PathBuf,
-    /// One operation, repeated in the order the plan applies them
-    #[arg(long = "operation", required = true)]
+
+    #[arg(
+        long = "operation",
+        required = true,
+        help = "One operation, repeated in the order the plan applies them"
+    )]
     pub operations: Vec<String>,
 }
 
 #[derive(Debug, Args)]
 pub struct ApplyOptions {
-    /// Git repository holding the saves and the provenance ledger
-    #[arg(long)]
+    #[arg(
+        long,
+        help = "Git repository holding the saves and the provenance ledger"
+    )]
     pub repo: PathBuf,
-    /// Directory holding the .d2s and .d2i files, inside the repository
-    #[arg(long)]
+
+    #[arg(
+        long,
+        help = "Directory holding the .d2s and .d2i files, inside the repository"
+    )]
     pub saves: Option<PathBuf>,
-    /// JSON file the plan command printed
-    #[arg(long)]
+
+    #[arg(long, help = "JSON file the plan command printed")]
     pub plan: PathBuf,
-    /// Systemd user timer paused while the plan is applied
-    #[arg(long, default_value = DEFAULT_TIMER)]
+
+    #[arg(
+        long,
+        default_value = DEFAULT_TIMER,
+        help = "Systemd user timer paused while the plan is applied"
+    )]
     pub timer: String,
 }
 

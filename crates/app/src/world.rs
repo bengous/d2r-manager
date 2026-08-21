@@ -177,11 +177,24 @@ impl SaveTree {
     }
 
     pub fn project(&mut self, vault: &Vault) -> Result<(), WorldError> {
-        for stash in &mut self.stashes {
-            stash.project(vault)?;
+        let mut stashes: Vec<StashSave> =
+            self.stashes.iter().map(|file| file.save.clone()).collect();
+        for (file, save) in self.stashes.iter().zip(&mut stashes) {
+            file.project(save, vault)?;
         }
-        for character in &mut self.characters {
-            character.project(vault)?;
+        let mut characters: Vec<CharacterSave> = self
+            .characters
+            .iter()
+            .map(|file| file.save.clone())
+            .collect();
+        for (file, save) in self.characters.iter().zip(&mut characters) {
+            file.project(save, vault)?;
+        }
+        for (file, save) in self.stashes.iter_mut().zip(stashes) {
+            file.save = save;
+        }
+        for (file, save) in self.characters.iter_mut().zip(characters) {
+            file.save = save;
         }
         Ok(())
     }
@@ -218,11 +231,11 @@ impl SaveTree {
 }
 
 impl StashFile {
-    fn project(&mut self, vault: &Vault) -> Result<(), WorldError> {
+    fn project(&self, save: &mut StashSave, vault: &Vault) -> Result<(), WorldError> {
         let name = &self.name;
         let path = &self.path;
-        let count = self.save.tabs.len();
-        for (index, tab) in self.save.tabs.iter_mut().enumerate() {
+        let count = save.tabs.len();
+        for (index, tab) in save.tabs.iter_mut().enumerate() {
             let position = u8::try_from(index).map_err(|_| WorldError::TooManyTabs {
                 path: path.clone(),
                 tabs: count,
@@ -272,7 +285,7 @@ impl CharacterFile {
         self.save.items.0.iter().filter_map(stored_page).collect()
     }
 
-    fn project(&mut self, vault: &Vault) -> Result<(), WorldError> {
+    fn project(&self, save: &mut CharacterSave, vault: &Vault) -> Result<(), WorldError> {
         let mut placed: Vec<(CharacterPage, GridPosition, Item)> = Vec::new();
         for page in CHARACTER_PAGES {
             let id = self.grid(page);
@@ -289,8 +302,7 @@ impl CharacterFile {
             .iter()
             .map(|(page, _, item)| Ok((*page, Fingerprint::of(item)?)))
             .collect::<Result<_, ModelError>>()?;
-        let original: Vec<Option<(CharacterPage, Fingerprint)>> = self
-            .save
+        let original: Vec<Option<(CharacterPage, Fingerprint)>> = save
             .items
             .0
             .iter()
@@ -303,14 +315,14 @@ impl CharacterFile {
         let mut items = Vec::with_capacity(placed.len());
         for emit in arrange(&held, &original) {
             match emit {
-                Emit::Original(index) => items.push(self.save.items.0[index].clone()),
+                Emit::Original(index) => items.push(save.items.0[index].clone()),
                 Emit::Held(index) => {
                     let (page, at, item) = &placed[index];
                     items.push(stored(item, *at, store_page(*page)));
                 }
             }
         }
-        self.save.items = ItemList(items);
+        save.items = ItemList(items);
         Ok(())
     }
 }
