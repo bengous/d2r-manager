@@ -14,6 +14,23 @@ use support::{ABSENT_TIMER, Answer, Call, Rig, copy_fixture, encoded, git, repos
 
 const CONTRACT: &str = include_str!("../../../docs/openapi.json");
 
+const METHODS: [&str; 7] = ["get", "put", "post", "delete", "options", "head", "patch"];
+
+const KEYWORDS: [&str; 12] = [
+    "$ref",
+    "additionalProperties",
+    "const",
+    "description",
+    "enum",
+    "items",
+    "maximum",
+    "minimum",
+    "oneOf",
+    "properties",
+    "required",
+    "type",
+];
+
 #[derive(Debug)]
 struct Contract {
     document: Value,
@@ -69,8 +86,10 @@ impl Contract {
         {
             return Err(format!("{at}: {value} is outside {allowed:?}"));
         }
+        let named = schema.get("const").is_some() || schema.get("enum").is_some();
         match schema.get("type").and_then(Value::as_str) {
-            None => Ok(()),
+            None if named => Ok(()),
+            None => Err(format!("{at}: the contract declares no type for {value}")),
             Some("object") => self.object(schema, value, at),
             Some("array") => self.array(schema, value, at),
             Some("string") => wants(value.is_string(), value, "a string", at),
@@ -148,9 +167,11 @@ impl Contract {
                     .as_str()
                     .expect("the name of a parameter")
                     .to_owned(),
-                required: parameter["required"]
-                    .as_bool()
-                    .expect("the requiredness of a parameter"),
+                held: parameter["in"]
+                    .as_str()
+                    .expect("the place of a parameter")
+                    .to_owned(),
+                required: parameter["required"].as_bool().unwrap_or(false),
                 schema: parameter["schema"].clone(),
             })
             .collect()
@@ -168,6 +189,11 @@ impl Contract {
                     .and_then(Value::as_object)
                     .unwrap_or(&empty);
                 let held = sample.as_object().expect("an object of the sample");
+                let closed = schema.get("additionalProperties") == Some(&Value::Bool(false));
+                walk.nodes.push(Node {
+                    pointer: at.to_owned(),
+                    closed,
+                });
                 for name in properties.keys() {
                     if !held.contains_key(name) {
                         walk.missing.push(format!("{at}/{name}"));
@@ -178,6 +204,7 @@ impl Contract {
                         pointer: at.to_owned(),
                         name: name.clone(),
                         required: required.contains(name),
+                        closed,
                     });
                     if let Some(property) = properties.get(name) {
                         self.walk(property, entry, &format!("{at}/{name}"), walk);
@@ -235,9 +262,11 @@ fn wants(held: bool, value: &Value, wanted: &str, at: &str) -> Result<(), String
 }
 
 fn bounded(schema: &Value, value: &Value, at: &str) -> Result<(), String> {
-    let number = value.as_i64().unwrap_or_default();
+    let number = value
+        .as_f64()
+        .ok_or_else(|| format!("{at}: {value} carries no number a bound compares"))?;
     for (name, holds) in [("minimum", true), ("maximum", false)] {
-        if let Some(bound) = schema.get(name).and_then(Value::as_i64)
+        if let Some(bound) = schema.get(name).and_then(Value::as_f64)
             && (holds && number < bound || !holds && number > bound)
         {
             return Err(format!("{at}: {number} is outside the {name} {bound}"));
@@ -264,9 +293,16 @@ fn the_contract_and_the_server_hold_the_same_routes() {
         .expect("the paths of the contract")
         .iter()
         .flat_map(|(path, operations)| {
+            let operations = operations.as_object().expect("the operations of a path");
+            assert!(
+                operations.keys().all(|key| METHODS.contains(&key.as_str())),
+                "{path} carries what no test reads: {:?}",
+                operations
+                    .keys()
+                    .filter(|key| !METHODS.contains(&key.as_str()))
+                    .collect::<Vec<&String>>()
+            );
             operations
-                .as_object()
-                .expect("the operations of a path")
                 .keys()
                 .map(move |method| format!("{} {path}", method.to_ascii_uppercase()))
         })
@@ -277,6 +313,34 @@ fn the_contract_and_the_server_hold_the_same_routes() {
         .collect();
 
     assert_eq!(declared, served);
+}
+
+#[test]
+fn every_answer_the_contract_declares_is_an_answer_the_server_can_name() {
+    let contract = Contract::read();
+    let mut held: BTreeSet<String> = Kind::ALL
+        .iter()
+        .map(|kind| kind.status().to_string())
+        .collect();
+    held.insert("200".to_owned());
+
+    for route in ROUTES {
+        let method = route.method().as_str().to_ascii_lowercase();
+        let declared: BTreeSet<String> = contract
+            .at(&["paths", route.path(), &method, "responses"])
+            .as_object()
+            .expect("the answers of an operation")
+            .keys()
+            .cloned()
+            .collect();
+        assert!(declared.contains("200"), "{}", route.path());
+        assert!(
+            declared.is_subset(&held),
+            "{} declares answers no kind carries: {:?}",
+            route.path(),
+            &declared - &held
+        );
+    }
 }
 
 #[test]
@@ -468,17 +532,26 @@ struct Probe {
     pointer: String,
     name: String,
     required: bool,
+    closed: bool,
+}
+
+#[derive(Debug)]
+struct Node {
+    pointer: String,
+    closed: bool,
 }
 
 #[derive(Debug, Default)]
 struct Walk {
     probes: Vec<Probe>,
+    nodes: Vec<Node>,
     missing: Vec<String>,
 }
 
 #[derive(Debug)]
 struct Parameter {
     name: String,
+    held: String,
     required: bool,
     schema: Value,
 }
@@ -492,6 +565,18 @@ fn without(sample: &Value, probe: &Probe) -> String {
         .expect("an object of the sample")
         .remove(&probe.name);
     short.to_string()
+}
+
+fn renamed(sample: &Value, probe: &Probe) -> String {
+    let mut other = sample.clone();
+    let node = other
+        .pointer_mut(&probe.pointer)
+        .expect("a node of the sample")
+        .as_object_mut()
+        .expect("an object of the sample");
+    let value = node.remove(&probe.name).expect("a property of the sample");
+    node.insert("gold".to_owned(), value);
+    other.to_string()
 }
 
 fn joined(fields: &[(&str, String)]) -> String {
@@ -518,18 +603,17 @@ fn plan_sample() -> Value {
 fn every_request_the_contract_declares_is_the_request_the_server_reads() {
     let contract = Contract::read();
     let rig = Rig::new("contract-requests");
-    let saves = rig.tree.path("saves");
-    seed(&saves);
-    let nowhere = rig.tree.path("nowhere");
+    let (repo, saves) = corpus(&rig);
     let samples: [(&'static str, Value); 3] = [
         (
             "/sync",
-            json!({"source": saves, "repo": nowhere, "lock": rig.tree.path("lock/backup.lock")}),
+            json!({"source": saves, "repo": rig.tree.path("nowhere"),
+                "lock": rig.tree.path("lock/backup.lock")}),
         ),
         ("/plan", json!({"saves": saves, "plan": plan_sample()})),
         (
             "/apply",
-            json!({"repo": nowhere, "saves": saves, "plan": plan_sample(),
+            json!({"repo": repo, "saves": saves, "plan": plan_sample(),
                 "timer": ABSENT_TIMER}),
         ),
     ];
@@ -551,8 +635,18 @@ fn every_request_the_contract_declares_is_the_request_the_server_reads() {
         assert_ne!(answer.status, 400, "{path}: {}", answer.body);
 
         for probe in &walk.probes {
-            let answer = rig.ask(Call::post(path, &without(&sample, probe)));
             let at = format!("{path}{}/{}", probe.pointer, probe.name);
+            let answer = rig.ask(Call::post(path, &renamed(&sample, probe)));
+            if probe.required || probe.closed {
+                assert_eq!(
+                    answer.status, 400,
+                    "the server reads {at} under a name the contract never declares"
+                );
+            } else {
+                assert_ne!(answer.status, 400, "the server refuses to drop {at}");
+            }
+
+            let answer = rig.ask(Call::post(path, &without(&sample, probe)));
             if probe.required {
                 assert_eq!(
                     answer.status, 400,
@@ -566,14 +660,78 @@ fn every_request_the_contract_declares_is_the_request_the_server_reads() {
             }
         }
 
-        let mut extra = sample.clone();
-        extra["gold"] = json!(1);
-        let answer = rig.ask(Call::post(path, &extra.to_string()));
-        assert_eq!(
-            answer.status, 400,
-            "{path}: the server reads a property the contract never declares"
-        );
+        for node in &walk.nodes {
+            let mut extra = sample.clone();
+            extra
+                .pointer_mut(&node.pointer)
+                .expect("a node of the sample")
+                .as_object_mut()
+                .expect("an object of the sample")
+                .insert("gold".to_owned(), json!(1));
+            let answer = rig.ask(Call::post(path, &extra.to_string()));
+            let at = format!("{path}{}", node.pointer);
+            if node.closed {
+                assert_eq!(
+                    answer.status, 400,
+                    "the server reads a property {at} never declares"
+                );
+            } else {
+                assert_ne!(
+                    answer.status, 400,
+                    "the server refuses a property {at} allows"
+                );
+            }
+        }
     }
+}
+
+fn keywords(schema: &Value, at: &str, found: &mut Vec<String>) {
+    let Some(fields) = schema.as_object() else {
+        return;
+    };
+    for (name, entry) in fields {
+        if !KEYWORDS.contains(&name.as_str()) {
+            found.push(format!("{at}/{name}"));
+            continue;
+        }
+        match name.as_str() {
+            "properties" => {
+                for (property, entry) in entry.as_object().expect("the properties of a schema") {
+                    keywords(entry, &format!("{at}/{property}"), found);
+                }
+            }
+            "items" | "additionalProperties" => keywords(entry, &format!("{at}/{name}"), found),
+            "oneOf" => {
+                for (index, branch) in entry
+                    .as_array()
+                    .expect("the branches of a choice")
+                    .iter()
+                    .enumerate()
+                {
+                    keywords(branch, &format!("{at}/{index}"), found);
+                }
+            }
+            _ => {}
+        }
+    }
+}
+
+#[test]
+fn the_contract_holds_no_keyword_the_confrontation_reads_past() {
+    let contract = Contract::read();
+    let mut found = Vec::new();
+    for (name, schema) in contract
+        .at(&["components", "schemas"])
+        .as_object()
+        .expect("the schemas of the contract")
+    {
+        keywords(schema, name, &mut found);
+    }
+
+    assert!(
+        found.is_empty(),
+        "the contract declares what no test reads: {found:?}"
+    );
 }
 
 #[test]
@@ -614,6 +772,11 @@ fn every_query_the_contract_declares_is_the_query_the_server_reads() {
             "{route}: the contract and the query hold other parameters"
         );
         for parameter in &declared {
+            assert_eq!(
+                parameter.held, "query",
+                "{route}: the server reads {} from the query alone",
+                parameter.name
+            );
             let (_, value) = sample
                 .iter()
                 .find(|(name, _)| *name == parameter.name)
@@ -681,10 +844,29 @@ fn the_reading_routes_answer_the_schemas_the_contract_declares() {
     );
     confrontation.holds(&rig.ask(Call::get("/items", "").spoken_by("PUT")), 405);
     confrontation.holds(&rig.ask(Call::get("/objects", "")), 404);
+
+    let legacy = rig.tree.directory("legacy");
+    copy_fixture("legacy/SharedStashHardCoreV2.d2i", &legacy.join("old.d2i"));
     confrontation.holds(
-        &rig.ask(Call::get("/diff", &format!("saves={path}&against={path}"))),
-        200,
+        &rig.ask(Call::get("/items", &format!("saves={}", encoded(&legacy)))),
+        422,
     );
+
+    let other = rig.tree.path("other");
+    seed(&other);
+    std::fs::remove_file(other.join("Gous.d2s")).expect("the character leaves");
+    let answer = rig.ask(Call::get(
+        "/diff",
+        &format!("saves={path}&against={}", encoded(&other)),
+    ));
+    assert!(
+        !answer.json()["differences"]
+            .as_array()
+            .expect("a list of differences")
+            .is_empty(),
+        "the comparison holds no difference to confront"
+    );
+    confrontation.holds(&answer, 200);
 
     confrontation.answered(&["/items", "/diff"], 200);
 }
@@ -697,9 +879,9 @@ fn the_writing_routes_answer_the_schemas_the_contract_declares() {
     let listing = rig.ask(Call::get("/items", &format!("saves={}", encoded(&saves))));
     let fingerprint = first_fingerprint(&listing);
     let plan = json!({"operations": [{
-        "transfer": "move",
+        "transfer": "duplicate",
         "from": {"container": "shared/linux/0", "fingerprint": fingerprint},
-        "to": {"container": "shared/linux/2"},
+        "to": {"container": "char/Elektra/cube"},
     }]});
     let refused = json!({"operations": [{
         "transfer": "move",
@@ -735,13 +917,18 @@ fn the_writing_routes_answer_the_schemas_the_contract_declares() {
         )),
         422,
     );
-    confrontation.holds(
-        &rig.ask(Call::post(
-            "/apply",
-            &json!({"repo": repo, "timer": ABSENT_TIMER, "plan": plan}).to_string(),
-        )),
-        200,
+    let answer = rig.ask(Call::post(
+        "/apply",
+        &json!({"repo": repo, "timer": ABSENT_TIMER, "plan": plan}).to_string(),
+    ));
+    assert!(
+        !answer.json()["duplications"]
+            .as_array()
+            .expect("a list of duplications")
+            .is_empty(),
+        "the apply recorded no duplication to confront"
     );
+    confrontation.holds(&answer, 200);
 
     let source = rig.tree.path("source");
     seed(&source);

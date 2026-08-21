@@ -499,6 +499,20 @@ fn a_parameter_the_route_never_takes_is_refused() {
 }
 
 #[test]
+fn a_query_on_a_route_that_reads_a_body_is_refused() {
+    let rig = Rig::new("post-query");
+    let saves = saves(&rig);
+    let body = json!({"saves": saves, "plan": {"operations": []}}).to_string();
+
+    let mut call = Call::post("/plan", &body);
+    call.target = "/plan?gold=1".to_owned();
+    let answer = rig.ask(call);
+
+    assert_eq!(answer.status, 400, "{}", answer.body);
+    assert_eq!(answer.kind(), "bad_request");
+}
+
+#[test]
 fn a_body_above_the_limit_is_refused() {
     let rig = Rig::new("body");
     let body = format!("{{\"saves\":\"{}\"}}", "x".repeat(server::BODY_LIMIT));

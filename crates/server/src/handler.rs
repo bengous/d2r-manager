@@ -33,11 +33,11 @@ pub(crate) fn answer(
     body: &[u8],
 ) -> Result<String, Failure> {
     match target {
-        Target::Sync => write(&sync(services, &parse(body)?)?),
+        Target::Sync => write(&sync(services, &parse(query, body)?)?),
         Target::Items => write(&items(services, query)?),
         Target::Diff => write(&diff(services, query)?),
-        Target::Plan => write(&plan(services, &parse(body)?)?),
-        Target::Apply => write(&apply(services, &parse(body)?)?),
+        Target::Plan => write(&plan(services, &parse(query, body)?)?),
+        Target::Apply => write(&apply(services, &parse(query, body)?)?),
     }
 }
 
@@ -131,7 +131,13 @@ fn world(files: &dyn Files, directory: &Path) -> Result<Vault, Failure> {
     Ok(SaveTree::read(files, directory)?.vault()?)
 }
 
-fn parse<Body: DeserializeOwned>(body: &[u8]) -> Result<Body, Failure> {
+fn parse<Body: DeserializeOwned>(query: &str, body: &[u8]) -> Result<Body, Failure> {
+    if !query.is_empty() {
+        return Err(Failure::new(
+            Kind::BadRequest,
+            format!("this route reads its request from the body alone, not from {query:?}"),
+        ));
+    }
     serde_json::from_slice(body).map_err(|error| {
         Failure::new(
             Kind::BadRequest,
