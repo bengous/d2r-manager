@@ -549,12 +549,14 @@
           "repo": { "$ref": "#/components/schemas/Path" },
           "saves": {
             "$ref": "#/components/schemas/Path",
-            "description": "The saves inside the repository. Absent, the task takes the saves directory of the repository."
+            "description": "The saves inside the repository. Absent, the task takes this directory of the repository.",
+            "x-default": "saves"
           },
           "plan": { "$ref": "#/components/schemas/Plan" },
           "timer": {
             "type": "string",
-            "description": "The systemd user timer the task pauses. Absent, the task takes d2r-backup.timer."
+            "description": "The systemd user timer the task pauses. Absent, the task takes this one.",
+            "x-default": "d2r-backup.timer"
           }
         },
         "required": ["repo", "plan"],

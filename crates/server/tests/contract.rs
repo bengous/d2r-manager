@@ -6,17 +6,27 @@ use std::path::PathBuf;
 use serde_json::{Value, json};
 
 use app::inspect::Quality;
-use app::transaction::TransferDocument;
-use server::failure::Kind;
-use server::route::ROUTES;
+use app::ledger::LedgerEntry;
+use app::sync::MIRROR_DIRECTORY;
+use app::transaction::{
+    CellDocument, DEFAULT_TIMER, DestinationDocument, OperationDocument, PlanDocument,
+    SourceDocument, TransferDocument,
+};
+use domain::pile::{PileCount, PileUnits};
+use server::failure::{Failure, Kind};
+use server::payload::{
+    ApplyBody, DiffBody, DifferenceBody, ItemBody, ItemsBody, PlacementBody, PlanBody,
+    RealizedBody, RecordBody, SyncBody,
+};
+use server::route::{Method, ROUTES};
 
-use support::{ABSENT_TIMER, Answer, Call, Rig, copy_fixture, encoded, git, repository, seed};
+use support::{ABSENT_TIMER, AT, Answer, Call, Rig, copy_fixture, encoded, git, repository, seed};
 
 const CONTRACT: &str = include_str!("../../../docs/openapi.json");
 
 const METHODS: [&str; 7] = ["get", "put", "post", "delete", "options", "head", "patch"];
 
-const KEYWORDS: [&str; 12] = [
+const KEYWORDS: [&str; 13] = [
     "$ref",
     "additionalProperties",
     "const",
@@ -29,6 +39,7 @@ const KEYWORDS: [&str; 12] = [
     "properties",
     "required",
     "type",
+    "x-default",
 ];
 
 #[derive(Debug)]
@@ -373,6 +384,253 @@ fn every_route_names_the_command_line_tasks_it_serves() {
     );
 }
 
+fn keys(value: &Value) -> BTreeSet<String> {
+    value
+        .as_object()
+        .expect("an object the server writes")
+        .keys()
+        .cloned()
+        .collect()
+}
+
+fn written<Body: serde::Serialize>(body: &Body) -> Value {
+    serde_json::to_value(body).expect("the server writes this answer")
+}
+
+fn answers() -> [(&'static str, Value, Value); 10] {
+    [
+        (
+            "Item",
+            written(&ItemBody {
+                container: "shared/linux/0".to_owned(),
+                placement: PlacementBody::Units(1),
+                code: Some("jew".to_owned()),
+                quality: "unique".to_owned(),
+                fingerprint: FINGERPRINT.to_owned(),
+            }),
+            written(&ItemBody {
+                container: "shared/linux/0".to_owned(),
+                placement: PlacementBody::Units(1),
+                code: None,
+                quality: "unique".to_owned(),
+                fingerprint: FINGERPRINT.to_owned(),
+            }),
+        ),
+        (
+            "Items",
+            written(&ItemsBody { items: Vec::new() }),
+            written(&ItemsBody { items: Vec::new() }),
+        ),
+        (
+            "Difference",
+            written(&DifferenceBody {
+                container: "shared/linux/0".to_owned(),
+                fingerprint: FINGERPRINT.to_owned(),
+                before: 1,
+                after: 0,
+            }),
+            written(&DifferenceBody {
+                container: "shared/linux/0".to_owned(),
+                fingerprint: FINGERPRINT.to_owned(),
+                before: 1,
+                after: 0,
+            }),
+        ),
+        (
+            "Differences",
+            written(&DiffBody {
+                differences: Vec::new(),
+            }),
+            written(&DiffBody {
+                differences: Vec::new(),
+            }),
+        ),
+        (
+            "PlanAnswer",
+            written(&PlanBody {
+                plan: PlanDocument {
+                    operations: Vec::new(),
+                },
+            }),
+            written(&PlanBody {
+                plan: PlanDocument {
+                    operations: Vec::new(),
+                },
+            }),
+        ),
+        (
+            "Plan",
+            written(&PlanDocument {
+                operations: Vec::new(),
+            }),
+            written(&PlanDocument {
+                operations: Vec::new(),
+            }),
+        ),
+        (
+            "Operation",
+            written(&operation(true)),
+            written(&operation(false)),
+        ),
+        ("Source", written(&source(true)), written(&source(false))),
+        (
+            "Destination",
+            written(&destination(true)),
+            written(&destination(false)),
+        ),
+        (
+            "Cell",
+            written(&CellDocument { column: 1, row: 2 }),
+            written(&CellDocument { column: 1, row: 2 }),
+        ),
+    ]
+}
+
+fn records() -> [(&'static str, Value, Value); 5] {
+    [
+        (
+            "Realized",
+            written(&RealizedBody {
+                transfer: TransferDocument::Move,
+                fingerprint: FINGERPRINT.to_owned(),
+                from: "shared/linux/0".to_owned(),
+                to: "shared/linux/1".to_owned(),
+                landing: PlacementBody::Cell { column: 1, row: 2 },
+            }),
+            written(&RealizedBody {
+                transfer: TransferDocument::Move,
+                fingerprint: FINGERPRINT.to_owned(),
+                from: "shared/linux/0".to_owned(),
+                to: "shared/linux/1".to_owned(),
+                landing: PlacementBody::Cell { column: 1, row: 2 },
+            }),
+        ),
+        ("Duplication", written(&ledger()), written(&ledger())),
+        ("ApplyAnswer", written(&applied()), written(&applied())),
+        ("Error", refused(), refused()),
+        (
+            "ErrorDetail",
+            refused()["error"].clone(),
+            refused()["error"].clone(),
+        ),
+    ]
+}
+
+#[test]
+fn every_answer_the_contract_declares_holds_the_properties_the_server_writes() {
+    let contract = Contract::read();
+    for (name, full, bare) in answers().into_iter().chain(records()) {
+        let schema = contract.at(&["components", "schemas", name]);
+        assert_eq!(
+            keys(&full),
+            names(&schema["properties"]),
+            "{name}: the contract declares other properties than the server writes"
+        );
+        assert_eq!(
+            keys(&bare),
+            names(&schema["required"]),
+            "{name}: the contract holds other properties for granted than the server always writes"
+        );
+        assert_eq!(
+            schema.get("additionalProperties"),
+            Some(&Value::Bool(false)),
+            "{name}: the contract leaves room for a property the server never writes"
+        );
+    }
+}
+
+#[test]
+fn every_outcome_the_server_writes_is_an_outcome_the_contract_names() {
+    let contract = Contract::read();
+    covered(
+        &contract,
+        "SyncAnswer",
+        &[
+            written(&SyncBody::LockHeldElsewhere),
+            written(&SyncBody::GameRunning),
+            written(&SyncBody::GameStartedDuringSync),
+            written(&SyncBody::NothingChanged),
+            written(&SyncBody::Committed {
+                commit: COMMIT.to_owned(),
+                at: AT.to_owned(),
+            }),
+        ],
+    );
+    covered(
+        &contract,
+        "Record",
+        &[
+            written(&RecordBody::NothingChanged),
+            written(&RecordBody::Committed {
+                commit: COMMIT.to_owned(),
+                at: AT.to_owned(),
+            }),
+        ],
+    );
+    covered(
+        &contract,
+        "Placement",
+        &[
+            written(&PlacementBody::Cell { column: 1, row: 2 }),
+            written(&PlacementBody::Units(1)),
+        ],
+    );
+}
+
+fn covered(contract: &Contract, name: &str, held: &[Value]) {
+    let schema = contract.at(&["components", "schemas", name]).clone();
+    let branches = schema["oneOf"]
+        .as_array()
+        .expect("the branches of a choice");
+    let mut taken: BTreeSet<usize> = BTreeSet::new();
+    for value in held {
+        let matched: Vec<usize> = branches
+            .iter()
+            .enumerate()
+            .filter(|(_, branch)| contract.check(branch, value, name).is_ok())
+            .map(|(index, _)| index)
+            .collect();
+        assert_eq!(
+            matched.len(),
+            1,
+            "{name}: {} branches hold {value}",
+            matched.len()
+        );
+        taken.insert(matched[0]);
+    }
+    assert_eq!(
+        taken.len(),
+        branches.len(),
+        "{name}: the contract holds a branch the server never writes"
+    );
+}
+
+#[test]
+fn the_bounds_of_the_contract_are_the_bounds_the_rules_hold() {
+    let contract = Contract::read();
+    for (schema, name) in [("Source", "units"), ("Duplication", "units")] {
+        let bounds = contract.at(&["components", "schemas", schema, "properties", name]);
+        assert_eq!(
+            bounds["minimum"].as_u64(),
+            Some(u64::from(PileUnits::ONE.get())),
+            "{schema}/{name}"
+        );
+        assert_eq!(
+            bounds["maximum"].as_u64(),
+            Some(u64::from(PileCount::MAX)),
+            "{schema}/{name}"
+        );
+    }
+}
+
+#[test]
+fn the_defaults_of_the_contract_are_the_defaults_the_tasks_take() {
+    let contract = Contract::read();
+    let apply = contract.at(&["components", "schemas", "ApplyRequest", "properties"]);
+    assert_eq!(apply["timer"]["x-default"].as_str(), Some(DEFAULT_TIMER));
+    assert_eq!(apply["saves"]["x-default"].as_str(), Some(MIRROR_DIRECTORY));
+}
+
 #[test]
 fn the_contract_serves_the_loopback_only() {
     let contract = Contract::read();
@@ -381,14 +639,19 @@ fn the_contract_serves_the_loopback_only() {
         .as_array()
         .expect("the servers of the contract");
     assert!(!servers.is_empty());
-    for server in servers {
-        let url = server["url"].as_str().expect("a url");
+    for held in servers {
+        let url = held["url"].as_str().expect("a url");
         let host = url
             .trim_start_matches("http://")
             .split(':')
             .next()
             .expect("a host");
         assert_eq!(host, "127.0.0.1", "{url}");
+        assert_eq!(
+            url,
+            format!("http://127.0.0.1:{}", server::DEFAULT_PORT),
+            "the contract serves another port than the serve task takes"
+        );
     }
 }
 
@@ -587,6 +850,58 @@ fn joined(fields: &[(&str, String)]) -> String {
         .join("&")
 }
 
+const OUTSIDE: &str = "outside-every-value-the-contract-names";
+const FINGERPRINT: &str = "00000000000000000000000000000000";
+const COMMIT: &str = "0123456789abcdef0123456789abcdef01234567";
+
+fn source(full: bool) -> SourceDocument {
+    SourceDocument {
+        container: "shared/linux/5".to_owned(),
+        fingerprint: FINGERPRINT.to_owned(),
+        units: full.then_some(2),
+    }
+}
+
+fn destination(full: bool) -> DestinationDocument {
+    DestinationDocument {
+        container: "shared/linux/0".to_owned(),
+        cell: full.then_some(CellDocument { column: 1, row: 2 }),
+    }
+}
+
+fn operation(full: bool) -> OperationDocument {
+    OperationDocument {
+        transfer: TransferDocument::Move,
+        from: source(full),
+        to: destination(full),
+    }
+}
+
+fn ledger() -> LedgerEntry {
+    LedgerEntry {
+        at: AT.to_owned(),
+        fingerprint: FINGERPRINT.to_owned(),
+        from: "shared/linux/0".to_owned(),
+        to: "char/Elektra/cube".to_owned(),
+        units: 1,
+    }
+}
+
+fn refused() -> Value {
+    serde_json::from_str(&Failure::new(Kind::BadRequest, "refused".to_owned()).body())
+        .expect("the server writes this refusal")
+}
+
+fn applied() -> ApplyBody {
+    ApplyBody {
+        checkpoint: COMMIT.to_owned(),
+        record: RecordBody::NothingChanged,
+        realized: Vec::new(),
+        duplications: Vec::new(),
+        written: Vec::new(),
+    }
+}
+
 fn plan_sample() -> Value {
     json!({"operations": [{
         "transfer": "move",
@@ -727,11 +1042,58 @@ fn the_contract_holds_no_keyword_the_confrontation_reads_past() {
     {
         keywords(schema, name, &mut found);
     }
+    for route in ROUTES {
+        if route.method() != Method::Get {
+            continue;
+        }
+        for parameter in contract.parameters(route.path()) {
+            keywords(
+                &parameter.schema,
+                &format!("{}?{}", route.path(), parameter.name),
+                &mut found,
+            );
+        }
+    }
 
     assert!(
         found.is_empty(),
         "the contract declares what no test reads: {found:?}"
     );
+}
+
+fn outside(
+    contract: &Contract,
+    rig: &Rig,
+    route: &'static str,
+    sample: &[(&str, String)],
+    declared: &[Parameter],
+) {
+    for parameter in declared {
+        if contract
+            .resolve(&parameter.schema)
+            .get("enum")
+            .and_then(Value::as_array)
+            .is_none_or(|allowed| allowed.contains(&json!(OUTSIDE)))
+        {
+            continue;
+        }
+        let held: Vec<(&str, String)> = sample
+            .iter()
+            .map(|(name, value)| {
+                if *name == parameter.name {
+                    (*name, OUTSIDE.to_owned())
+                } else {
+                    (*name, value.clone())
+                }
+            })
+            .collect();
+        let answer = rig.ask(Call::get(route, &joined(&held)));
+        assert_eq!(
+            answer.status, 400,
+            "{route}: the server reads a {} the contract never names",
+            parameter.name
+        );
+    }
 }
 
 #[test]
@@ -777,6 +1139,13 @@ fn every_query_the_contract_declares_is_the_query_the_server_reads() {
                 "{route}: the server reads {} from the query alone",
                 parameter.name
             );
+            if parameter.name == "quality" {
+                assert_eq!(
+                    parameter.schema["$ref"].as_str(),
+                    Some("#/components/schemas/Quality"),
+                    "{route}: the server keeps one quality only"
+                );
+            }
             let (_, value) = sample
                 .iter()
                 .find(|(name, _)| *name == parameter.name)
@@ -816,6 +1185,8 @@ fn every_query_the_contract_declares_is_the_query_the_server_reads() {
             answer.status, 400,
             "{route}: the server reads a parameter the contract never declares"
         );
+
+        outside(&contract, &rig, route, &sample, &declared);
     }
 }
 
