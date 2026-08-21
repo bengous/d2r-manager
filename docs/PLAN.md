@@ -1,9 +1,15 @@
 # d2r-manager : plan de projet
 
-Ecrit et fige le 2026-08-20. Ce document est le brief complet du projet : un
-agent d'implementation le prend et construit l'outil en entier. Toute divergence
-avec ce document se regle par une question a l'utilisateur, pas par une
-initiative silencieuse.
+**Archive.** Ce document est le brief d'origine, ecrit et fige le 2026-08-20,
+avant la premiere ligne de code. Il garde la trace des intentions et des
+mesures du depart. Il ne decrit pas l'etat courant du projet et ne se met pas
+a jour.
+
+La verite courante vit ailleurs : le code et ses tests d'abord, puis
+`docs/FORMAT.md` pour le bitstream, `docs/openapi.json` pour l'API,
+`fixtures/PROVENANCE.md` pour le corpus, `.claude/rules/` pour les regles de
+travail. Les questions encore ouvertes vivent dans `docs/DECISIONS.md`, plus
+au §11 ci-dessous.
 
 Binaire CLI : `d2r-manager`. Ne pas installer sous le nom `d2r`, pris par le
 lanceur `~/.local/bin/d2r`.
@@ -246,15 +252,5 @@ de documentation dont ce plan.
 
 ## 11. Questions ouvertes
 
-1. Remote GitHub prive : a creer quand l'utilisateur le decide.
-2. `apply` ecrit dans le miroir du depot de sauvegarde, pas dans `~/Games/`.
-   Le retour des fichiers vers le repertoire du jeu reste a decider, comme la
-   bascule du script bash.
-3. Verrou d'`apply` : la sequence §7.3 met le timer en pause mais ne prend
-   aucun verrou, donc une sauvegarde deja en vol peut ecraser une ecriture.
-   Le port de verrou existe deja ; l'ajout est une decision utilisateur.
-4. Transfert d'or entre onglets : §7.1 ne prevoit que `move` et `duplicate`,
-   donc aucun plan ne deplace d'or. La fusion du 2026-08-20 en a pourtant
-   deplace 940 000. Une troisieme operation reste a decider par l'utilisateur ;
-   hors perimetre tant qu'elle n'est pas decidee. Le plafond de 2 500 000 par
-   onglet reste une regle de construction dans `domain`.
+Deplacees vers `docs/DECISIONS.md`, qui les tient a jour : remote git, retour
+des fichiers vers le jeu, verrou d'`apply`, transfert d'or.
