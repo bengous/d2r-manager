@@ -10,7 +10,7 @@ use anyhow::{Result, anyhow};
 use app::inspect::{FingerprintPrefix, Needle, Quality, compare, list};
 use app::selector::ContainerSelector;
 use app::sync::{Backup, BackupPaths};
-use app::transaction::{PlanDocument, Transaction, TransactionPaths, describe, resolve};
+use app::transaction::{PlanDocument, Transaction, TransactionPaths, describe, prepare};
 use app::value::UnitName;
 use app::world::SaveTree;
 use domain::vault::Vault;
@@ -75,11 +75,7 @@ fn find(options: &FindOptions, out: &mut dyn Write) -> Result<()> {
     let vault = world(&options.saves)?;
     let needle = Needle {
         container: container(options.container.as_deref())?,
-        code: options
-            .code
-            .as_deref()
-            .map(ItemCode::from_text)
-            .transpose()?,
+        code: code(options.code.as_deref())?,
         quality: options.quality.as_deref().map(Quality::parse).transpose()?,
         fingerprint: options
             .fingerprint
@@ -106,10 +102,9 @@ fn plan(options: &PlanOptions, out: &mut dyn Write) -> Result<()> {
             .map(|text| app::shorthand::parse(text))
             .collect::<Result<_, _>>()?,
     };
-    let vault = world(&options.saves)?;
-    let plan = resolve(&document, &vault)?;
-    let normalized = describe(&plan);
-    plan.validate(vault)?;
+    let mut tree = SaveTree::read(&RealFiles, &options.saves)?;
+    let validated = prepare(&mut tree, &document)?;
+    let normalized = describe(validated.operations());
     writeln!(out, "{}", serde_json::to_string_pretty(&normalized)?)?;
     Ok(())
 }
@@ -170,6 +165,15 @@ fn serve(options: &ServeOptions, out: &mut dyn Write) -> Result<()> {
 fn world(directory: &Path) -> Result<Vault> {
     let files = RealFiles;
     Ok(SaveTree::read(&files, directory)?.vault()?)
+}
+
+fn code(text: Option<&str>) -> Result<Option<ItemCode>> {
+    match text {
+        None => Ok(None),
+        Some(text) => Ok(Some(
+            ItemCode::from_text(text).map_err(|source| anyhow!("--code {text}: {source}"))?,
+        )),
+    }
 }
 
 fn container(text: Option<&str>) -> Result<Option<ContainerSelector>> {

@@ -4,10 +4,10 @@ use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 
 use app::ports::Clock;
-use app::ports::{Availability, Lease, Locks, MirrorPlan, Processes};
+use app::ports::{Availability, Lease, Locks, MirrorPlan, Processes, Repository};
 use app::sync::{Backup, BackupPaths, EXCLUDED, GAME_PROCESS, SyncOutcome};
 use infra::files::{FileLock, RealFiles};
-use infra::git::GitCommands;
+use infra::git::{GitCommands, stage_arguments};
 use infra::system::{Rsync, SystemClock, SystemProcesses, rsync_arguments};
 
 use support::{AT, SteadyClock, StillProcesses, TempTree, copy_fixture, git, repository};
@@ -200,5 +200,49 @@ fn the_clock_prints_the_stamp_the_backup_script_writes() {
             .all(|(index, byte)| !matches!(index, 0..=3 | 5..=6 | 8..=9 | 11..=12 | 14..=15 | 17..=18 | 20..=21 | 23..=24)
                 || byte.is_ascii_digit()),
         "{stamp}"
+    );
+}
+
+#[test]
+fn staging_takes_the_new_and_the_deleted_inside_the_pathspec_and_nothing_outside() {
+    let tree = TempTree::new("stage");
+    let repo = repository(&tree, "backup");
+    let saves = repo.join("saves");
+    std::fs::create_dir_all(&saves).expect("saves directory");
+    std::fs::write(saves.join("kept.d2s"), b"kept").expect("seed");
+    std::fs::write(saves.join("gone.d2s"), b"gone").expect("seed");
+    git(&repo, &["add", "-A", "--", "saves"]);
+    git(&repo, &["commit", "-m", "seed"]);
+
+    std::fs::write(saves.join("fresh.d2s"), b"fresh").expect("a save the game added");
+    std::fs::remove_file(saves.join("gone.d2s")).expect("a save the game removed");
+    std::fs::write(repo.join("outside.txt"), b"not a save").expect("a file outside the mirror");
+
+    GitCommands
+        .stage(&repo, &[Path::new("saves")])
+        .expect("the staging runs");
+
+    let mut staged: Vec<String> = git(&repo, &["diff", "--cached", "--name-status"])
+        .lines()
+        .map(str::to_owned)
+        .collect();
+    staged.sort();
+    assert_eq!(staged, ["A\tsaves/fresh.d2s", "D\tsaves/gone.d2s"]);
+    assert_eq!(
+        git(&repo, &["status", "--porcelain", "--", "outside.txt"]),
+        "?? outside.txt"
+    );
+}
+
+#[test]
+fn the_staging_arguments_carry_the_flags_of_the_backup_script() {
+    assert_eq!(
+        stage_arguments(&[Path::new("saves")]),
+        vec![
+            OsString::from("add"),
+            OsString::from("-A"),
+            OsString::from("--"),
+            OsString::from("saves"),
+        ]
     );
 }

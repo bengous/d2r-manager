@@ -341,5 +341,5 @@ fn a_plan_prints_the_operations_it_was_given() {
         }],
     };
     let plan = resolve(&document, &vault).expect("the plan resolves");
-    assert_eq!(describe(&plan), document);
+    assert_eq!(describe(plan.operations()), document);
 }

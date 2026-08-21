@@ -838,8 +838,16 @@ fn renamed(sample: &Value, probe: &Probe) -> String {
         .as_object_mut()
         .expect("an object of the sample");
     let value = node.remove(&probe.name).expect("a property of the sample");
-    node.insert("gold".to_owned(), value);
+    node.insert(sentinel(&probe.name), value);
     other.to_string()
+}
+
+fn sentinel(named: &str) -> String {
+    let held = named
+        .rsplit('/')
+        .find(|part| !part.is_empty())
+        .unwrap_or("body");
+    format!("{held}-x")
 }
 
 fn joined(fields: &[(&str, String)]) -> String {
@@ -982,7 +990,7 @@ fn every_request_the_contract_declares_is_the_request_the_server_reads() {
                 .expect("a node of the sample")
                 .as_object_mut()
                 .expect("an object of the sample")
-                .insert("gold".to_owned(), json!(1));
+                .insert(sentinel(&node.pointer), json!(1));
             let answer = rig.ask(Call::post(path, &extra.to_string()));
             let at = format!("{path}{}", node.pointer);
             if node.closed {
@@ -1042,6 +1050,17 @@ fn the_contract_holds_no_keyword_the_confrontation_reads_past() {
     {
         keywords(schema, name, &mut found);
     }
+    for (name, response) in contract
+        .at(&["components", "responses"])
+        .as_object()
+        .expect("the answers of the contract")
+    {
+        keywords(
+            &response["content"]["application/json"]["schema"],
+            name,
+            &mut found,
+        );
+    }
     for route in ROUTES {
         if route.method() != Method::Get {
             continue;
@@ -1096,6 +1115,33 @@ fn outside(
     }
 }
 
+fn named(route: &'static str, declared: &[Parameter], sample: &[(&str, String)]) {
+    let held: BTreeSet<String> = declared
+        .iter()
+        .map(|parameter| parameter.name.clone())
+        .collect();
+    let served: BTreeSet<String> = ROUTES
+        .iter()
+        .find(|entry| entry.path() == route)
+        .expect("a route of the server")
+        .parameters()
+        .iter()
+        .map(|name| (*name).to_owned())
+        .collect();
+    assert_eq!(
+        held, served,
+        "{route}: the contract and the server hold other parameters"
+    );
+    assert_eq!(
+        held,
+        sample
+            .iter()
+            .map(|(name, _)| (*name).to_owned())
+            .collect::<BTreeSet<String>>(),
+        "{route}: the contract and the query hold other parameters"
+    );
+}
+
 #[test]
 fn every_query_the_contract_declares_is_the_query_the_server_reads() {
     let contract = Contract::read();
@@ -1122,17 +1168,7 @@ fn every_query_the_contract_declares_is_the_query_the_server_reads() {
 
     for (route, sample) in samples {
         let declared = contract.parameters(route);
-        assert_eq!(
-            declared
-                .iter()
-                .map(|parameter| parameter.name.clone())
-                .collect::<BTreeSet<String>>(),
-            sample
-                .iter()
-                .map(|(name, _)| (*name).to_owned())
-                .collect::<BTreeSet<String>>(),
-            "{route}: the contract and the query hold other parameters"
-        );
+        named(route, &declared, &sample);
         for parameter in &declared {
             assert_eq!(
                 parameter.held, "query",
@@ -1178,9 +1214,12 @@ fn every_query_the_contract_declares_is_the_query_the_server_reads() {
             }
         }
 
-        let mut extra = sample.clone();
-        extra.push(("gold", "1".to_owned()));
-        let answer = rig.ask(Call::get(route, &joined(&extra)));
+        let phantom = sentinel(route);
+        let mut extra = joined(&sample);
+        extra.push('&');
+        extra.push_str(&phantom);
+        extra.push_str("=1");
+        let answer = rig.ask(Call::get(route, &extra));
         assert_eq!(
             answer.status, 400,
             "{route}: the server reads a parameter the contract never declares"
@@ -1291,7 +1330,7 @@ fn the_writing_routes_answer_the_schemas_the_contract_declares() {
     confrontation.holds(
         &rig.ask(Call::post(
             "/plan",
-            &json!({"saves": saves, "plan": refused, "gold": 1}).to_string(),
+            &json!({"saves": saves, "plan": refused, "plan-x": 1}).to_string(),
         )),
         400,
     );

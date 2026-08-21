@@ -350,6 +350,27 @@ fn a_move_from_a_grid_to_an_advanced_stash_tab_is_refused_before_any_write() {
 }
 
 #[test]
+fn a_plan_from_a_grid_to_an_advanced_stash_tab_is_refused_at_the_gate() {
+    let rig = Rig::new("plan-advanced");
+    let saves = saves(&rig);
+    let held = bytes_of(&saves);
+
+    let fingerprint = first_fingerprint(&rig, &saves, "shared/linux/0");
+    let answer = rig.ask(Call::post(
+        "/plan",
+        &json!({
+            "saves": saves,
+            "plan": move_to("shared/linux/0", &fingerprint, "shared/linux/5"),
+        })
+        .to_string(),
+    ));
+
+    assert_eq!(answer.status, 422, "{}", answer.body);
+    assert_eq!(answer.kind(), "projection_refused");
+    assert_eq!(bytes_of(&saves), held);
+}
+
+#[test]
 fn two_applies_at_once_run_one_after_the_other() {
     let rig = Rig::new("apply-together");
     let (repo, saves) = corpus(&rig);

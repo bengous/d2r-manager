@@ -2,6 +2,7 @@ mod support;
 
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
+use std::process::{Command, Stdio};
 
 use clap::CommandFactory;
 use clap::Parser;
@@ -9,7 +10,7 @@ use clap::Parser;
 use app::transaction::PlanDocument;
 use cli::options::Options;
 
-use support::{TempTree, copy_fixture, git, repository};
+use support::{TempTree, copy_fixture, fixture_root, git, repository};
 
 const ABSENT_TIMER: &str = "d2r-manager-tests-no-such.timer";
 const CONTRACT: &str = include_str!("../../../docs/openapi.json");
@@ -318,6 +319,112 @@ fn the_apply_command_runs_a_plan_file_end_to_end() {
         git(&repo, &["log", "-1", "--format=%s"]).starts_with("apply: "),
         "the binary committed nothing"
     );
+}
+
+#[test]
+fn a_reader_that_closes_the_pipe_ends_the_listing_without_an_error() {
+    let tree = TempTree::new("broken-pipe");
+    let saves = tree.directory("saves");
+    let corpus = fixture_root().join("v105/linux");
+    for entry in std::fs::read_dir(&corpus).expect("the corpus lists") {
+        let name = entry.expect("directory entry").file_name();
+        let name = name.to_string_lossy();
+        if name.ends_with(".d2s") {
+            copy_fixture(&format!("v105/linux/{name}"), &saves.join(name.as_ref()));
+        }
+    }
+    copy_fixture(
+        "v105/linux/ModernSharedStashSoftCoreV2.d2i",
+        &saves.join("linux.d2i"),
+    );
+
+    let listing = Command::new(env!("CARGO_BIN_EXE_d2r-manager"))
+        .args(["ls", "--saves", &saved(&saves)])
+        .output()
+        .expect("the listing runs");
+    assert!(
+        listing.stdout.len() > 64 * 1024,
+        "the listing must overflow a pipe buffer to reach the closed pipe, got {} bytes",
+        listing.stdout.len()
+    );
+
+    let mut child = Command::new(env!("CARGO_BIN_EXE_d2r-manager"))
+        .args(["ls", "--saves", &saved(&saves)])
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .expect("the listing starts");
+    drop(child.stdout.take().expect("the pipe"));
+    let ended = child.wait_with_output().expect("the listing ends");
+
+    assert!(ended.status.success(), "{:?}", ended.status);
+    assert!(
+        ended.stderr.is_empty(),
+        "{}",
+        String::from_utf8_lossy(&ended.stderr)
+    );
+}
+
+#[test]
+fn a_plan_the_apply_would_refuse_is_refused_at_the_gate() {
+    let tree = TempTree::new("plan-gate");
+    let saves = saves(&tree);
+    let before = fingerprints(&saves);
+    let listing = spoken(&[
+        "d2r-manager",
+        "ls",
+        "--saves",
+        &saved(&saves),
+        "--container",
+        "shared/linux/0",
+    ]);
+    let fingerprint = listing
+        .lines()
+        .next()
+        .expect("the tab holds an item")
+        .split_whitespace()
+        .last()
+        .expect("the fingerprint closes the line")
+        .to_owned();
+
+    let options = Options::try_parse_from([
+        "d2r-manager",
+        "plan",
+        "--saves",
+        &saved(&saves),
+        "--operation",
+        &format!("move:shared/linux/0#{fingerprint}:shared/linux/5"),
+    ])
+    .expect("the arguments parse");
+    let mut out = Vec::new();
+    let error = cli::run(&options, &mut out)
+        .expect_err("a grid item carries no advanced stash stack field");
+    assert!(out.is_empty());
+    assert!(
+        format!("{error}").contains("advanced stash stack field"),
+        "{error}"
+    );
+    assert_eq!(fingerprints(&saves), before);
+}
+
+#[test]
+fn a_bad_item_code_names_the_option_and_the_value() {
+    let tree = TempTree::new("bad-code");
+    let saves = saves(&tree);
+    let options = Options::try_parse_from([
+        "d2r-manager",
+        "find",
+        "--saves",
+        &saved(&saves),
+        "--code",
+        "zzzzz",
+    ])
+    .expect("the arguments parse");
+    let mut out = Vec::new();
+    let error = cli::run(&options, &mut out).expect_err("zzzzz is no item code");
+    let message = format!("{error}");
+    assert!(message.contains("--code"), "{message}");
+    assert!(message.contains("zzzzz"), "{message}");
 }
 
 #[test]

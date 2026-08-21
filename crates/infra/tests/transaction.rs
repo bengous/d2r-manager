@@ -13,6 +13,9 @@ use domain::census::Census;
 use domain::container::{GridId, PileId, StashName, TabIndex};
 use domain::object::Fingerprint;
 use domain::vault::Vault;
+use format::save::CharacterSave;
+use format::stash::StashSave;
+use format::stats::PlayerStats;
 use infra::files::RealFiles;
 use infra::git::GitCommands;
 use infra::system::SystemdTimers;
@@ -111,6 +114,117 @@ impl Rig {
             document,
         )
     }
+}
+
+fn gold(saves: &Path) -> Vec<(String, u32)> {
+    let bytes = std::fs::read(saves.join(format!("{STASH}.d2i"))).expect("the stash");
+    StashSave::read(&bytes)
+        .expect("the stash reads")
+        .tabs
+        .iter()
+        .enumerate()
+        .map(|(index, tab)| (format!("tab {index} {:?}", tab.kind()), tab.gold))
+        .collect()
+}
+
+fn character_stats(saves: &Path) -> Vec<(String, PlayerStats)> {
+    let mut held: Vec<(String, PlayerStats)> = Vec::new();
+    for name in ["Gous", "Elektra"] {
+        let bytes = std::fs::read(saves.join(format!("{name}.d2s"))).expect("the character");
+        let save = CharacterSave::read(&bytes).expect("the character reads");
+        held.push((name.to_owned(), save.stats));
+    }
+    held
+}
+
+fn hoard(saves: &Path, tab: usize, amount: u32) {
+    let path = saves.join(format!("{STASH}.d2i"));
+    let mut save = StashSave::read(&std::fs::read(&path).expect("the stash")).expect("the stash");
+    save.tabs[tab].gold = amount;
+    std::fs::write(&path, save.write().expect("the stash writes")).expect("the stash");
+}
+
+#[test]
+fn no_operation_moves_a_single_piece_of_gold() {
+    let tree = TempTree::new("gold");
+    let repo = repository(&tree, "backup");
+    let saves = corpus(&repo);
+    let rig = Rig::new();
+
+    hoard(&saves, 5, 4_242);
+    git(&repo, &["add", "-A", "--", "saves"]);
+    git(&repo, &["commit", "-m", "gold in the advanced stash tab"]);
+
+    let before = gold(&saves);
+    let stats = character_stats(&saves);
+    assert!(
+        before.iter().any(|(_, amount)| *amount == 1_075_411),
+        "{before:?}"
+    );
+    assert_eq!(
+        before
+            .iter()
+            .find(|(name, _)| name.contains("AdvancedStash"))
+            .map(|(_, amount)| *amount),
+        Some(4_242),
+        "{before:?}"
+    );
+
+    let fingerprint = first(&vault(&saves), 0);
+    rig.apply(
+        &repo,
+        &saves,
+        &plan(&format!(
+            "move:shared/{STASH}/0#{fingerprint}:shared/{STASH}/2"
+        )),
+    )
+    .expect("the move applies");
+    assert_eq!(gold(&saves), before, "a move moved gold");
+    assert_eq!(
+        character_stats(&saves),
+        stats,
+        "a move changed a character stat"
+    );
+
+    let carried = first(&vault(&saves), 1);
+    rig.apply(
+        &repo,
+        &saves,
+        &plan(&format!(
+            "duplicate:shared/{STASH}/1#{carried}:char/Elektra/cube"
+        )),
+    )
+    .expect("the duplication applies");
+    assert_eq!(gold(&saves), before, "a duplication moved gold");
+    assert_eq!(
+        character_stats(&saves),
+        stats,
+        "a duplication changed a character stat"
+    );
+
+    let entry = vault(&saves)
+        .pile(&pile(5))
+        .expect("the advanced stash tab")
+        .entries()
+        .first()
+        .expect("the tab holds units")
+        .clone();
+    rig.apply(
+        &repo,
+        &saves,
+        &plan(&format!(
+            "move:shared/{STASH}/5#{}*{}:shared/{STASH}/5",
+            entry.object().fingerprint(),
+            entry.count().get()
+        )),
+    )
+    .expect("the pile move applies");
+    assert_eq!(gold(&saves), before, "a pile move moved gold");
+    assert_eq!(
+        character_stats(&saves),
+        stats,
+        "a pile move changed a character stat"
+    );
 }
 
 #[test]

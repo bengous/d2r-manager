@@ -58,9 +58,7 @@ impl Repository for GitCommands {
     }
 
     fn stage(&self, repo: &Path, paths: &[&Path]) -> Result<(), CommandError> {
-        let mut arguments = vec![osstr("add"), osstr("-A"), osstr("--")];
-        arguments.extend(paths.iter().map(|path| path.as_os_str().to_owned()));
-        run(repo, &arguments).map(|_| ())
+        run(repo, &stage_arguments(paths)).map(|_| ())
     }
 
     fn staged(&self, repo: &Path, paths: &[&Path]) -> Result<Staged, CommandError> {
@@ -105,6 +103,13 @@ impl Repository for GitCommands {
         arguments.extend(paths.iter().map(|path| path.as_os_str().to_owned()));
         run(repo, &arguments).map(|_| ())
     }
+}
+
+#[must_use]
+pub fn stage_arguments(paths: &[&Path]) -> Vec<OsString> {
+    let mut arguments = vec![osstr("add"), osstr("-A"), osstr("--")];
+    arguments.extend(paths.iter().map(|path| path.as_os_str().to_owned()));
+    arguments
 }
 
 fn osstr(text: &str) -> OsString {

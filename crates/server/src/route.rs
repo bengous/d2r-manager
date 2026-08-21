@@ -28,6 +28,7 @@ pub struct Route {
     method: Method,
     path: &'static str,
     commands: &'static [&'static str],
+    parameters: &'static [&'static str],
     target: Target,
 }
 
@@ -47,6 +48,11 @@ impl Route {
         self.commands
     }
 
+    #[must_use]
+    pub const fn parameters(&self) -> &'static [&'static str] {
+        self.parameters
+    }
+
     pub(crate) const fn target(&self) -> Target {
         self.target
     }
@@ -57,30 +63,35 @@ pub const ROUTES: [Route; 5] = [
         method: Method::Post,
         path: "/sync",
         commands: &["sync"],
+        parameters: &[],
         target: Target::Sync,
     },
     Route {
         method: Method::Get,
         path: "/items",
         commands: &["ls", "find"],
+        parameters: &["saves", "container", "code", "quality", "fingerprint"],
         target: Target::Items,
     },
     Route {
         method: Method::Get,
         path: "/diff",
         commands: &["diff"],
+        parameters: &["saves", "against"],
         target: Target::Diff,
     },
     Route {
         method: Method::Post,
         path: "/plan",
         commands: &["plan"],
+        parameters: &[],
         target: Target::Plan,
     },
     Route {
         method: Method::Post,
         path: "/apply",
         commands: &["apply"],
+        parameters: &[],
         target: Target::Apply,
     },
 ];

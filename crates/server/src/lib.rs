@@ -125,7 +125,7 @@ fn handle(request: &mut Request, services: Services<'_>) -> Result<String, Failu
         }
     };
     let body = body(request)?;
-    handler::answer(services, route.target(), query, &body)
+    handler::answer(services, route, query, &body)
 }
 
 fn method(request: &Request) -> Option<Method> {

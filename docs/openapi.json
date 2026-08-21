@@ -173,7 +173,7 @@
       "post": {
         "operationId": "plan",
         "summary": "Read a plan against the saves and answer it in its normal form.",
-        "description": "Resolves every operation against the saves, then runs the rules over it. Writes nothing, whatever the answer. A plan the rules refuse answers 422. The answer is the document the apply task takes.",
+        "description": "Resolves every operation against the saves, runs the rules over it, then projects the outcome onto the save format. Writes nothing, whatever the answer. A plan the rules refuse answers 422, and so does a move the save format cannot hold, such as a move from a grid to an advanced stash tab. The answer is the document the apply task takes.",
         "x-cli": ["plan"],
         "requestBody": {
           "required": true,

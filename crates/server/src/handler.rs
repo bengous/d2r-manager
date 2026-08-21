@@ -8,7 +8,7 @@ use app::inspect::{FingerprintPrefix, Needle, Quality, compare, list};
 use app::ports::Files;
 use app::selector::ContainerSelector;
 use app::sync::{Backup, BackupPaths, MIRROR_DIRECTORY};
-use app::transaction::{DEFAULT_TIMER, Transaction, TransactionPaths, describe, resolve};
+use app::transaction::{DEFAULT_TIMER, Transaction, TransactionPaths, describe, prepare};
 use app::value::UnitName;
 use app::world::SaveTree;
 use domain::vault::Vault;
@@ -21,21 +21,19 @@ use crate::payload::{
     SyncBody, SyncRequest,
 };
 use crate::query::Query;
-use crate::route::Target;
-
-const ITEM_PARAMETERS: [&str; 5] = ["saves", "container", "code", "quality", "fingerprint"];
-const DIFF_PARAMETERS: [&str; 2] = ["saves", "against"];
+use crate::route::{Route, Target};
 
 pub(crate) fn answer(
     services: Services<'_>,
-    target: Target,
+    route: Route,
     query: &str,
     body: &[u8],
 ) -> Result<String, Failure> {
-    match target {
+    let asked = route.parameters();
+    match route.target() {
         Target::Sync => write(&sync(services, &parse(query, body)?)?),
-        Target::Items => write(&items(services, query)?),
-        Target::Diff => write(&diff(services, query)?),
+        Target::Items => write(&items(services, query, asked)?),
+        Target::Diff => write(&diff(services, query, asked)?),
         Target::Plan => write(&plan(services, &parse(query, body)?)?),
         Target::Apply => write(&apply(services, &parse(query, body)?)?),
     }
@@ -58,8 +56,8 @@ fn sync(services: Services<'_>, request: &SyncRequest) -> Result<SyncBody, Failu
     Ok(SyncBody::of(&outcome))
 }
 
-fn items(services: Services<'_>, query: &str) -> Result<ItemsBody, Failure> {
-    let query = Query::parse(query, &ITEM_PARAMETERS)?;
+fn items(services: Services<'_>, query: &str, asked: &[&str]) -> Result<ItemsBody, Failure> {
+    let query = Query::parse(query, asked)?;
     let vault = world(services.files, Path::new(query.required("saves")?))?;
     let needle = Needle {
         container: query
@@ -81,8 +79,8 @@ fn items(services: Services<'_>, query: &str) -> Result<ItemsBody, Failure> {
     })
 }
 
-fn diff(services: Services<'_>, query: &str) -> Result<DiffBody, Failure> {
-    let query = Query::parse(query, &DIFF_PARAMETERS)?;
+fn diff(services: Services<'_>, query: &str, asked: &[&str]) -> Result<DiffBody, Failure> {
+    let query = Query::parse(query, asked)?;
     let before = world(services.files, Path::new(query.required("saves")?))?;
     let after = world(services.files, Path::new(query.required("against")?))?;
     Ok(DiffBody {
@@ -94,11 +92,11 @@ fn diff(services: Services<'_>, query: &str) -> Result<DiffBody, Failure> {
 }
 
 fn plan(services: Services<'_>, request: &PlanRequest) -> Result<PlanBody, Failure> {
-    let vault = world(services.files, &request.saves)?;
-    let plan = resolve(&request.plan, &vault)?;
-    let normalized = describe(&plan);
-    plan.validate(vault)?;
-    Ok(PlanBody { plan: normalized })
+    let mut tree = SaveTree::read(services.files, &request.saves)?;
+    let validated = prepare(&mut tree, &request.plan)?;
+    Ok(PlanBody {
+        plan: describe(validated.operations()),
+    })
 }
 
 fn apply(services: Services<'_>, request: &ApplyRequest) -> Result<ApplyBody, Failure> {

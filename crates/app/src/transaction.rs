@@ -133,10 +133,20 @@ pub fn resolve(document: &PlanDocument, vault: &Vault) -> Result<Plan, ResolveEr
 }
 
 #[must_use]
-pub fn describe(plan: &Plan) -> PlanDocument {
+pub fn describe(operations: &[Operation]) -> PlanDocument {
     PlanDocument {
-        operations: plan.operations().iter().map(operation).collect(),
+        operations: operations.iter().map(operation).collect(),
     }
+}
+
+pub fn prepare(
+    tree: &mut SaveTree,
+    document: &PlanDocument,
+) -> Result<ValidatedPlan, TransactionError> {
+    let vault = tree.vault()?;
+    let validated = resolve(document, &vault)?.validate(vault)?;
+    tree.project(validated.outcome())?;
+    Ok(validated)
 }
 
 pub const DEFAULT_TIMER: &str = "d2r-backup.timer";
@@ -265,9 +275,7 @@ impl Transaction<'_> {
         let ledger = root.join(LEDGER_DIRECTORY).join(LEDGER_FILE);
 
         let mut tree = SaveTree::read(self.files, &saves)?;
-        let vault = tree.vault()?;
-        let validated = resolve(document, &vault)?.validate(vault)?;
-        tree.project(validated.outcome())?;
+        let validated = prepare(&mut tree, document)?;
 
         let pause = self.pause(&paths.timer)?;
         let outcome = self.write(
