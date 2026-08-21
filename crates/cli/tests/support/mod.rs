@@ -1,17 +1,8 @@
 #![allow(dead_code, reason = "each test binary drives a subset of this harness")]
 
-use std::cell::RefCell;
-use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::sync::atomic::{AtomicU32, Ordering};
-
-use app::ports::{
-    Availability, Clock, CommandError, ProcessQuery, Processes, Sighting, TimerState, Timers,
-};
-use app::value::{Timestamp, UnitName, ValueError};
-
-pub(crate) const AT: &str = "2026-08-21T02:13:19+02:00";
 
 static COUNTER: AtomicU32 = AtomicU32::new(0);
 
@@ -111,96 +102,4 @@ pub(crate) fn fixture_root() -> PathBuf {
 
 pub(crate) fn copy_fixture(relative: &str, target: &Path) {
     std::fs::copy(fixture_root().join(relative), target).expect("fixture copy");
-}
-
-#[derive(Debug, Default)]
-pub(crate) struct StillProcesses {
-    seen: RefCell<BTreeSet<String>>,
-    pub(crate) asked: RefCell<Vec<String>>,
-}
-
-impl StillProcesses {
-    #[must_use]
-    pub(crate) fn quiet() -> Self {
-        Self::default()
-    }
-
-    pub(crate) fn sees(&self, query: &str) -> &Self {
-        self.seen.borrow_mut().insert(query.to_owned());
-        self
-    }
-}
-
-impl Processes for StillProcesses {
-    fn look_up(&self, query: ProcessQuery<'_>) -> Result<Sighting, CommandError> {
-        let key = match query {
-            ProcessQuery::ExactName(name) => format!("-x {name}"),
-            ProcessQuery::CommandPattern(pattern) => format!("-f {pattern}"),
-        };
-        self.asked.borrow_mut().push(key.clone());
-        Ok(if self.seen.borrow().contains(&key) {
-            Sighting::Seen
-        } else {
-            Sighting::Absent
-        })
-    }
-
-    fn available(&self, _command: &str) -> Result<Availability, CommandError> {
-        Ok(Availability::Present)
-    }
-}
-
-#[derive(Debug)]
-pub(crate) struct RecordedTimers {
-    pub(crate) state: TimerState,
-    pub(crate) calls: RefCell<Vec<String>>,
-}
-
-impl RecordedTimers {
-    #[must_use]
-    pub(crate) fn active() -> Self {
-        Self {
-            state: TimerState::Active,
-            calls: RefCell::new(Vec::new()),
-        }
-    }
-
-    #[must_use]
-    pub(crate) fn called(&self) -> Vec<String> {
-        self.calls.borrow().clone()
-    }
-}
-
-impl Timers for RecordedTimers {
-    fn state(&self, _unit: &UnitName) -> Result<TimerState, CommandError> {
-        self.calls.borrow_mut().push("state".to_owned());
-        Ok(self.state)
-    }
-
-    fn pause(&self, _unit: &UnitName) -> Result<(), CommandError> {
-        self.calls.borrow_mut().push("pause".to_owned());
-        Ok(())
-    }
-
-    fn resume(&self, _unit: &UnitName) -> Result<(), CommandError> {
-        self.calls.borrow_mut().push("resume".to_owned());
-        Ok(())
-    }
-}
-
-#[derive(Debug)]
-pub(crate) struct SteadyClock {
-    pub(crate) at: String,
-}
-
-impl Default for SteadyClock {
-    fn default() -> Self {
-        Self { at: AT.to_owned() }
-    }
-}
-
-impl Clock for SteadyClock {
-    fn now(&self) -> Result<Timestamp, ValueError> {
-        Timestamp::new(&self.at)
-    }
 }

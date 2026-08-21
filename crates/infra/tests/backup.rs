@@ -6,9 +6,9 @@ use std::path::{Path, PathBuf};
 use app::ports::Clock;
 use app::ports::{Availability, Lease, Locks, MirrorPlan, Processes};
 use app::sync::{Backup, BackupPaths, EXCLUDED, GAME_PROCESS, SyncOutcome};
-use cli::adapters::files::{FileLock, RealFiles};
-use cli::adapters::git::GitCommands;
-use cli::adapters::system::{Rsync, SystemClock, SystemProcesses, rsync_arguments};
+use infra::files::{FileLock, RealFiles};
+use infra::git::GitCommands;
+use infra::system::{Rsync, SystemClock, SystemProcesses, rsync_arguments};
 
 use support::{AT, SteadyClock, StillProcesses, TempTree, copy_fixture, git, repository};
 

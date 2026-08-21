@@ -1,0 +1,19 @@
+[package]
+name = "infra"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+app = { path = "../app", version = "0.1.0" }
+jiff.workspace = true
+
+[dev-dependencies]
+domain = { path = "../domain", version = "0.1.0" }
+format = { path = "../format", version = "0.1.0" }
+serde_json.workspace = true
+
+[lints]
+workspace = true

@@ -1,4 +1,3 @@
-pub mod adapters;
 pub mod options;
 pub mod render;
 
@@ -17,9 +16,9 @@ use app::world::SaveTree;
 use domain::vault::Vault;
 use format::code::ItemCode;
 
-use adapters::files::{FileLock, RealFiles};
-use adapters::git::GitCommands;
-use adapters::system::{Rsync, SystemClock, SystemProcesses, SystemdTimers};
+use infra::files::{FileLock, RealFiles};
+use infra::git::GitCommands;
+use infra::system::{Rsync, SystemClock, SystemProcesses, SystemdTimers};
 use options::{
     ApplyOptions, DiffOptions, FindOptions, LsOptions, Options, PlanOptions, SyncOptions, Task,
 };

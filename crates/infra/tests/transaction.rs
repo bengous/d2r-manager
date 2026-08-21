@@ -2,8 +2,6 @@ mod support;
 
 use std::path::{Path, PathBuf};
 
-use clap::Parser;
-
 use app::ledger::{LEDGER_DIRECTORY, LEDGER_FILE, LedgerEntry};
 use app::ports::{TimerState, Timers};
 use app::transaction::{
@@ -11,14 +9,13 @@ use app::transaction::{
 };
 use app::value::UnitName;
 use app::world::SaveTree;
-use cli::adapters::files::RealFiles;
-use cli::adapters::git::GitCommands;
-use cli::adapters::system::SystemdTimers;
-use cli::options::Options;
 use domain::census::Census;
 use domain::container::{GridId, PileId, StashName, TabIndex};
 use domain::object::Fingerprint;
 use domain::vault::Vault;
+use infra::files::RealFiles;
+use infra::git::GitCommands;
+use infra::system::SystemdTimers;
 
 use support::{
     AT, RecordedTimers, SteadyClock, StillProcesses, TempTree, copy_fixture, git, repository,
@@ -412,53 +409,5 @@ fn a_repository_dirty_before_the_apply_gets_its_own_return_point() {
             ]
         ),
         "saves/note.txt"
-    );
-}
-
-#[test]
-fn the_apply_command_runs_a_plan_file_end_to_end() {
-    let tree = TempTree::new("binary");
-    let repo = repository(&tree, "backup");
-    let saves = corpus(&repo);
-
-    let fingerprint = first(&vault(&saves), 0);
-    let file = tree.path("plan.json");
-    std::fs::write(
-        &file,
-        serde_json::to_string_pretty(&plan(&format!(
-            "move:shared/{STASH}/0#{fingerprint}:shared/{STASH}/2"
-        )))
-        .expect("the plan serializes"),
-    )
-    .expect("the plan file");
-
-    let options = Options::try_parse_from([
-        "d2r-manager",
-        "apply",
-        "--repo",
-        &repo.to_string_lossy(),
-        "--plan",
-        &file.to_string_lossy(),
-        "--timer",
-        ABSENT_TIMER,
-    ])
-    .expect("the arguments parse");
-    let mut out = Vec::new();
-    cli::run(&options, &mut out).expect("the apply runs; Diablo II Resurrected must be closed");
-    let text = String::from_utf8(out).expect("utf-8");
-
-    assert!(text.contains("apply: committed"), "{text}");
-    assert!(text.contains(&fingerprint.to_string()), "{text}");
-    let after = vault(&saves);
-    assert!(
-        after
-            .grid(&tab(2))
-            .expect("tab 2")
-            .find(fingerprint)
-            .is_some()
-    );
-    assert!(
-        git(&repo, &["log", "-1", "--format=%s"]).starts_with("apply: "),
-        "the binary committed nothing"
     );
 }

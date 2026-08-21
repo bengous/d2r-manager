@@ -10,6 +10,8 @@ use cli::options::Options;
 
 use support::{TempTree, copy_fixture, git, repository};
 
+const ABSENT_TIMER: &str = "d2r-manager-tests-no-such.timer";
+
 fn fingerprints(directory: &Path) -> Vec<(String, u64)> {
     let mut prints: Vec<(String, u64)> = std::fs::read_dir(directory)
         .expect("the saves list")
@@ -46,6 +48,28 @@ fn spoken(arguments: &[&str]) -> String {
 
 fn saved(path: &Path) -> String {
     path.to_string_lossy().into_owned()
+}
+
+fn listing(saves: &Path, container: &str) -> String {
+    spoken(&[
+        "d2r-manager",
+        "ls",
+        "--saves",
+        &saved(saves),
+        "--container",
+        container,
+    ])
+}
+
+fn fingerprint_of(saves: &Path, container: &str) -> String {
+    listing(saves, container)
+        .lines()
+        .next()
+        .expect("the container holds an item")
+        .split_whitespace()
+        .last()
+        .expect("the fingerprint closes the line")
+        .to_owned()
 }
 
 #[test]
@@ -133,22 +157,7 @@ fn a_comparison_of_a_directory_with_itself_prints_nothing() {
 fn a_plan_prints_json_that_reads_back_as_a_plan() {
     let tree = TempTree::new("plan");
     let saves = saves(&tree);
-    let listing = spoken(&[
-        "d2r-manager",
-        "ls",
-        "--saves",
-        &saved(&saves),
-        "--container",
-        "shared/linux/0",
-    ]);
-    let fingerprint = listing
-        .lines()
-        .next()
-        .expect("the tab holds an item")
-        .split_whitespace()
-        .last()
-        .expect("the fingerprint closes the line")
-        .to_owned();
+    let fingerprint = fingerprint_of(&saves, "shared/linux/0");
 
     let text = spoken(&[
         "d2r-manager",
@@ -169,22 +178,7 @@ fn a_plan_leaves_every_save_byte_where_it_found_it() {
     let tree = TempTree::new("plan-writes-nothing");
     let saves = saves(&tree);
     let before = fingerprints(&saves);
-    let listing = spoken(&[
-        "d2r-manager",
-        "ls",
-        "--saves",
-        &saved(&saves),
-        "--container",
-        "shared/linux/0",
-    ]);
-    let fingerprint = listing
-        .lines()
-        .next()
-        .expect("the tab holds an item")
-        .split_whitespace()
-        .last()
-        .expect("the fingerprint closes the line")
-        .to_owned();
+    let fingerprint = fingerprint_of(&saves, "shared/linux/0");
 
     spoken(&[
         "d2r-manager",
@@ -217,6 +211,55 @@ fn the_sync_command_mirrors_and_commits_through_its_real_adapters() {
     assert!(
         git(&repo, &["log", "-1", "--format=%s"]).starts_with("backup: "),
         "the sync command committed nothing"
+    );
+}
+
+#[test]
+fn the_apply_command_runs_a_plan_file_end_to_end() {
+    let tree = TempTree::new("apply-command");
+    let repo = repository(&tree, "backup");
+    let saves = repo.join("saves");
+    std::fs::create_dir_all(&saves).expect("saves directory");
+    copy_fixture(
+        "v105/linux/ModernSharedStashSoftCoreV2.d2i",
+        &saves.join("linux.d2i"),
+    );
+    git(&repo, &["add", "-A", "--", "saves"]);
+    git(&repo, &["commit", "-m", "saves"]);
+
+    let fingerprint = fingerprint_of(&saves, "shared/linux/0");
+    let file = tree.path("plan.json");
+    std::fs::write(
+        &file,
+        spoken(&[
+            "d2r-manager",
+            "plan",
+            "--saves",
+            &saved(&saves),
+            "--operation",
+            &format!("move:shared/linux/0#{fingerprint}:shared/linux/2"),
+        ]),
+    )
+    .expect("the plan file");
+
+    let text = spoken(&[
+        "d2r-manager",
+        "apply",
+        "--repo",
+        &saved(&repo),
+        "--plan",
+        &saved(&file),
+        "--timer",
+        ABSENT_TIMER,
+    ]);
+
+    assert!(text.contains("apply: committed"), "{text}");
+    assert!(text.contains(&fingerprint), "{text}");
+    assert!(listing(&saves, "shared/linux/2").contains(&fingerprint));
+    assert!(!listing(&saves, "shared/linux/0").contains(&fingerprint));
+    assert!(
+        git(&repo, &["log", "-1", "--format=%s"]).starts_with("apply: "),
+        "the binary committed nothing"
     );
 }
 
