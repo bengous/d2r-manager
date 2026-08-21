@@ -1,7 +1,7 @@
 #![allow(dead_code, reason = "each test binary drives a subset of these fakes")]
 #![allow(
     clippy::disallowed_methods,
-    reason = "PLAN 6.5: the fakes seed themselves from the frozen corpus"
+    reason = "the fakes seed themselves from the frozen corpus"
 )]
 
 use std::cell::RefCell;

@@ -4,7 +4,7 @@
 )]
 #![allow(
     clippy::disallowed_methods,
-    reason = "PLAN 6.5: integration tests read the frozen corpus"
+    reason = "integration tests read the frozen corpus"
 )]
 
 use std::ffi::OsStr;

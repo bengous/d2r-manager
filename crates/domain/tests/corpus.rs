@@ -67,7 +67,7 @@ fn every_version_105_fixture_builds_a_vault() {
 }
 
 #[test]
-fn the_shared_stash_marker_file_counts_what_the_plan_records() {
+fn the_shared_stash_marker_file_holds_the_counts_measured_on_it() {
     let vault = vault_of(LINUX, MARKER);
     let stash = stash_name(MARKER);
 
@@ -81,17 +81,14 @@ fn the_shared_stash_marker_file_counts_what_the_plan_records() {
         .map(|(_, grid)| grid.slots().len())
         .chain(piles.iter().map(|(_, pile)| pile.entries().len()))
         .sum();
-    assert_eq!(entries, 227, "PLAN 6: 227 item entries");
+    assert_eq!(entries, 227, "227 item entries");
 
     let units: u32 = piles
         .iter()
         .flat_map(|(_, pile)| pile.entries())
         .map(|entry| u32::from(entry.count().get()))
         .sum();
-    assert_eq!(
-        units, 1306,
-        "PLAN 6: the AdvancedStash piles hold 1306 units"
-    );
+    assert_eq!(units, 1306, "the AdvancedStash piles hold 1306 units");
 
     let first_tab = ContainerId::Grid(GridId::SharedTab {
         stash: stash.clone(),
@@ -100,7 +97,7 @@ fn the_shared_stash_marker_file_counts_what_the_plan_records() {
     assert_eq!(
         vault.gold(&first_tab).map(domain::gold::Gold::get),
         Some(1_075_411),
-        "PLAN 6: 1 075 411 gold on the first tab"
+        "1 075 411 gold on the first tab"
     );
 
     let census = Census::of(&vault);

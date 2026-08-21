@@ -15,7 +15,7 @@ fn repo_root() -> PathBuf {
 
 #[expect(
     clippy::disallowed_methods,
-    reason = "PLAN 6.5: the table guard reads the reference txt files"
+    reason = "the table guard reads the reference txt files"
 )]
 fn read_txt(name: &str) -> String {
     let path = repo_root().join(TXT_DIR).join(name);
@@ -149,7 +149,7 @@ fn render() -> String {
 #[test]
 #[expect(
     clippy::disallowed_methods,
-    reason = "PLAN 6.5: the table guard reads and rewrites the generated table"
+    reason = "the table guard reads and rewrites the generated table"
 )]
 fn the_version_105_tables_match_the_reference_txt_files() {
     let path = repo_root().join(GENERATED);
