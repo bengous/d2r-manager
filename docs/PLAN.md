@@ -237,3 +237,8 @@ de documentation dont ce plan.
 ## 11. Questions ouvertes
 
 1. Remote GitHub prive : a creer quand l'utilisateur le decide.
+2. Transfert d'or entre onglets : §7.1 ne prevoit que `move` et `duplicate`,
+   donc aucun plan ne deplace d'or. La fusion du 2026-08-20 en a pourtant
+   deplace 940 000. Une troisieme operation reste a decider par l'utilisateur ;
+   hors perimetre tant qu'elle n'est pas decidee. Le plafond de 2 500 000 par
+   onglet reste une regle de construction dans `domain`.
