@@ -1,6 +1,8 @@
 mod support;
 
+use std::net::{IpAddr, SocketAddr, TcpStream, UdpSocket};
 use std::path::{Path, PathBuf};
+use std::time::Duration;
 
 use serde_json::{Value, json};
 
@@ -520,11 +522,44 @@ fn a_request_from_another_machine_is_refused() {
     assert_eq!(answer.status, 200, "{}", answer.body);
 }
 
+fn outward_address() -> Option<IpAddr> {
+    let probe = UdpSocket::bind(("0.0.0.0", 0)).ok()?;
+    probe.connect(("192.0.2.1", 9)).ok()?;
+    let address = probe.local_addr().ok()?.ip();
+    (!address.is_loopback()).then_some(address)
+}
+
 #[test]
 fn the_server_listens_on_the_loopback_only() {
     let rig = Rig::new("loopback");
     assert!(rig.address().ip().is_loopback(), "{}", rig.address());
     assert_ne!(rig.address().port(), 0);
+
+    let port = rig.address().port();
+    assert!(
+        TcpStream::connect_timeout(&rig.address(), Duration::from_millis(500)).is_ok(),
+        "the loopback takes no connection on {port}"
+    );
+    if let Some(outward) = outward_address() {
+        assert!(
+            TcpStream::connect_timeout(&SocketAddr::new(outward, port), Duration::from_millis(500))
+                .is_err(),
+            "{outward} answers on the port of the server"
+        );
+    }
+}
+
+#[test]
+fn a_request_that_names_another_machine_as_its_host_is_refused() {
+    let rig = Rig::new("host");
+    let saves = saves(&rig);
+    let answer = rig.ask(
+        Call::get("/items", &format!("saves={}", encoded(&saves)))
+            .with_host("d2r-manager.example.invalid"),
+    );
+
+    assert_eq!(answer.status, 403, "{}", answer.body);
+    assert_eq!(answer.kind(), "forbidden_origin");
 }
 
 #[test]

@@ -167,33 +167,37 @@ fn body(request: &mut Request) -> Result<Vec<u8>, Failure> {
 }
 
 fn from_this_machine(request: &Request) -> Result<(), Failure> {
-    let Some(header) = request
-        .headers()
-        .iter()
-        .find(|header| header.field.equiv("Origin"))
-    else {
-        return Ok(());
-    };
-    let origin = header.value.as_str();
-    if loopback(origin) {
-        return Ok(());
+    for (field, named) in [("Origin", true), ("Host", false)] {
+        let Some(header) = request
+            .headers()
+            .iter()
+            .find(|header| header.field.equiv(field))
+        else {
+            continue;
+        };
+        let value = header.value.as_str();
+        let host = if named { origin(value) } else { Some(value) };
+        if host.is_some_and(loopback) {
+            continue;
+        }
+        return Err(Failure::new(
+            Kind::ForbiddenOrigin,
+            format!("the {field} {value:?} is no name of this machine"),
+        ));
     }
-    Err(Failure::new(
-        Kind::ForbiddenOrigin,
-        format!("{origin:?} is no origin of this machine"),
-    ))
+    Ok(())
 }
 
-fn loopback(origin: &str) -> bool {
-    let Some(rest) = origin
+fn origin(value: &str) -> Option<&str> {
+    value
         .strip_prefix("http://")
-        .or_else(|| origin.strip_prefix("https://"))
-    else {
-        return false;
-    };
-    let host = match rest.strip_prefix('[') {
+        .or_else(|| value.strip_prefix("https://"))
+}
+
+fn loopback(authority: &str) -> bool {
+    let host = match authority.strip_prefix('[') {
         Some(inside) => inside.split(']').next().unwrap_or_default(),
-        None => rest.split(['/', ':']).next().unwrap_or_default(),
+        None => authority.split(['/', ':']).next().unwrap_or_default(),
     };
     host == "localhost"
         || host

@@ -229,6 +229,7 @@ pub(crate) struct Call {
     pub(crate) target: String,
     pub(crate) body: Option<String>,
     pub(crate) origin: Option<String>,
+    pub(crate) host: Option<String>,
 }
 
 impl Call {
@@ -243,6 +244,7 @@ impl Call {
             },
             body: None,
             origin: None,
+            host: None,
         }
     }
 
@@ -253,6 +255,7 @@ impl Call {
             target: path.to_owned(),
             body: Some(body.to_owned()),
             origin: None,
+            host: None,
         }
     }
 
@@ -263,6 +266,11 @@ impl Call {
 
     pub(crate) fn with_origin(mut self, origin: &str) -> Self {
         self.origin = Some(origin.to_owned());
+        self
+    }
+
+    pub(crate) fn with_host(mut self, host: &str) -> Self {
+        self.host = Some(host.to_owned());
         self
     }
 }
@@ -374,8 +382,9 @@ impl Rig {
 
 fn send(address: SocketAddr, call: &Call) -> (u16, String, String) {
     let mut stream = TcpStream::connect(address).expect("the client connects");
+    let host = call.host.clone().unwrap_or_else(|| address.to_string());
     let mut request = format!(
-        "{} {} HTTP/1.1\r\nHost: {address}\r\nConnection: close\r\n",
+        "{} {} HTTP/1.1\r\nHost: {host}\r\nConnection: close\r\n",
         call.method, call.target
     );
     if let Some(origin) = &call.origin {

@@ -4,7 +4,7 @@
     "title": "d2r-manager local API",
     "version": "1.0.0",
     "summary": "Offline Diablo II Resurrected saves: backup, exploration and transactions.",
-    "description": "The API serves the tasks of the d2r-manager command line, and nothing more: it never creates an item, never edits a stat, and never reaches an item the saves do not already hold. Every task goes through the same rules as the command line. The server listens on the loopback of one machine only. A request that carries an Origin header from another machine is refused. Paths in requests are read as this machine reads them; the caller and the server share one filesystem.",
+    "description": "The API serves the tasks of the d2r-manager command line, and nothing more: it never creates an item, never edits a stat, and never reaches an item the saves do not already hold. Every task goes through the same rules as the command line. The server listens on the loopback of one machine only, and it answers one request at a time. A request whose Origin or Host header names another machine is refused. Paths in requests are read as this machine reads them; the caller and the server share one filesystem.",
     "license": {
       "name": "MIT",
       "identifier": "MIT"
@@ -246,7 +246,7 @@
         }
       },
       "ForbiddenOrigin": {
-        "description": "The request carries an Origin header from outside this machine.",
+        "description": "The request carries an Origin or a Host header that names another machine.",
         "content": {
           "application/json": { "schema": { "$ref": "#/components/schemas/Error" } }
         }

@@ -125,6 +125,19 @@ impl Contract {
         Ok(())
     }
 
+    fn request(&self, path: &str) -> &Value {
+        let schema = self.at(&[
+            "paths",
+            path,
+            "post",
+            "requestBody",
+            "content",
+            "application/json",
+            "schema",
+        ]);
+        self.resolve(schema)
+    }
+
     fn confront(&self, answer: &Answer) {
         let method = answer.call.method.to_ascii_lowercase();
         let declared = ROUTES.iter().any(|route| {
@@ -375,6 +388,81 @@ fn first_fingerprint(answer: &Answer) -> String {
         .as_str()
         .expect("a fingerprint")
         .to_owned()
+}
+
+fn names(value: &Value) -> BTreeSet<String> {
+    match value {
+        Value::Array(entries) => entries
+            .iter()
+            .map(|entry| entry.as_str().expect("a name").to_owned())
+            .collect(),
+        Value::Object(fields) => fields.keys().cloned().collect(),
+        other => panic!("{other} names nothing"),
+    }
+}
+
+fn without(sample: &Value, name: &str) -> String {
+    let mut short = sample.clone();
+    short
+        .as_object_mut()
+        .expect("a request object")
+        .remove(name);
+    short.to_string()
+}
+
+#[test]
+fn every_request_the_contract_declares_is_the_request_the_server_reads() {
+    let contract = Contract::read();
+    let rig = Rig::new("contract-requests");
+    let saves = rig.tree.path("saves");
+    seed(&saves);
+    let nowhere = rig.tree.path("nowhere");
+    let samples: [(&'static str, Value); 3] = [
+        (
+            "/sync",
+            json!({"source": saves, "repo": nowhere, "lock": rig.tree.path("lock/backup.lock")}),
+        ),
+        ("/plan", json!({"saves": saves, "plan": {"operations": []}})),
+        (
+            "/apply",
+            json!({"repo": nowhere, "saves": saves, "plan": {"operations": []},
+                "timer": ABSENT_TIMER}),
+        ),
+    ];
+
+    for (path, sample) in samples {
+        let schema = contract.request(path);
+        let declared = names(&schema["properties"]);
+        let required = names(&schema["required"]);
+        assert_eq!(names(&sample), declared, "{path}");
+        assert!(required.is_subset(&declared), "{path}");
+
+        let answer = rig.ask(Call::post(path, &sample.to_string()));
+        assert_ne!(answer.status, 400, "{path}: {}", answer.body);
+
+        for name in &required {
+            let answer = rig.ask(Call::post(path, &without(&sample, name)));
+            assert_eq!(
+                answer.status, 400,
+                "{path}: the server reads a request without {name}"
+            );
+        }
+        for name in declared.difference(&required) {
+            let answer = rig.ask(Call::post(path, &without(&sample, name)));
+            assert_ne!(
+                answer.status, 400,
+                "{path}: the server refuses a request without {name}"
+            );
+        }
+
+        let mut extra = sample.clone();
+        extra["gold"] = json!(1);
+        let answer = rig.ask(Call::post(path, &extra.to_string()));
+        assert_eq!(
+            answer.status, 400,
+            "{path}: the server reads a property the contract never declares"
+        );
+    }
 }
 
 #[test]
