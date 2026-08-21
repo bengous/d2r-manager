@@ -348,6 +348,31 @@ fn a_move_from_a_grid_to_an_advanced_stash_tab_is_refused_before_any_write() {
 }
 
 #[test]
+fn two_applies_at_once_run_one_after_the_other() {
+    let rig = Rig::new("apply-together");
+    let (repo, saves) = corpus(&rig);
+    let fingerprint = first_fingerprint(&rig, &saves, "shared/linux/0");
+    let plan = json!({"repo": repo, "timer": ABSENT_TIMER,
+        "plan": move_to("shared/linux/0", &fingerprint, "shared/linux/2")})
+    .to_string();
+
+    let answers = rig.ask_together(Call::post("/apply", &plan), Call::post("/apply", &plan));
+
+    let mut statuses: Vec<u16> = answers.iter().map(|answer| answer.status).collect();
+    statuses.sort_unstable();
+    assert_eq!(statuses, [200, 422], "{:?}", answers.map(|a| a.body));
+    assert_eq!(
+        items(&rig, &saves, &format!("&fingerprint={fingerprint}"))["items"]
+            .as_array()
+            .expect("a list of items")
+            .len(),
+        1
+    );
+    assert_eq!(git(&repo, &["log", "--oneline"]).lines().count(), 3);
+    assert!(git(&repo, &["status", "--porcelain"]).is_empty());
+}
+
+#[test]
 fn an_apply_while_the_game_runs_is_refused() {
     let rig = Rig::new("apply-game");
     let (repo, saves) = corpus(&rig);

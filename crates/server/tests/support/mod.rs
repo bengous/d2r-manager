@@ -333,6 +333,28 @@ impl Rig {
         }
     }
 
+    pub(crate) fn ask_together(&self, first: Call, second: Call) -> [Answer; 2] {
+        let address = self.server.address();
+        let asked = [first, second];
+        let clients = asked.clone().map(|call| {
+            std::thread::spawn(move || {
+                let (status, content_type, body) = send(address, &call);
+                Answer {
+                    status,
+                    content_type,
+                    body,
+                    call,
+                }
+            })
+        });
+        for _ in &asked {
+            self.server
+                .serve_once(&self.services())
+                .expect("the server answers");
+        }
+        clients.map(|client| client.join().expect("the client reads the answer"))
+    }
+
     pub(crate) fn ask(&self, call: Call) -> Answer {
         let address = self.server.address();
         let asked = call.clone();
