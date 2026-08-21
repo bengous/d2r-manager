@@ -378,6 +378,70 @@ fn a_cell_the_grid_refuses_stops_the_plan_before_the_timer_moves() {
 }
 
 #[test]
+fn a_timer_that_was_already_stopped_is_left_stopped() {
+    let rig = Rig {
+        timers: FakeTimers::inactive(),
+        ..Rig::new()
+    };
+    let fingerprint = first(&rig.files, 0);
+    rig.apply(&one(TransferDocument::Move, fingerprint, 1))
+        .expect("the plan applies");
+    assert_eq!(rig.timers.called(), ["state"]);
+}
+
+#[test]
+fn an_operation_the_rules_refuse_stops_the_whole_plan() {
+    let rig = Rig::new();
+    let fingerprint = first(&rig.files, 0);
+    let absent = "00000000000000000000000000000000";
+    let bytes = rig.files.bytes(stash_path()).expect("the stash");
+
+    let mut document = one(TransferDocument::Move, fingerprint, 1);
+    document.operations.push(OperationDocument {
+        transfer: TransferDocument::Move,
+        from: SourceDocument {
+            container: format!("shared/{STASH}/0"),
+            fingerprint: absent.to_owned(),
+            units: None,
+        },
+        to: DestinationDocument {
+            container: format!("shared/{STASH}/1"),
+            cell: None,
+        },
+    });
+
+    let error = rig
+        .apply(&document)
+        .expect_err("no item carries that fingerprint");
+    let TransactionError::Refused(refused) = &error else {
+        panic!("{error}");
+    };
+    assert_eq!(refused.index, 1);
+    assert_eq!(rig.files.bytes(stash_path()), Some(bytes));
+    assert!(rig.timers.called().is_empty());
+    assert!(rig.git.called().iter().all(|call| call == "root"));
+}
+
+#[test]
+fn a_repository_root_that_is_not_the_repository_stops_the_apply() {
+    let rig = Rig::new();
+    rig.files.directory("/backup/elsewhere");
+    let rig = Rig {
+        git: FakeGit::at("/backup/elsewhere").answering(&[Staged::Nothing, Staged::Changes]),
+        ..rig
+    };
+    let fingerprint = first(&rig.files, 0);
+    let error = rig
+        .apply(&one(TransferDocument::Move, fingerprint, 1))
+        .expect_err("a nested repository is not the repository");
+    assert!(
+        matches!(error, TransactionError::UnexpectedRoot { .. }),
+        "{error}"
+    );
+    assert!(rig.timers.called().is_empty());
+}
+
+#[test]
 fn saves_outside_the_repository_stop_the_apply() {
     let rig = Rig::new();
     rig.files.directory("/elsewhere/saves");

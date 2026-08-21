@@ -139,8 +139,8 @@ pub fn describe(plan: &Plan) -> PlanDocument {
     }
 }
 
-pub const CHECKPOINT_PREFIX: &str = "checkpoint";
-pub const APPLY_PREFIX: &str = "apply";
+const CHECKPOINT_PREFIX: &str = "checkpoint";
+const APPLY_PREFIX: &str = "apply";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TransactionPaths {

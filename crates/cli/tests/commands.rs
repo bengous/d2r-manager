@@ -8,7 +8,24 @@ use clap::Parser;
 use app::transaction::PlanDocument;
 use cli::options::Options;
 
-use support::{TempTree, copy_fixture};
+use support::{TempTree, copy_fixture, git, repository};
+
+fn fingerprints(directory: &Path) -> Vec<(String, u64)> {
+    let mut prints: Vec<(String, u64)> = std::fs::read_dir(directory)
+        .expect("the saves list")
+        .map(|entry| {
+            let entry = entry.expect("directory entry");
+            let bytes = std::fs::read(entry.path()).expect("save file");
+            let mut sum = 0u64;
+            for byte in bytes {
+                sum = sum.wrapping_mul(31).wrapping_add(u64::from(byte));
+            }
+            (entry.file_name().to_string_lossy().into_owned(), sum)
+        })
+        .collect();
+    prints.sort();
+    prints
+}
 
 fn saves(tree: &TempTree) -> PathBuf {
     let saves = tree.directory("saves");
@@ -145,6 +162,62 @@ fn a_plan_prints_json_that_reads_back_as_a_plan() {
     assert_eq!(document.operations.len(), 1);
     assert_eq!(document.operations[0].from.fingerprint, fingerprint);
     assert_eq!(document.operations[0].to.container, "shared/linux/1");
+}
+
+#[test]
+fn a_plan_leaves_every_save_byte_where_it_found_it() {
+    let tree = TempTree::new("plan-writes-nothing");
+    let saves = saves(&tree);
+    let before = fingerprints(&saves);
+    let listing = spoken(&[
+        "d2r-manager",
+        "ls",
+        "--saves",
+        &saved(&saves),
+        "--container",
+        "shared/linux/0",
+    ]);
+    let fingerprint = listing
+        .lines()
+        .next()
+        .expect("the tab holds an item")
+        .split_whitespace()
+        .last()
+        .expect("the fingerprint closes the line")
+        .to_owned();
+
+    spoken(&[
+        "d2r-manager",
+        "plan",
+        "--saves",
+        &saved(&saves),
+        "--operation",
+        &format!("move:shared/linux/0#{fingerprint}:shared/linux/1"),
+    ]);
+    assert_eq!(fingerprints(&saves), before);
+}
+
+#[test]
+fn the_sync_command_mirrors_and_commits_through_its_real_adapters() {
+    let tree = TempTree::new("sync-command");
+    let source = saves(&tree);
+    let repo = repository(&tree, "backup");
+    let text = spoken(&[
+        "d2r-manager",
+        "sync",
+        "--source",
+        &saved(&source),
+        "--repo",
+        &saved(&repo),
+        "--lock",
+        &saved(&tree.path("lock/backup.lock")),
+    ]);
+    assert!(text.starts_with("sync: committed "), "{text}");
+    assert!(repo.join("saves/linux.d2i").is_file());
+    assert!(
+        git(&repo, &["log", "-1", "--format=%s"]).starts_with("backup: "),
+        "the sync command committed nothing"
+    );
 }
 
 #[test]

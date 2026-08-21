@@ -78,7 +78,7 @@ pub enum WorldError {
 }
 
 #[derive(Debug)]
-pub struct StashFile {
+struct StashFile {
     name: StashName,
     path: PathBuf,
     bytes: Vec<u8>,
@@ -86,7 +86,7 @@ pub struct StashFile {
 }
 
 #[derive(Debug)]
-pub struct CharacterFile {
+struct CharacterFile {
     name: CharacterName,
     path: PathBuf,
     bytes: Vec<u8>,

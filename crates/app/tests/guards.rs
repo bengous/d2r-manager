@@ -13,7 +13,8 @@ use support::{AT, FakeClock, FakeFiles, FakeGit, FakeLocks, FakeMirrors, FakePro
 const SOURCE: &str = "/games/moved";
 const REPO: &str = "/backup/repo";
 const MIRROR: &str = "/backup/repo/saves";
-const LOCK: &str = "/run/d2r-backup/lock";
+const RUNTIME: &str = "/run/user/1000";
+const LOCK: &str = "/run/user/1000/d2r-backup/lock";
 
 fn paths() -> BackupPaths {
     BackupPaths {
@@ -40,7 +41,8 @@ impl Rig {
             .directory(SOURCE)
             .directory(REPO)
             .directory(format!("{REPO}/.git"))
-            .directory(MIRROR);
+            .directory(MIRROR)
+            .directory(RUNTIME);
         Self {
             files,
             locks: FakeLocks::holding(),
@@ -206,16 +208,54 @@ fn a_lock_another_run_holds_ends_the_backup_without_mirroring() {
 }
 
 #[test]
-fn the_lock_directory_is_created_before_the_lock_is_taken() {
+fn the_lock_directory_is_created_under_a_runtime_directory_that_exists() {
     let rig = Rig::new();
     rig.run().expect("the backup runs");
     assert_eq!(
         rig.files
-            .probe(Path::new("/run/d2r-backup"))
+            .probe(Path::new("/run/user/1000/d2r-backup"))
             .expect("probe"),
         PathState::Directory
     );
     assert_eq!(rig.locks.asked.borrow().as_slice(), [PathBuf::from(LOCK)]);
+}
+
+#[test]
+fn a_missing_runtime_directory_stops_the_backup_instead_of_building_one() {
+    let files = FakeFiles::new();
+    files
+        .directory(SOURCE)
+        .directory(REPO)
+        .directory(format!("{REPO}/.git"))
+        .directory(MIRROR);
+    let rig = Rig {
+        files,
+        ..Rig::new()
+    };
+    assert!(matches!(
+        rig.run().expect_err("a mistyped lock path builds nothing"),
+        SyncError::LockRootMissing { .. }
+    ));
+    assert_eq!(
+        rig.files
+            .probe(Path::new("/run/user/1000/d2r-backup"))
+            .expect("probe"),
+        PathState::Missing
+    );
+    assert!(rig.locks.asked.borrow().is_empty());
+}
+
+#[test]
+fn a_mirror_that_resolves_outside_the_repository_stops_the_backup() {
+    let rig = Rig::new();
+    rig.files.directory("/elsewhere/saves");
+    rig.files.resolves(MIRROR, "/elsewhere/saves");
+    assert!(matches!(
+        rig.run()
+            .expect_err("the mirror resolves outside the repository"),
+        SyncError::UnexpectedMirror { .. }
+    ));
+    assert!(rig.mirrors.runs.borrow().is_empty());
 }
 
 #[test]
@@ -267,7 +307,8 @@ fn a_missing_mirror_directory_is_created_before_the_mirror_runs() {
     files
         .directory(SOURCE)
         .directory(REPO)
-        .directory(format!("{REPO}/.git"));
+        .directory(format!("{REPO}/.git"))
+        .directory(RUNTIME);
     let rig = Rig {
         files,
         ..Rig::new()
@@ -315,17 +356,9 @@ fn a_mirror_that_changed_nothing_leaves_no_commit() {
         rig.run().expect("the backup runs"),
         SyncOutcome::NothingChanged
     );
-    assert!(
-        rig.git
-            .called()
-            .iter()
-            .any(|call| call.starts_with("stage"))
-    );
-    assert!(
-        !rig.git
-            .called()
-            .iter()
-            .any(|call| call.starts_with("commit"))
+    assert_eq!(
+        rig.git.called(),
+        ["root", "branch", "remote", "stage saves", "staged"]
     );
 }
 
@@ -340,5 +373,16 @@ fn a_mirror_that_changed_something_commits_the_timestamp() {
     assert_eq!(
         rig.git.messages.borrow().as_slice(),
         [format!("backup: {AT}")]
+    );
+    assert_eq!(
+        rig.git.called(),
+        [
+            "root",
+            "branch",
+            "remote",
+            "stage saves",
+            "staged",
+            "commit saves"
+        ]
     );
 }

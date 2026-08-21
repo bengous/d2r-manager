@@ -372,7 +372,51 @@ fn a_unit_no_timer_declares_reads_back_as_absent() {
 }
 
 #[test]
-fn the_binary_applies_a_plan_file_end_to_end() {
+fn a_repository_dirty_before_the_apply_gets_its_own_return_point() {
+    let tree = TempTree::new("checkpoint");
+    let repo = repository(&tree, "backup");
+    let saves = corpus(&repo);
+    let rig = Rig::new();
+    std::fs::write(saves.join("note.txt"), b"left behind by the game\n").expect("stray file");
+
+    let fingerprint = first(&vault(&saves), 0);
+    let applied = rig
+        .apply(
+            &repo,
+            &saves,
+            &plan(&format!(
+                "move:shared/{STASH}/0#{fingerprint}:shared/{STASH}/2"
+            )),
+        )
+        .expect("the plan applies");
+
+    assert_eq!(
+        git(
+            &repo,
+            &["log", "-1", "--format=%s", applied.checkpoint.as_str()]
+        ),
+        format!("checkpoint: {AT}")
+    );
+    assert_eq!(
+        git(&repo, &["rev-parse", "HEAD~1"]),
+        applied.checkpoint.as_str()
+    );
+    assert_eq!(
+        git(
+            &repo,
+            &[
+                "show",
+                "--name-only",
+                "--format=",
+                applied.checkpoint.as_str()
+            ]
+        ),
+        "saves/note.txt"
+    );
+}
+
+#[test]
+fn the_apply_command_runs_a_plan_file_end_to_end() {
     let tree = TempTree::new("binary");
     let repo = repository(&tree, "backup");
     let saves = corpus(&repo);

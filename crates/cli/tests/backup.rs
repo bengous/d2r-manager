@@ -3,11 +3,12 @@ mod support;
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 
+use app::ports::Clock;
 use app::ports::{Availability, Lease, Locks, MirrorPlan, Processes};
 use app::sync::{Backup, BackupPaths, EXCLUDED, GAME_PROCESS, SyncOutcome};
 use cli::adapters::files::{FileLock, RealFiles};
 use cli::adapters::git::GitCommands;
-use cli::adapters::system::{Rsync, SystemProcesses, rsync_arguments};
+use cli::adapters::system::{Rsync, SystemClock, SystemProcesses, rsync_arguments};
 
 use support::{AT, SteadyClock, StillProcesses, TempTree, copy_fixture, git, repository};
 
@@ -157,7 +158,7 @@ fn a_running_game_stops_the_mirror() {
 }
 
 #[test]
-fn the_commands_the_backup_spawns_are_installed_on_this_machine() {
+fn every_command_the_adapters_spawn_is_installed_on_this_machine() {
     let processes = SystemProcesses;
     for command in app::sync::REQUIRED_COMMANDS {
         assert_eq!(
@@ -171,5 +172,27 @@ fn the_commands_the_backup_spawns_are_installed_on_this_machine() {
             .available("d2r-manager-no-such-command")
             .expect("the lookup runs"),
         Availability::Missing
+    );
+}
+
+#[test]
+fn the_clock_prints_the_stamp_the_backup_script_writes() {
+    let stamp = SystemClock.now().expect("the clock reads").to_string();
+    let bytes = stamp.as_bytes();
+    assert_eq!(bytes.len(), 25, "{stamp}");
+    assert_eq!(bytes[4], b'-');
+    assert_eq!(bytes[7], b'-');
+    assert_eq!(bytes[10], b'T');
+    assert_eq!(bytes[13], b':');
+    assert_eq!(bytes[16], b':');
+    assert!(bytes[19] == b'+' || bytes[19] == b'-', "{stamp}");
+    assert_eq!(bytes[22], b':');
+    assert!(
+        bytes
+            .iter()
+            .enumerate()
+            .all(|(index, byte)| !matches!(index, 0..=3 | 5..=6 | 8..=9 | 11..=12 | 14..=15 | 17..=18 | 20..=21 | 23..=24)
+                || byte.is_ascii_digit()),
+        "{stamp}"
     );
 }

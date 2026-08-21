@@ -6,7 +6,7 @@ use std::io::Write;
 use std::path::Path;
 use std::str::FromStr;
 
-use anyhow::{Context, Result};
+use anyhow::{Result, anyhow};
 
 use app::inspect::{FingerprintPrefix, Needle, Quality, compare, list};
 use app::selector::ContainerSelector;
@@ -77,8 +77,7 @@ fn find(options: &FindOptions, out: &mut dyn Write) -> Result<()> {
             .code
             .as_deref()
             .map(ItemCode::from_text)
-            .transpose()
-            .with_context(|| "the code names no item")?,
+            .transpose()?,
         quality: options.quality.as_deref().map(Quality::parse).transpose()?,
         fingerprint: options
             .fingerprint
@@ -114,10 +113,11 @@ fn plan(options: &PlanOptions, out: &mut dyn Write) -> Result<()> {
 }
 
 fn apply(options: &ApplyOptions, out: &mut dyn Write) -> Result<()> {
+    let plan = options.plan.display();
     let text = std::fs::read_to_string(&options.plan)
-        .with_context(|| format!("{}: read", options.plan.display()))?;
+        .map_err(|source| anyhow!("{plan}: read: {source}"))?;
     let document: PlanDocument = serde_json::from_str(&text)
-        .with_context(|| format!("{}: the plan does not parse", options.plan.display()))?;
+        .map_err(|source| anyhow!("{plan}: the plan does not parse: {source}"))?;
     let files = RealFiles;
     let processes = SystemProcesses;
     let repository = GitCommands;
@@ -144,9 +144,7 @@ fn apply(options: &ApplyOptions, out: &mut dyn Write) -> Result<()> {
 
 fn world(directory: &Path) -> Result<Vault> {
     let files = RealFiles;
-    let tree = SaveTree::read(&files, directory)
-        .with_context(|| format!("{}: read the saves", directory.display()))?;
-    Ok(tree.vault()?)
+    Ok(SaveTree::read(&files, directory)?.vault()?)
 }
 
 fn container(text: Option<&str>) -> Result<Option<ContainerSelector>> {

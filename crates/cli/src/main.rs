@@ -8,13 +8,10 @@ use cli::options::Options;
 fn main() -> ExitCode {
     let options = Options::parse();
     let mut out = std::io::stdout().lock();
-    match cli::run(&options, &mut out) {
-        Ok(()) => {
-            let _ = out.flush();
-            ExitCode::SUCCESS
-        }
+    match cli::run(&options, &mut out).and_then(|()| Ok(out.flush()?)) {
+        Ok(()) => ExitCode::SUCCESS,
         Err(error) => {
-            eprintln!("d2r-manager: {error:#}");
+            eprintln!("d2r-manager: {error}");
             ExitCode::FAILURE
         }
     }

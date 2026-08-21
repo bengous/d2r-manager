@@ -70,6 +70,9 @@ pub enum SyncError {
     #[error("the lock path has no parent directory: {path}")]
     LockWithoutDirectory { path: PathBuf },
 
+    #[error("runtime directory not found: {path}")]
+    LockRootMissing { path: PathBuf },
+
     #[error(transparent)]
     File(#[from] FileError),
 
@@ -181,11 +184,16 @@ impl Backup<'_> {
     }
 
     fn take_lock(&self, lock: &Path) -> Result<Lease, SyncError> {
-        let directory = lock
-            .parent()
-            .ok_or_else(|| SyncError::LockWithoutDirectory {
-                path: lock.to_owned(),
-            })?;
+        let missing = || SyncError::LockWithoutDirectory {
+            path: lock.to_owned(),
+        };
+        let directory = lock.parent().ok_or_else(missing)?;
+        let root = directory.parent().ok_or_else(missing)?;
+        if self.files.probe(root)? != PathState::Directory {
+            return Err(SyncError::LockRootMissing {
+                path: root.to_owned(),
+            });
+        }
         self.files.create_directory(directory)?;
         Ok(self.locks.hold(lock)?)
     }
@@ -224,7 +232,7 @@ impl Backup<'_> {
     }
 }
 
-pub fn game(processes: &dyn Processes) -> Result<GameState, CommandError> {
+pub(crate) fn game(processes: &dyn Processes) -> Result<GameState, CommandError> {
     for query in [
         ProcessQuery::ExactName(GAME_PROCESS),
         ProcessQuery::CommandPattern(GAME_PATTERN),

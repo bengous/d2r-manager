@@ -3,7 +3,7 @@ mod support;
 use std::path::Path;
 use std::str::FromStr;
 
-use app::inspect::{FingerprintPrefix, Needle, Placement, Quality, compare, list};
+use app::inspect::{FingerprintPrefix, Needle, Placement, Quality, Row, compare, list};
 use app::selector::{ContainerSelector, SelectorError};
 use app::shorthand::{ShorthandError, parse};
 use app::transaction::{
@@ -12,6 +12,7 @@ use app::transaction::{
 };
 use app::world::SaveTree;
 use domain::container::{CharacterPage, StashName, TabIndex};
+use domain::object::Fingerprint;
 use format::code::ItemCode;
 
 use support::{FakeFiles, fixture};
@@ -40,24 +41,40 @@ fn vault() -> domain::vault::Vault {
         .expect("the vault builds")
 }
 
+fn order(row: &Row) -> (ContainerSelector, u8, u8, u8, Fingerprint) {
+    let (line, column, units) = match row.placement {
+        Placement::Cell(cell) => (cell.row().get(), cell.column().get(), 0),
+        Placement::Units(count) => (0, 0, count.get()),
+    };
+    (row.container.clone(), line, column, units, row.fingerprint)
+}
+
 #[test]
-fn the_listing_holds_every_item_of_every_container_and_never_changes_order() {
+fn the_listing_comes_out_container_by_container_in_reading_order() {
     let vault = vault();
     let rows = list(&vault, &Needle::default());
     assert_eq!(rows.len(), 262);
-    assert_eq!(rows, list(&vault, &Needle::default()));
 
-    let mut keys: Vec<(String, String)> = rows
-        .iter()
-        .map(|row| (row.container.to_string(), row.placement.to_string()))
+    let keys: Vec<_> = rows.iter().map(order).collect();
+    let out_of_order: Vec<_> = keys
+        .windows(2)
+        .enumerate()
+        .filter(|(_, pair)| pair[0] > pair[1])
+        .map(|(index, _)| index)
         .collect();
-    let sorted = {
-        let mut copy = keys.clone();
-        copy.sort();
-        copy
-    };
-    keys.sort();
-    assert_eq!(keys, sorted);
+    assert!(
+        out_of_order.is_empty(),
+        "rows out of order at {out_of_order:?}"
+    );
+
+    let head = rows.first().expect("the saves hold items");
+    assert_eq!(head.container.to_string(), format!("shared/{STASH}/0"));
+    assert_eq!(head.placement.to_string(), "0,0");
+    assert_eq!(
+        head.fingerprint.to_string(),
+        "5219cb83a1c0bbc9a27d80235f963d24"
+    );
+    assert_eq!(rows, list(&vault, &Needle::default()));
 }
 
 #[test]

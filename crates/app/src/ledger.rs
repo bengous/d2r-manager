@@ -19,8 +19,7 @@ pub struct LedgerEntry {
 }
 
 impl LedgerEntry {
-    #[must_use]
-    pub fn of(step: &Realized, at: &Timestamp) -> Self {
+    fn of(step: &Realized, at: &Timestamp) -> Self {
         Self {
             at: at.to_string(),
             fingerprint: step.fingerprint().to_string(),

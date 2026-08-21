@@ -59,6 +59,7 @@ pub(crate) enum Entry {
 pub(crate) struct FakeFiles {
     entries: RefCell<BTreeMap<PathBuf, Entry>>,
     ignored: RefCell<BTreeSet<PathBuf>>,
+    resolved: RefCell<BTreeMap<PathBuf, PathBuf>>,
 }
 
 impl FakeFiles {
@@ -88,6 +89,13 @@ impl FakeFiles {
 
     pub(crate) fn ignore_writes(&self, path: impl AsRef<Path>) -> &Self {
         self.ignored.borrow_mut().insert(path.as_ref().to_owned());
+        self
+    }
+
+    pub(crate) fn resolves(&self, path: impl AsRef<Path>, target: impl AsRef<Path>) -> &Self {
+        self.resolved
+            .borrow_mut()
+            .insert(path.as_ref().to_owned(), target.as_ref().to_owned());
         self
     }
 
@@ -125,6 +133,9 @@ impl Files for FakeFiles {
     }
 
     fn real_path(&self, path: &Path) -> Result<PathBuf, FileError> {
+        if let Some(target) = self.resolved.borrow().get(path) {
+            return Ok(target.clone());
+        }
         if self.entries.borrow().contains_key(path) {
             return Ok(path.to_owned());
         }
@@ -465,6 +476,14 @@ impl FakeTimers {
     pub(crate) fn absent() -> Self {
         Self {
             state: TimerState::Absent,
+            calls: RefCell::new(Vec::new()),
+        }
+    }
+
+    #[must_use]
+    pub(crate) fn inactive() -> Self {
+        Self {
+            state: TimerState::Inactive,
             calls: RefCell::new(Vec::new()),
         }
     }
