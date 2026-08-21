@@ -44,14 +44,6 @@ impl Vault {
     }
 
     #[must_use]
-    pub fn holds(&self, id: &ContainerId) -> bool {
-        match id {
-            ContainerId::Grid(grid) => self.grids.contains_key(grid),
-            ContainerId::Pile(pile) => self.piles.contains_key(pile),
-        }
-    }
-
-    #[must_use]
     pub fn gold(&self, id: &ContainerId) -> Option<Gold> {
         self.gold.get(id).copied()
     }

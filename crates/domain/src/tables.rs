@@ -35,11 +35,6 @@ impl Footprint {
     pub const fn height(self) -> u8 {
         self.height.get()
     }
-
-    #[must_use]
-    pub const fn cells(self) -> u16 {
-        self.width.get() as u16 * self.height.get() as u16
-    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]

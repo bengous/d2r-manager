@@ -95,7 +95,6 @@ fn canonical(item: &Item) -> Result<Vec<u8>, ModelError> {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Object {
     item: Item,
-    code: ItemCode,
     fingerprint: Fingerprint,
     footprint: Footprint,
     carry_group: Option<CarryGroup>,
@@ -106,7 +105,6 @@ impl Object {
         let code = item.code().unwrap_or(ItemCode::EAR);
         let footprint = tables::footprint(code)?;
         Ok(Self {
-            code,
             fingerprint: Fingerprint::of(&item)?,
             footprint,
             carry_group: carry_group(&item),
@@ -117,11 +115,6 @@ impl Object {
     #[must_use]
     pub const fn item(&self) -> &Item {
         &self.item
-    }
-
-    #[must_use]
-    pub const fn code(&self) -> ItemCode {
-        self.code
     }
 
     #[must_use]

@@ -82,11 +82,6 @@ impl GridGeometry {
     }
 
     #[must_use]
-    pub const fn cells(self) -> u16 {
-        self.columns.get() as u16 * self.rows.get() as u16
-    }
-
-    #[must_use]
     const fn holds(self, cell: GridPosition, footprint: Footprint) -> bool {
         cell.column.0 as u16 + footprint.width() as u16 <= self.columns.get() as u16
             && cell.row.0 as u16 + footprint.height() as u16 <= self.rows.get() as u16
