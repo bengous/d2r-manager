@@ -51,15 +51,17 @@ lanceur `~/.local/bin/d2r`.
 | `format` | octets vers modele et retour, v105 seul, pur, zero I/O | rien |
 | `domain` | objets, grilles, regles, plans de transaction, pur | `format` |
 | `app` | ports (traits) et cas d'usage : sync, plan, apply | `domain` |
-| `cli` | adaptateurs (fs, git, processus) et binaire clap | `app` |
+| `infra` | adaptateurs (fs, verrous, git, processus, timer, horloge) | `app` |
+| `cli` | binaire clap `d2r-manager` | `app`, `infra` |
+| `server` | API HTTP locale, contrat `docs/openapi.json` | `app`, `infra` |
 
 Regles :
 
 1. `format` et `domain` ne touchent ni fichier, ni horloge, ni processus.
    Impose par `clippy.toml` : `disallowed-types` sur `std::fs`, `std::process`,
    `std::time::SystemTime` dans ces deux crates.
-2. Les adaptateurs restent dans `cli` tant qu'il est le seul consommateur.
-   Extraction en crate `infra` quand l'API HTTP arrive, pas avant.
+2. Les adaptateurs vivent dans `infra` depuis l'arrivee de l'API HTTP.
+   `cli` et `server` les consomment, aucun n'en porte.
 3. Etats invalides irrepresentables : `Plan` puis `ValidatedPlan` puis
    `AppliedPlan` sont des types distincts ; une position de grille ne se
    construit que bornee ; les codes objet sont des newtypes.
@@ -106,7 +108,8 @@ Mesurees sur la machine le 2026-08-20, installees via mise.
 | slf4j-api | 2.0.17, sha256 `7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832` | dependance `provided` de l'oracle Java, telechargee par script |
 
 Dependances Rust : `clap`, `serde`, `serde_json`, `thiserror`, `anyhow` (cli),
-`jiff` 0.2.32 (cli, horodatage ISO-8601 local du commit de sauvegarde),
+`jiff` 0.2.32 (infra, horodatage ISO-8601 local du commit de sauvegarde),
+`tiny_http` 0.12.0 (server, plus `ascii`, `chunked_transfer`, `httpdate`),
 `proptest` (dev). Versions prises au `cargo add` initial et figees par le
 `Cargo.lock` commite.
 
