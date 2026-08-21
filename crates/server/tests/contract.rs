@@ -138,6 +138,68 @@ impl Contract {
         self.resolve(schema)
     }
 
+    fn parameters(&self, path: &str) -> Vec<Parameter> {
+        self.at(&["paths", path, "get", "parameters"])
+            .as_array()
+            .expect("the parameters of a route")
+            .iter()
+            .map(|parameter| Parameter {
+                name: parameter["name"]
+                    .as_str()
+                    .expect("the name of a parameter")
+                    .to_owned(),
+                required: parameter["required"]
+                    .as_bool()
+                    .expect("the requiredness of a parameter"),
+                schema: parameter["schema"].clone(),
+            })
+            .collect()
+    }
+
+    fn walk(&self, schema: &Value, sample: &Value, at: &str, walk: &mut Walk) {
+        let schema = self.resolve(schema);
+        match schema.get("type").and_then(Value::as_str) {
+            Some("object") => {
+                let none = Value::Array(Vec::new());
+                let required = names(schema.get("required").unwrap_or(&none));
+                let empty = serde_json::Map::new();
+                let properties = schema
+                    .get("properties")
+                    .and_then(Value::as_object)
+                    .unwrap_or(&empty);
+                let held = sample.as_object().expect("an object of the sample");
+                for name in properties.keys() {
+                    if !held.contains_key(name) {
+                        walk.missing.push(format!("{at}/{name}"));
+                    }
+                }
+                for (name, entry) in held {
+                    walk.probes.push(Probe {
+                        pointer: at.to_owned(),
+                        name: name.clone(),
+                        required: required.contains(name),
+                    });
+                    if let Some(property) = properties.get(name) {
+                        self.walk(property, entry, &format!("{at}/{name}"), walk);
+                    }
+                }
+            }
+            Some("array") => {
+                if let Some(items) = schema.get("items") {
+                    for (index, entry) in sample
+                        .as_array()
+                        .expect("an array of the sample")
+                        .iter()
+                        .enumerate()
+                    {
+                        self.walk(items, entry, &format!("{at}/{index}"), walk);
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
     fn confront(&self, answer: &Answer) {
         let method = answer.call.method.to_ascii_lowercase();
         let declared = ROUTES.iter().any(|route| {
@@ -401,13 +463,55 @@ fn names(value: &Value) -> BTreeSet<String> {
     }
 }
 
-fn without(sample: &Value, name: &str) -> String {
+#[derive(Debug)]
+struct Probe {
+    pointer: String,
+    name: String,
+    required: bool,
+}
+
+#[derive(Debug, Default)]
+struct Walk {
+    probes: Vec<Probe>,
+    missing: Vec<String>,
+}
+
+#[derive(Debug)]
+struct Parameter {
+    name: String,
+    required: bool,
+    schema: Value,
+}
+
+fn without(sample: &Value, probe: &Probe) -> String {
     let mut short = sample.clone();
     short
+        .pointer_mut(&probe.pointer)
+        .expect("a node of the sample")
         .as_object_mut()
-        .expect("a request object")
-        .remove(name);
+        .expect("an object of the sample")
+        .remove(&probe.name);
     short.to_string()
+}
+
+fn joined(fields: &[(&str, String)]) -> String {
+    fields
+        .iter()
+        .map(|(name, value)| format!("{name}={value}"))
+        .collect::<Vec<String>>()
+        .join("&")
+}
+
+fn plan_sample() -> Value {
+    json!({"operations": [{
+        "transfer": "move",
+        "from": {
+            "container": "shared/linux/5",
+            "fingerprint": "00000000000000000000000000000000",
+            "units": 2,
+        },
+        "to": {"container": "shared/linux/0", "cell": {"column": 1, "row": 2}},
+    }]})
 }
 
 #[test]
@@ -422,37 +526,44 @@ fn every_request_the_contract_declares_is_the_request_the_server_reads() {
             "/sync",
             json!({"source": saves, "repo": nowhere, "lock": rig.tree.path("lock/backup.lock")}),
         ),
-        ("/plan", json!({"saves": saves, "plan": {"operations": []}})),
+        ("/plan", json!({"saves": saves, "plan": plan_sample()})),
         (
             "/apply",
-            json!({"repo": nowhere, "saves": saves, "plan": {"operations": []},
+            json!({"repo": nowhere, "saves": saves, "plan": plan_sample(),
                 "timer": ABSENT_TIMER}),
         ),
     ];
 
     for (path, sample) in samples {
-        let schema = contract.request(path);
-        let declared = names(&schema["properties"]);
-        let required = names(&schema["required"]);
-        assert_eq!(names(&sample), declared, "{path}");
-        assert!(required.is_subset(&declared), "{path}");
+        let schema = contract.request(path).clone();
+        if let Err(reason) = contract.check(&schema, &sample, path) {
+            panic!("the contract declares another request than the server reads: {reason}");
+        }
+        let mut walk = Walk::default();
+        contract.walk(&schema, &sample, "", &mut walk);
+        assert!(
+            walk.missing.is_empty(),
+            "{path}: the contract declares properties no request exercises: {:?}",
+            walk.missing
+        );
 
         let answer = rig.ask(Call::post(path, &sample.to_string()));
         assert_ne!(answer.status, 400, "{path}: {}", answer.body);
 
-        for name in &required {
-            let answer = rig.ask(Call::post(path, &without(&sample, name)));
-            assert_eq!(
-                answer.status, 400,
-                "{path}: the server reads a request without {name}"
-            );
-        }
-        for name in declared.difference(&required) {
-            let answer = rig.ask(Call::post(path, &without(&sample, name)));
-            assert_ne!(
-                answer.status, 400,
-                "{path}: the server refuses a request without {name}"
-            );
+        for probe in &walk.probes {
+            let answer = rig.ask(Call::post(path, &without(&sample, probe)));
+            let at = format!("{path}{}/{}", probe.pointer, probe.name);
+            if probe.required {
+                assert_eq!(
+                    answer.status, 400,
+                    "the server reads a request without {at}"
+                );
+            } else {
+                assert_ne!(
+                    answer.status, 400,
+                    "the server refuses a request without {at}"
+                );
+            }
         }
 
         let mut extra = sample.clone();
@@ -461,6 +572,86 @@ fn every_request_the_contract_declares_is_the_request_the_server_reads() {
         assert_eq!(
             answer.status, 400,
             "{path}: the server reads a property the contract never declares"
+        );
+    }
+}
+
+#[test]
+fn every_query_the_contract_declares_is_the_query_the_server_reads() {
+    let contract = Contract::read();
+    let rig = Rig::new("contract-queries");
+    let saves = rig.tree.path("saves");
+    seed(&saves);
+    let path = encoded(&saves);
+    let samples: [(&'static str, Vec<(&str, String)>); 2] = [
+        (
+            "/items",
+            vec![
+                ("saves", path.clone()),
+                ("container", "shared/linux/0".to_owned()),
+                ("code", "jew".to_owned()),
+                ("quality", "unique".to_owned()),
+                ("fingerprint", "0".to_owned()),
+            ],
+        ),
+        (
+            "/diff",
+            vec![("saves", path.clone()), ("against", path.clone())],
+        ),
+    ];
+
+    for (route, sample) in samples {
+        let declared = contract.parameters(route);
+        assert_eq!(
+            declared
+                .iter()
+                .map(|parameter| parameter.name.clone())
+                .collect::<BTreeSet<String>>(),
+            sample
+                .iter()
+                .map(|(name, _)| (*name).to_owned())
+                .collect::<BTreeSet<String>>(),
+            "{route}: the contract and the query hold other parameters"
+        );
+        for parameter in &declared {
+            let (_, value) = sample
+                .iter()
+                .find(|(name, _)| *name == parameter.name)
+                .expect("a parameter of the query");
+            if let Err(reason) = contract.check(&parameter.schema, &json!(value), &parameter.name) {
+                panic!(
+                    "{route}: the query carries another value than the contract declares: {reason}"
+                );
+            }
+        }
+
+        let answer = rig.ask(Call::get(route, &joined(&sample)));
+        assert_ne!(answer.status, 400, "{route}: {}", answer.body);
+
+        for parameter in &declared {
+            let short: Vec<(&str, String)> = sample
+                .iter()
+                .filter(|(name, _)| *name != parameter.name)
+                .cloned()
+                .collect();
+            let answer = rig.ask(Call::get(route, &joined(&short)));
+            let at = format!("{route}?{}", parameter.name);
+            if parameter.required {
+                assert_eq!(answer.status, 400, "the server reads a query without {at}");
+            } else {
+                assert_ne!(
+                    answer.status, 400,
+                    "the server refuses a query without {at}"
+                );
+            }
+        }
+
+        let mut extra = sample.clone();
+        extra.push(("gold", "1".to_owned()));
+        let answer = rig.ask(Call::get(route, &joined(&extra)));
+        assert_eq!(
+            answer.status, 400,
+            "{route}: the server reads a parameter the contract never declares"
         );
     }
 }
