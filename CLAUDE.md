@@ -4,8 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Gestion de saves Diablo II Resurrected (offline, format v105) : sauvegarde vers
 git, exploration hors jeu, deplacement et duplication d'objets par transaction.
-Source de verite : `docs/PLAN.md`, avec `docs/FORMAT.md` pour le bitstream et
-`fixtures/PROVENANCE.md` pour le corpus.
+Source de verite : le code et ses tests, avec `docs/FORMAT.md` pour le
+bitstream, `docs/openapi.json` pour l'API et `fixtures/PROVENANCE.md` pour le
+corpus. `docs/PLAN.md` est le brief d'origine, archive : il ne decrit pas
+l'etat courant.
 
 ## Interdictions absolues
 
@@ -21,11 +23,12 @@ Source de verite : `docs/PLAN.md`, avec `docs/FORMAT.md` pour le bitstream et
 ## Commandes
 
 - `just check` : corpus sha256, fmt, clippy pedantic `-D warnings`, machete, deny.
-- `just test` : `cargo test --workspace --all-features` (206 tests).
+- `just test` : `cargo test --workspace --all-features`.
 - Un seul test : `cargo test -p <crate> --test <fichier> <nom>`, par exemple
   `cargo test -p server --test contract`.
-- `just goldens` : reconstruit les oracles et regenere les 120 golden files.
-  Doit etre idempotent : `git diff --exit-code goldens/` apres coup.
+- `just goldens` : reconstruit les oracles et regenere les goldens, un fichier
+  par fixture et par oracle. Doit etre idempotent :
+  `git diff --exit-code goldens/` apres coup.
 - `just tables` : regenere les tables `v105.rs` de `format` et `domain`
   (`UPDATE_TABLES=1`), puis leur test-garde les revalide contre les `.txt`.
 
@@ -39,11 +42,8 @@ Six crates, dependances a sens unique, violation = erreur de compilation :
   `FORMAT.md §x.y`, seule forme de commentaire autorisee du depot.
 - `domain` : grilles, regles, empreintes d'objet, typestate
   `Plan` -> `ValidatedPlan` -> `AppliedPlan`. Pur.
-- `app` : ports (traits) et cas d'usage. `app::transaction::prepare` porte
-  lecture, resolution, validation ET projection a blanc ; `cli::plan`,
-  `server::handler::plan` et `Transaction::apply` la partagent, sinon la porte
-  du plan accepte ce que l'apply refuse.
-- `infra` : les sept adaptateurs (fs, verrous, git par sous-processus, pgrep,
+- `app` : ports (traits) et cas d'usage : sync, inspection, transactions. Pur.
+- `infra` : les adaptateurs (fs, verrous, git par sous-processus, pgrep,
   systemctl, horloge). `cli` et `server` n'en portent aucun.
 - `server` : API locale, loopback seul. Toute route est declaree dans
   `docs/openapi.json` ; `crates/server/tests/contract.rs` oppose le contrat au
@@ -62,8 +62,10 @@ faire passer un test.
 - `docs/PLAN.md`, `CLAUDE.md` et `.claude/rules/` ne se modifient pas sans
   demande explicite de l'utilisateur.
 - Deux echecs sur la meme piste : arret, resume, remontee.
-- Divergence avec `docs/PLAN.md` : question, jamais d'initiative silencieuse.
-- Questions ouvertes en attente de decision : `docs/PLAN.md` §11.
+- Changement de regle metier ou de perimetre : question a l'utilisateur, jamais
+  d'initiative silencieuse.
+- Questions ouvertes en attente de decision : `docs/DECISIONS.md`. Un agent ne
+  les tranche pas seul.
 
 ## Regles
 
