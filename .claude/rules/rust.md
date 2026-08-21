@@ -3,16 +3,16 @@ paths:
   - "crates/**"
 ---
 
-# Qualite Rust
+# Rust quality
 
-- Etats invalides irrepresentables partout ou une donnee a plus d'une forme
-  legitime : enums a la place de bools correles, newtypes pour les primitives
-  porteuses de regles, typestate pour les operations ordonnees.
-- Propriete et emprunts precis : les API prennent ce qu'elles consomment ;
-  pas de clone de confort.
-- `thiserror` a variantes precises dans les bibliotheques ; `anyhow` seulement
-  dans les binaires `cli` et `server`.
-- `format`, `domain` et `app` restent purs : zero I/O, horloge, processus.
-  Chaque crate pure porte son propre `clippy.toml` `disallowed-types` ; une
-  nouvelle crate pure sans ce fichier n'est gardee par rien.
-- `dead_code` en deny : une API publique sans appelant se supprime.
+- Invalid states unrepresentable everywhere a datum has more than one
+  legitimate shape: enums in place of correlated bools, newtypes for the
+  primitives that carry rules, typestate for the ordered operations.
+- Precise ownership and borrows: the APIs take what they consume; no
+  convenience clone.
+- `thiserror` with precise variants in the libraries; `anyhow` only in the
+  `cli` and `server` binaries.
+- `format`, `domain` and `app` stay pure: zero I/O, clock, process. Every pure
+  crate carries its own `clippy.toml` `disallowed-types`; a new pure crate
+  without that file is guarded by nothing.
+- `dead_code` is set to deny: a public API with no caller is deleted.

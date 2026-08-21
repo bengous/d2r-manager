@@ -4,18 +4,17 @@ paths:
   - "docs/FORMAT.md"
 ---
 
-# Bitstream et spec FORMAT.md
+# Bitstream and FORMAT.md spec
 
-- Zero commentaire, sauf les references de la forme `FORMAT.md §x.y` dans le
-  code du bitstream : seule forme de commentaire autorisee du depot.
-- Toute largeur de champ vient de `docs/FORMAT.md`, jamais d'un nombre magique
-  local. Code qui contredit la spec : corriger la spec dans le meme commit.
-- Les goldens sont le corrige : ne jamais les ajuster pour faire passer un
-  test. Le round-trip octet seul ne prouve rien, un champ lu au mauvais offset
-  et reecrit au meme offset le passe. La preuve est la concordance champ a
-  champ (`tests/project/`).
-- Version de sauvegarde autre que 105 : erreur explicite, aucune
-  compatibilite.
-- `proptest` sur le bitreader (`src/bits.rs`) uniquement.
-- Axes : `InvX` = colonne, `InvY` = ligne, convention D2SSharp. Cette rule est
-  le foyer de la convention pour tout le depot.
+- Zero comments, except the references of the form `FORMAT.md §x.y` in the
+  bitstream code: the only comment form the repository allows.
+- Every field width comes from `docs/FORMAT.md`, never from a local magic
+  number. Code that contradicts the spec: fix the spec in the same commit.
+- The goldens are the answer key: never adjust them to make a test pass. The
+  byte round-trip alone proves nothing, a field read at the wrong offset and
+  rewritten at the same offset passes it. The proof is the field-by-field
+  match (`tests/project/`).
+- Save version other than 105: explicit error, no compatibility.
+- `proptest` on the bitreader (`src/bits.rs`) only.
+- Axes: `InvX` = column, `InvY` = row, D2SSharp convention. This rule is the
+  home of that convention for the whole repository.

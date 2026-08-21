@@ -4,21 +4,22 @@ paths:
   - "docs/openapi.json"
 ---
 
-# API HTTP locale
+# Local HTTP API
 
-- `docs/openapi.json` est le contrat gele : il fige l'interface pour une GUI
-  future. Toute route, propriete, parametre de query ou statut ajoute au
-  serveur se declare dans le contrat, et l'inverse.
-- `tests/contract.rs` oppose le contrat au serveur : noms, types, requiredness,
-  schemas imbriques, parametres de query, mots-cles inline et statuts. Quand il
-  echoue, on rapproche le garde du contrat, jamais le contrat du garde.
-- Les noms de parametres vivent dans la table `ROUTES` : un nom ajoute cote
-  serveur sans le contrat fait echouer la suite. C'est voulu.
-- Ecoute loopback seulement. Un `Host` etranger rend 403 : c'est une mesure
-  anti-reliaison DNS, pas une authentification.
-- Aucune operation que la CLI n'expose pas ; la parite est verrouillee dans les
-  deux sens par `x-cli` et `cli/tests/commands.rs`. Pas de creation d'objet,
-  rien qui contourne `domain` : ce projet n'est pas un editeur de personnage.
-- Erreurs typees par famille metier ; jamais de 500 pour un refus de regle.
-- Le serveur traite une requete a la fois : deux `apply` simultanes sont
-  serialises. Aucun verrou n'est pris, voir `docs/DECISIONS.md`.
+- `docs/openapi.json` is the frozen contract: it freezes the interface for a
+  future GUI. Every route, property, query parameter or status added to the
+  server is declared in the contract, and the reverse.
+- `tests/contract.rs` checks the contract against the server: names, types,
+  requiredness, nested schemas, query parameters, inline keywords and
+  statuses. When it fails, move the guard toward the contract, never the
+  contract toward the guard.
+- The parameter names live in the `ROUTES` table: a name added on the server
+  side without the contract makes the suite fail. That is intended.
+- Loopback listen only. A foreign `Host` returns 403: this is a DNS rebinding
+  defense, not authentication.
+- No operation that the CLI does not expose; the parity is locked in both
+  directions by `x-cli` and `cli/tests/commands.rs`. No item creation, nothing
+  that bypasses `domain`: this project is not a character editor.
+- Errors typed by business family; never a 500 for a rule refusal.
+- The server handles one request at a time: two simultaneous `apply` are
+  serialized. No lock is taken, see `docs/DECISIONS.md`.

@@ -3,40 +3,40 @@ paths:
   - "crates/domain/**"
 ---
 
-# Regles du domaine
+# Domain rules
 
-Faits mesures sur le corpus, pas des conventions : les changer casse des
-fichiers reels.
+Facts measured on the corpus, not conventions: changing them breaks real
+files.
 
-- L'onglet `AdvancedStash` n'est pas une grille : les fichiers ecrits par le
-  jeu y portent des positions qui se recouvrent. On empile sur une entree de
-  meme empreinte tant qu'il reste de la place, sinon on ajoute en gardant la
-  position de l'objet entrant. Aucune position ne s'invente : `Destination::Pile`
-  n'a pas de champ cellule.
-- Le champ de pile `AdvancedStash` est optionnel par objet et entre dans
-  l'empreinte : les objets de grille le portent absent, ceux de l'onglet le
-  portent present. Un deplacement d'une grille vers l'onglet change donc
-  l'identite de l'objet et se refuse a la projection (`app::world`). Les sens
-  pile vers pile, pile vers grille et grille vers grille restent permis.
-- Des entrees de pile a 0 unite existent dans les vrais fichiers : `PileCount`
-  va de 0 a 99 pour ce qu'une entree porte, `PileUnits` de 1 a 99 pour ce
-  qu'une operation deplace. Une entree a 0 se lit, ne se deplace pas.
-- `carry1` des `.txt` est un identifiant de groupe, pas un booleen : 4 groupes,
-  dont les charmes Sunder (`cs2`), absents de la liste habituelle (Annihilus,
-  Hellfire Torch, Gheed's Fortune). La regle du « un par personnage » porte
-  sur le groupe.
-- L'or ne se deplace pas : `Plan` ne porte que `move` et `duplicate`, et
-  `Census` exclut l'or, donc l'invariant de conservation ne le voit pas. Le
-  seul filet est `infra/tests/transaction.rs`, test
-  `no_operation_moves_a_single_piece_of_gold`, qui lit l'or des onglets et les
-  `PlayerStats` depuis les fichiers. Une operation de transfert d'or est une
-  decision ouverte, voir `docs/DECISIONS.md`.
-- Une regle « quantity <= maxstack » refuserait des fichiers reels : `ama`
-  porte 180 la ou les `.txt` annoncent 120. La limite de 99 vise les piles de
-  l'onglet `AdvancedStash`, pas le champ `quantity`.
-- `Plan` -> `ValidatedPlan` -> `AppliedPlan` sont trois types distincts, aucun
-  ne derive `Clone`, et `validate` consomme le vault : reconstruire le vault
-  depuis les fichiers pour reessayer apres un refus.
-- La geometrie vient des `.txt` par table generee et commitee
-  (`src/tables/v105.rs`), revalidee par `tests/tables.rs` ; `just tables`
-  regenere. Jamais de dimension ecrite a la main.
+- The `AdvancedStash` tab is not a grid: the files the game writes carry
+  overlapping positions in it. We stack onto an entry of the same fingerprint
+  as long as room remains, otherwise we append and keep the position of the
+  incoming item. No position is invented: `Destination::Pile` has no cell
+  field.
+- The `AdvancedStash` stack field is optional per item and enters the
+  fingerprint: grid items carry it absent, tab items carry it present. A move
+  from a grid to the tab therefore changes the identity of the item and is
+  refused at projection (`app::world`). The stack to stack, stack to grid and
+  grid to grid directions stay allowed.
+- Stack entries with 0 units exist in the real files: `PileCount` runs from 0
+  to 99 for what an entry carries, `PileUnits` from 1 to 99 for what an
+  operation moves. An entry at 0 is read, not moved.
+- `carry1` of the `.txt` is a group identifier, not a boolean: 4 groups,
+  including the Sunder charms (`cs2`), absent from the usual list (Annihilus,
+  Hellfire Torch, Gheed's Fortune). The "one per character" rule applies to
+  the group.
+- Gold does not move: `Plan` carries only `move` and `duplicate`, and `Census`
+  excludes gold, so the conservation invariant does not see it. The only
+  safety net is `infra/tests/transaction.rs`, test
+  `no_operation_moves_a_single_piece_of_gold`, which reads the gold of the
+  tabs and the `PlayerStats` from the files. A gold transfer operation is an
+  open decision, see `docs/DECISIONS.md`.
+- A "quantity <= maxstack" rule would refuse real files: `ama` carries 180
+  where the `.txt` announce 120. The 99 cap targets the stacks of the
+  `AdvancedStash` tab, not the `quantity` field.
+- `Plan` -> `ValidatedPlan` -> `AppliedPlan` are three distinct types, none
+  derives `Clone`, and `validate` consumes the vault: rebuild the vault from
+  the files to retry after a refusal.
+- The geometry comes from the `.txt` through a generated and committed table
+  (`src/tables/v105.rs`), revalidated by `tests/tables.rs`; `just tables`
+  regenerates it. Never a hand-written dimension.
