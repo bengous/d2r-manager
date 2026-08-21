@@ -1,3 +1,4 @@
+use std::fmt;
 use std::num::NonZeroU8;
 
 use format::item::GridCell;
@@ -8,6 +9,48 @@ use crate::object::{Fingerprint, Object};
 use crate::tables::Footprint;
 
 const ADDRESS_ROWS: usize = 16;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Column(u8);
+
+impl Column {
+    #[must_use]
+    pub const fn new(index: u8) -> Self {
+        Self(index)
+    }
+
+    #[must_use]
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+}
+
+impl fmt::Display for Column {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(formatter, "{}", self.0)
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct Row(u8);
+
+impl Row {
+    #[must_use]
+    pub const fn new(index: u8) -> Self {
+        Self(index)
+    }
+
+    #[must_use]
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+}
+
+impl fmt::Display for Row {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(formatter, "{}", self.0)
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct GridGeometry {
@@ -45,20 +88,20 @@ impl GridGeometry {
 
     #[must_use]
     const fn holds(self, cell: GridPosition, footprint: Footprint) -> bool {
-        cell.column() as u16 + footprint.width() as u16 <= self.columns.get() as u16
-            && cell.row() as u16 + footprint.height() as u16 <= self.rows.get() as u16
+        cell.column.0 as u16 + footprint.width() as u16 <= self.columns.get() as u16
+            && cell.row.0 as u16 + footprint.height() as u16 <= self.rows.get() as u16
     }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct GridPosition {
-    column: u8,
-    row: u8,
+    column: Column,
+    row: Row,
 }
 
 impl GridPosition {
-    pub fn new(column: u8, row: u8) -> Result<Self, ModelError> {
-        GridCell::new(u32::from(column), u32::from(row))?;
+    pub fn new(column: Column, row: Row) -> Result<Self, ModelError> {
+        GridCell::new(u32::from(column.0), u32::from(row.0))?;
         Ok(Self { column, row })
     }
 
@@ -66,25 +109,31 @@ impl GridPosition {
     pub const fn from_cell(cell: GridCell) -> Self {
         #[expect(clippy::cast_possible_truncation, reason = "a grid cell holds 4 bits")]
         Self {
-            column: cell.column() as u8,
-            row: cell.row() as u8,
+            column: Column(cell.column() as u8),
+            row: Row(cell.row() as u8),
         }
     }
 
     #[must_use]
     pub fn to_cell(self) -> GridCell {
-        GridCell::new(u32::from(self.column), u32::from(self.row))
+        GridCell::new(u32::from(self.column.0), u32::from(self.row.0))
             .expect("a grid position is built inside the cell address space")
     }
 
     #[must_use]
-    pub const fn column(self) -> u8 {
+    pub const fn column(self) -> Column {
         self.column
     }
 
     #[must_use]
-    pub const fn row(self) -> u8 {
+    pub const fn row(self) -> Row {
         self.row
+    }
+}
+
+impl fmt::Display for GridPosition {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(formatter, "column {} row {}", self.column, self.row)
     }
 }
 
@@ -93,18 +142,17 @@ struct Occupancy([u16; ADDRESS_ROWS]);
 
 impl Occupancy {
     fn mask(cell: GridPosition, footprint: Footprint) -> u16 {
-        let width = u32::from(footprint.width());
-        let span = (1u32 << width) - 1;
+        let span = (1u32 << u32::from(footprint.width())) - 1;
         #[expect(
             clippy::cast_possible_truncation,
             reason = "a grid row holds 16 columns"
         )]
-        let mask = (span << u32::from(cell.column())) as u16;
+        let mask = (span << u32::from(cell.column.0)) as u16;
         mask
     }
 
     const fn rows(cell: GridPosition, footprint: Footprint) -> std::ops::Range<usize> {
-        let start = cell.row() as usize;
+        let start = cell.row.0 as usize;
         start..start + footprint.height() as usize
     }
 
@@ -170,10 +218,8 @@ impl Grid {
     }
 
     #[must_use]
-    pub fn holds(&self, fingerprint: Fingerprint) -> bool {
+    pub fn into_slots(self) -> Vec<Slot> {
         self.slots
-            .iter()
-            .any(|slot| slot.object.fingerprint() == fingerprint)
     }
 
     #[must_use]
@@ -240,7 +286,10 @@ impl Grid {
         let last_row = self.geometry.rows() - footprint.height();
         for row in 0..=last_row {
             for column in 0..=last_column {
-                let cell = GridPosition { column, row };
+                let cell = GridPosition {
+                    column: Column(column),
+                    row: Row(row),
+                };
                 if occupancy.is_free(cell, footprint) {
                     return Some(cell);
                 }

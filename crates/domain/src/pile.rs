@@ -83,6 +83,11 @@ impl PileEntry {
     }
 
     #[must_use]
+    pub fn into_object(self) -> Object {
+        self.object
+    }
+
+    #[must_use]
     pub const fn count(&self) -> PileCount {
         self.count
     }
@@ -104,6 +109,11 @@ impl Pile {
     #[must_use]
     pub fn entries(&self) -> &[PileEntry] {
         &self.entries
+    }
+
+    #[must_use]
+    pub fn into_entries(self) -> Vec<PileEntry> {
+        self.entries
     }
 
     #[must_use]

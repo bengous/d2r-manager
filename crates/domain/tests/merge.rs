@@ -228,8 +228,7 @@ fn plan_on_the_first_free_tab(vault: &Vault) -> Plan {
         working = Plan::new(vec![operation.clone()])
             .validate(working)
             .expect("the step is valid")
-            .outcome()
-            .clone();
+            .into_outcome();
         operations.push(operation);
     }
     operations.extend(pile_operations(vault));
@@ -254,10 +253,12 @@ fn the_stash_merge_of_2026_08_20_replays_to_the_file_the_game_wrote() {
     assert_eq!(plan.operations().len(), 67 + 68);
 
     let validated = plan.validate(start).expect("the merge is a valid plan");
+    validated
+        .conserved()
+        .expect("the merge keeps every item it moves");
     assert!(
-        validated.conservation().is_held(),
-        "{:?}",
-        validated.conservation()
+        validated.duplicated().is_empty(),
+        "the merge duplicates nothing"
     );
     let outcome = validated.outcome();
 
@@ -316,8 +317,10 @@ fn the_merged_stash_holds_the_same_items_when_the_plan_names_no_cell() {
         let mut cells: Vec<(u8, u8)> = Vec::new();
         for slot in grid.slots() {
             let footprint = slot.object().footprint();
-            for row in slot.origin().row()..slot.origin().row() + footprint.height() {
-                for column in slot.origin().column()..slot.origin().column() + footprint.width() {
+            for row in slot.origin().row().get()..slot.origin().row().get() + footprint.height() {
+                for column in
+                    slot.origin().column().get()..slot.origin().column().get() + footprint.width()
+                {
                     assert!(
                         column < grid.geometry().columns() && row < grid.geometry().rows(),
                         "tab {index}: an item leaves the grid"
@@ -331,6 +334,36 @@ fn the_merged_stash_holds_the_same_items_when_the_plan_names_no_cell() {
         cells.dedup();
         assert_eq!(taken, cells.len(), "tab {index}: two items share a cell");
     }
+}
+
+#[test]
+fn the_validated_merge_applies_against_the_file_the_game_wrote() {
+    let start = both();
+    let after = reference();
+    let cells = added_cells(&single(&linux(), &read(&merge_bytes("before.d2i"))), &after);
+
+    let validated = plan_on_the_reference_cells(&start, &cells)
+        .validate(start)
+        .expect("the merge is a valid plan");
+
+    let mut builder = Vault::builder()
+        .shared_stash(&linux(), &read(&merge_bytes("after.d2i")))
+        .expect("the merged Linux stash");
+    for index in NORMAL_TABS {
+        builder = builder
+            .grid(&tab(&windows(), index), vec![])
+            .expect("the emptied Windows tab");
+    }
+    let read_back = builder
+        .pile(&pile(&windows(), PILE_TAB), vec![])
+        .expect("the emptied Windows pile")
+        .build();
+
+    let applied = validated
+        .apply(&read_back)
+        .expect("the file the game wrote is the outcome the plan expected");
+    assert_eq!(applied.realized().len(), 67 + 68);
+    assert!(applied.duplicated().is_empty());
 }
 
 #[test]

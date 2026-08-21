@@ -1,89 +1,69 @@
 use std::collections::BTreeMap;
 
 use crate::container::ContainerId;
+use crate::error::ConservationError;
 use crate::object::Fingerprint;
 use crate::vault::{ContainerRef, Vault};
 
+pub type Units = BTreeMap<Fingerprint, u32>;
+
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct Census {
-    units: BTreeMap<(ContainerId, Fingerprint), u32>,
+    containers: BTreeMap<ContainerId, Units>,
 }
 
 impl Census {
     #[must_use]
     pub fn of(vault: &Vault) -> Self {
-        let mut units: BTreeMap<(ContainerId, Fingerprint), u32> = BTreeMap::new();
+        let mut containers: BTreeMap<ContainerId, Units> = BTreeMap::new();
         for (id, container) in vault.containers() {
+            let units = containers.entry(id).or_default();
             match container {
                 ContainerRef::Grid(grid) => {
                     for slot in grid.slots() {
-                        *units
-                            .entry((id.clone(), slot.object().fingerprint()))
-                            .or_default() += 1;
+                        *units.entry(slot.object().fingerprint()).or_default() += 1;
                     }
                 }
                 ContainerRef::Pile(pile) => {
                     for entry in pile.entries() {
-                        *units
-                            .entry((id.clone(), entry.object().fingerprint()))
-                            .or_default() += u32::from(entry.count().get());
+                        *units.entry(entry.object().fingerprint()).or_default() +=
+                            u32::from(entry.count().get());
                     }
                 }
             }
         }
-        Self { units }
+        Self { containers }
     }
 
     #[must_use]
-    pub fn units(&self, container: &ContainerId, fingerprint: Fingerprint) -> u32 {
-        self.units
-            .get(&(container.clone(), fingerprint))
-            .copied()
-            .unwrap_or_default()
+    pub fn units(&self, container: &ContainerId) -> Option<&Units> {
+        self.containers.get(container)
     }
 
     #[must_use]
-    pub fn totals(&self) -> BTreeMap<Fingerprint, u32> {
-        let mut totals: BTreeMap<Fingerprint, u32> = BTreeMap::new();
-        for ((_, fingerprint), count) in &self.units {
-            *totals.entry(*fingerprint).or_default() += count;
+    pub fn totals(&self) -> Units {
+        let mut totals = Units::new();
+        for units in self.containers.values() {
+            for (fingerprint, count) in units {
+                *totals.entry(*fingerprint).or_default() += count;
+            }
         }
         totals
     }
 
-    pub fn entries(&self) -> impl Iterator<Item = (&ContainerId, Fingerprint, u32)> {
-        self.units
-            .iter()
-            .map(|((container, fingerprint), count)| (container, *fingerprint, *count))
+    pub fn containers(&self) -> impl Iterator<Item = (&ContainerId, &Units)> {
+        self.containers.iter()
     }
-}
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Conservation {
-    Held {
-        duplicated: BTreeMap<Fingerprint, u32>,
-    },
-    Broken {
-        missing: BTreeMap<Fingerprint, u32>,
-        appeared: BTreeMap<Fingerprint, u32>,
-    },
-}
-
-impl Conservation {
-    #[must_use]
-    pub fn between(
-        before: &Census,
-        after: &Census,
-        duplicated: &BTreeMap<Fingerprint, u32>,
-    ) -> Self {
-        let mut expected = before.totals();
+    pub fn conserved(&self, after: &Self, duplicated: &Units) -> Result<(), ConservationError> {
+        let mut expected = self.totals();
         for (fingerprint, count) in duplicated {
             *expected.entry(*fingerprint).or_default() += count;
         }
         let observed = after.totals();
 
-        let mut missing = BTreeMap::new();
-        let mut appeared = BTreeMap::new();
+        let mut missing = Units::new();
+        let mut appeared = Units::new();
         for (fingerprint, count) in &expected {
             let held = observed.get(fingerprint).copied().unwrap_or_default();
             if held < *count {
@@ -97,16 +77,9 @@ impl Conservation {
             }
         }
         if missing.is_empty() && appeared.is_empty() {
-            Self::Held {
-                duplicated: duplicated.clone(),
-            }
+            Ok(())
         } else {
-            Self::Broken { missing, appeared }
+            Err(ConservationError { missing, appeared })
         }
-    }
-
-    #[must_use]
-    pub const fn is_held(&self) -> bool {
-        matches!(self, Self::Held { .. })
     }
 }

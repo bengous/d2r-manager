@@ -3,8 +3,8 @@ use thiserror::Error;
 use format::code::ItemCode;
 use format::error::FormatError;
 
-use crate::container::{CharacterName, ContainerId, GridId};
-use crate::gold::Gold;
+use crate::census::Units;
+use crate::container::{CharacterName, ContainerId, GridId, StashName};
 use crate::grid::{GridGeometry, GridPosition};
 use crate::object::Fingerprint;
 use crate::pile::PileUnits;
@@ -63,12 +63,8 @@ pub enum VaultError {
         source: ValueError,
     },
 
-    #[error("{container}: {violation}")]
-    Placement {
-        container: ContainerId,
-        #[source]
-        violation: RuleViolation,
-    },
+    #[error(transparent)]
+    Placement(#[from] RuleViolation),
 
     #[error("{container}: an item outside the Stored mode has no place in a container")]
     NotStored { container: ContainerId },
@@ -78,7 +74,7 @@ pub enum VaultError {
 
     #[error("stash {stash} declares {tabs} tabs, more than the {max} an index carries")]
     TooManyTabs {
-        stash: crate::container::StashName,
+        stash: StashName,
         tabs: usize,
         max: u8,
     },
@@ -107,11 +103,9 @@ pub enum RuleViolation {
     GridTakesOneUnit { container: GridId, asked: PileUnits },
 
     #[error(
-        "{container}: a {}x{} item at column {} row {} leaves the {}x{} grid",
+        "{container}: a {}x{} item at {cell} leaves the {}x{} grid",
         footprint.width(),
         footprint.height(),
-        cell.column(),
-        cell.row(),
         geometry.columns(),
         geometry.rows()
     )]
@@ -122,11 +116,7 @@ pub enum RuleViolation {
         geometry: GridGeometry,
     },
 
-    #[error(
-        "{container}: cell column {} row {} is already taken",
-        cell.column(),
-        cell.row()
-    )]
+    #[error("{container}: {cell} is already taken")]
     CellTaken {
         container: GridId,
         cell: GridPosition,
@@ -159,6 +149,17 @@ pub struct PlanError {
 }
 
 #[derive(Debug, Error, Clone, PartialEq, Eq)]
+#[error(
+    "the multiset of items changed: {} fingerprints short, {} in excess",
+    missing.len(),
+    appeared.len()
+)]
+pub struct ConservationError {
+    pub missing: Units,
+    pub appeared: Units,
+}
+
+#[derive(Debug, Error, Clone, PartialEq, Eq)]
 pub enum ApplyError {
     #[error("{container} holds {observed} units of {fingerprint}, the plan expected {expected}")]
     UnitsDiffer {
@@ -174,12 +175,8 @@ pub enum ApplyError {
     #[error("{container} is absent from the outcome the plan expected")]
     ContainerUnexpected { container: ContainerId },
 
-    #[error("{container} holds {observed} gold, the plan expected {expected}")]
-    GoldDiffers {
-        container: ContainerId,
-        expected: Gold,
-        observed: Gold,
-    },
+    #[error(transparent)]
+    Conservation(#[from] ConservationError),
 }
 
 #[derive(Debug, Error, Clone, PartialEq, Eq)]

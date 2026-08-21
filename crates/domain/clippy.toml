@@ -5,6 +5,9 @@ disallowed-types = [
     { path = "std::process::Command", reason = "PLAN 3.1: domain spawns no process" },
     { path = "std::time::SystemTime", reason = "PLAN 3.1: domain reads no clock" },
     { path = "std::time::Instant", reason = "PLAN 3.1: domain reads no clock" },
+    { path = "std::net::TcpStream", reason = "PLAN 3.1: domain opens no socket" },
+    { path = "std::net::TcpListener", reason = "PLAN 3.1: domain opens no socket" },
+    { path = "std::net::UdpSocket", reason = "PLAN 3.1: domain opens no socket" },
 ]
 
 disallowed-methods = [
@@ -18,4 +21,10 @@ disallowed-methods = [
     { path = "std::fs::metadata", reason = "PLAN 3.1: domain is pure, zero I/O" },
     { path = "std::env::var", reason = "PLAN 3.1: domain reads no environment" },
     { path = "std::env::var_os", reason = "PLAN 3.1: domain reads no environment" },
+    { path = "std::fs::read_dir", reason = "PLAN 3.1: domain is pure, zero I/O" },
+    { path = "std::fs::remove_dir", reason = "PLAN 3.1: domain is pure, zero I/O" },
+    { path = "std::fs::remove_dir_all", reason = "PLAN 3.1: domain is pure, zero I/O" },
+    { path = "std::process::exit", reason = "PLAN 3.1: domain never ends the process" },
+    { path = "std::process::abort", reason = "PLAN 3.1: domain never ends the process" },
+    { path = "std::thread::spawn", reason = "PLAN 3.1: domain starts no thread" },
 ]

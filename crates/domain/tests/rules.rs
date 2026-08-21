@@ -1,10 +1,9 @@
 mod support;
 
-use domain::census::Conservation;
 use domain::container::{CharacterPage, ContainerId, GridId, PileId, TabIndex};
-use domain::error::{RuleViolation, ValueError};
+use domain::error::{ApplyError, RuleViolation, ValueError};
 use domain::gold::Gold;
-use domain::grid::GridPosition;
+use domain::grid::{Column, GridPosition, Row};
 use domain::object::Object;
 use domain::pile::{PileCount, PileUnits};
 use domain::plan::{Destination, Landing, Operation, Plan, Source, Transfer};
@@ -38,7 +37,7 @@ fn page(page: CharacterPage) -> GridId {
 }
 
 fn at(column: u8, row: u8) -> GridPosition {
-    GridPosition::new(column, row).expect("grid position")
+    GridPosition::new(Column::new(column), Row::new(row)).expect("grid position")
 }
 
 fn object(item: &format::item::Item) -> Object {
@@ -65,8 +64,10 @@ fn refuse(plan: Plan, vault: Vault) -> RuleViolation {
 
 fn accept(plan: Plan, vault: Vault) -> Vault {
     let validated = plan.validate(vault).expect("the plan is accepted");
-    assert!(validated.conservation().is_held());
-    validated.outcome().clone()
+    validated
+        .conserved()
+        .expect("a valid plan keeps the multiset");
+    validated.into_outcome()
 }
 
 #[test]
@@ -683,12 +684,8 @@ fn a_move_keeps_the_multiset_and_a_duplication_grows_it() {
     )])
     .validate(vault.clone())
     .expect("the move is accepted");
-    assert_eq!(
-        moved.conservation(),
-        &Conservation::Held {
-            duplicated: std::collections::BTreeMap::new(),
-        }
-    );
+    moved.conserved().expect("a move keeps the multiset");
+    assert!(moved.duplicated().is_empty());
     assert_eq!(moved.realized()[0].transfer(), Transfer::Move);
 
     let duplicated = Plan::new(vec![Operation::duplicated(
@@ -703,11 +700,14 @@ fn a_move_keeps_the_multiset_and_a_duplication_grows_it() {
     )])
     .validate(vault)
     .expect("the duplication is accepted");
+    duplicated
+        .conserved()
+        .expect("a duplication keeps the multiset it grew");
     assert_eq!(
-        duplicated.conservation(),
-        &Conservation::Held {
-            duplicated: [(object(&rune).fingerprint(), 1)].into_iter().collect(),
-        }
+        duplicated.duplicated(),
+        &[(object(&rune).fingerprint(), 1)]
+            .into_iter()
+            .collect::<domain::census::Units>()
     );
     assert_eq!(duplicated.realized()[0].transfer(), Transfer::Duplicate);
     assert_eq!(
@@ -746,7 +746,7 @@ fn a_validated_plan_applies_only_against_the_outcome_it_expects() {
 
     let written = validated.outcome().clone();
     let applied = validated.apply(&written).expect("the outcome matches");
-    assert!(applied.conservation().is_held());
+    assert!(applied.duplicated().is_empty());
     assert_eq!(applied.realized().len(), 1);
 
     let validated = Plan::new(vec![Operation::moved(
@@ -761,7 +761,15 @@ fn a_validated_plan_applies_only_against_the_outcome_it_expects() {
     )])
     .validate(vault.clone())
     .expect("the plan is accepted");
-    assert!(validated.apply(&vault).is_err());
+    assert_eq!(
+        validated.apply(&vault),
+        Err(ApplyError::UnitsDiffer {
+            container: ContainerId::Grid(tab(0)),
+            fingerprint: object(&rune).fingerprint(),
+            expected: 0,
+            observed: 1,
+        })
+    );
 }
 
 #[test]

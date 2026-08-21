@@ -1,9 +1,8 @@
-use std::collections::BTreeMap;
+use std::collections::BTreeSet;
 
-use crate::census::{Census, Conservation};
+use crate::census::{Census, Units};
 use crate::container::{CharacterName, ContainerId, GridId, PileId};
-use crate::error::{ApplyError, PileError, PlanError, RuleViolation};
-use crate::gold::Gold;
+use crate::error::{ApplyError, ConservationError, PileError, PlanError, RuleViolation};
 use crate::grid::{Grid, GridPosition};
 use crate::object::{Fingerprint, Object};
 use crate::pile::{Pile, PileUnits};
@@ -179,7 +178,7 @@ impl Plan {
         let before = Census::of(&vault);
         let mut outcome = vault;
         let mut realized = Vec::with_capacity(self.operations.len());
-        let mut duplicated: BTreeMap<Fingerprint, u32> = BTreeMap::new();
+        let mut duplicated = Units::new();
 
         for (index, operation) in self.operations.iter().enumerate() {
             let step =
@@ -191,13 +190,12 @@ impl Plan {
             realized.push(step);
         }
 
-        let after = Census::of(&outcome);
-        let conservation = Conservation::between(&before, &after, &duplicated);
         Ok(ValidatedPlan {
             operations: self.operations,
             realized,
+            before,
             outcome,
-            conservation,
+            duplicated,
         })
     }
 }
@@ -206,8 +204,9 @@ impl Plan {
 pub struct ValidatedPlan {
     operations: Vec<Operation>,
     realized: Vec<Realized>,
+    before: Census,
     outcome: Vault,
-    conservation: Conservation,
+    duplicated: Units,
 }
 
 impl ValidatedPlan {
@@ -227,61 +226,63 @@ impl ValidatedPlan {
     }
 
     #[must_use]
-    pub const fn conservation(&self) -> &Conservation {
-        &self.conservation
+    pub fn into_outcome(self) -> Vault {
+        self.outcome
+    }
+
+    #[must_use]
+    pub const fn duplicated(&self) -> &Units {
+        &self.duplicated
+    }
+
+    pub fn conserved(&self) -> Result<(), ConservationError> {
+        self.before
+            .conserved(&Census::of(&self.outcome), &self.duplicated)
     }
 
     pub fn apply(self, observed: &Vault) -> Result<AppliedPlan, ApplyError> {
-        let expected = Census::of(&self.outcome);
-        let seen = Census::of(observed);
+        let wanted: BTreeSet<ContainerId> = self.outcome.containers().map(|(id, _)| id).collect();
+        let seen: BTreeSet<ContainerId> = observed.containers().map(|(id, _)| id).collect();
+        if let Some(container) = wanted.difference(&seen).next() {
+            return Err(ApplyError::ContainerMissing {
+                container: container.clone(),
+            });
+        }
+        if let Some(container) = seen.difference(&wanted).next() {
+            return Err(ApplyError::ContainerUnexpected {
+                container: container.clone(),
+            });
+        }
 
-        for (container, fingerprint, count) in expected.entries() {
-            if !observed.holds(container) {
-                return Err(ApplyError::ContainerMissing {
-                    container: container.clone(),
-                });
-            }
-            let held = seen.units(container, fingerprint);
-            if held != count {
-                return Err(ApplyError::UnitsDiffer {
-                    container: container.clone(),
-                    fingerprint,
-                    expected: count,
-                    observed: held,
-                });
-            }
-        }
-        for (container, fingerprint, count) in seen.entries() {
-            if !self.outcome.holds(container) {
-                return Err(ApplyError::ContainerUnexpected {
-                    container: container.clone(),
-                });
-            }
-            let wanted = expected.units(container, fingerprint);
-            if wanted != count {
-                return Err(ApplyError::UnitsDiffer {
-                    container: container.clone(),
-                    fingerprint,
-                    expected: wanted,
-                    observed: count,
-                });
+        let expected = Census::of(&self.outcome);
+        let read_back = Census::of(observed);
+        let empty = Units::new();
+        for container in &wanted {
+            let wanted_units = expected.units(container).unwrap_or(&empty);
+            let held_units = read_back.units(container).unwrap_or(&empty);
+            let fingerprints: BTreeSet<Fingerprint> = wanted_units
+                .keys()
+                .chain(held_units.keys())
+                .copied()
+                .collect();
+            for fingerprint in fingerprints {
+                let expected_count = wanted_units.get(&fingerprint).copied().unwrap_or_default();
+                let observed_count = held_units.get(&fingerprint).copied().unwrap_or_default();
+                if expected_count != observed_count {
+                    return Err(ApplyError::UnitsDiffer {
+                        container: container.clone(),
+                        fingerprint,
+                        expected: expected_count,
+                        observed: observed_count,
+                    });
+                }
             }
         }
-        for (container, _) in self.outcome.containers() {
-            let wanted = self.outcome.gold(&container);
-            let held = observed.gold(&container);
-            if wanted != held {
-                return Err(ApplyError::GoldDiffers {
-                    container,
-                    expected: wanted.unwrap_or(Gold::ZERO),
-                    observed: held.unwrap_or(Gold::ZERO),
-                });
-            }
-        }
+        self.before.conserved(&read_back, &self.duplicated)?;
 
         Ok(AppliedPlan {
             realized: self.realized,
-            conservation: self.conservation,
+            duplicated: self.duplicated,
         })
     }
 }
@@ -289,7 +290,7 @@ impl ValidatedPlan {
 #[derive(Debug, PartialEq, Eq)]
 pub struct AppliedPlan {
     realized: Vec<Realized>,
-    conservation: Conservation,
+    duplicated: Units,
 }
 
 impl AppliedPlan {
@@ -299,8 +300,8 @@ impl AppliedPlan {
     }
 
     #[must_use]
-    pub const fn conservation(&self) -> &Conservation {
-        &self.conservation
+    pub const fn duplicated(&self) -> &Units {
+        &self.duplicated
     }
 }
 

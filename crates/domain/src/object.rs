@@ -104,10 +104,11 @@ pub struct Object {
 impl Object {
     pub fn new(item: Item) -> Result<Self, ModelError> {
         let code = item.code().unwrap_or(ItemCode::EAR);
+        let footprint = tables::footprint(code)?;
         Ok(Self {
             code,
             fingerprint: Fingerprint::of(&item)?,
-            footprint: tables::footprint(code)?,
+            footprint,
             carry_group: carry_group(&item),
             item,
         })

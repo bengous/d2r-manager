@@ -98,11 +98,7 @@ impl VaultBuilder {
         let container = ContainerId::Grid(id.clone());
         let mut grid = Grid::new(id.geometry());
         for (at, object) in placements {
-            grid.place(id, object, at)
-                .map_err(|violation| VaultError::Placement {
-                    container: container.clone(),
-                    violation,
-                })?;
+            grid.place(id, object, at)?;
         }
         match self.vault.grids.entry(id.clone()) {
             Entry::Occupied(_) => Err(VaultError::ContainerDeclaredTwice { container }),
@@ -157,7 +153,7 @@ impl VaultBuilder {
                         tab: tab_index,
                     };
                     let container = ContainerId::Grid(grid_id.clone());
-                    let placements = placements(&container, &items.0)?;
+                    let placements = placements(&container, items.0.iter())?;
                     builder = builder.grid(&grid_id, placements)?;
                     container
                 }
@@ -183,7 +179,7 @@ impl VaultBuilder {
         character: &CharacterName,
         save: &CharacterSave,
     ) -> Result<Self, VaultError> {
-        let mut pages: BTreeMap<CharacterPage, Vec<Item>> = BTreeMap::new();
+        let mut pages: BTreeMap<CharacterPage, Vec<&Item>> = BTreeMap::new();
         for item in &save.items.0 {
             let ItemPosition::Slot {
                 mode: SlotMode::Stored,
@@ -196,7 +192,7 @@ impl VaultBuilder {
             let Some(page) = character_page(page) else {
                 continue;
             };
-            pages.entry(page).or_default().push(item.clone());
+            pages.entry(page).or_default().push(item);
         }
         let mut builder = self;
         for (page, items) in pages {
@@ -205,7 +201,7 @@ impl VaultBuilder {
                 page,
             };
             let container = ContainerId::Grid(grid_id.clone());
-            let placements = placements(&container, &items)?;
+            let placements = placements(&container, items.into_iter())?;
             builder = builder.grid(&grid_id, placements)?;
         }
         Ok(builder)
@@ -230,12 +226,11 @@ const fn character_page(page: StorePage) -> Option<CharacterPage> {
     }
 }
 
-fn placements(
+fn placements<'a>(
     container: &ContainerId,
-    items: &[Item],
+    items: impl Iterator<Item = &'a Item>,
 ) -> Result<Vec<(GridPosition, Object)>, VaultError> {
     items
-        .iter()
         .map(|item| {
             let ItemPosition::Slot {
                 mode: SlotMode::Stored,

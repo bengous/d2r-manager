@@ -47,9 +47,10 @@ fn every_version_105_fixture_builds_a_vault() {
                         for slot in grid.slots() {
                             let footprint = slot.object().footprint();
                             assert!(
-                                u16::from(slot.origin().column()) + u16::from(footprint.width())
+                                u16::from(slot.origin().column().get())
+                                    + u16::from(footprint.width())
                                     <= u16::from(grid.geometry().columns())
-                                    && u16::from(slot.origin().row())
+                                    && u16::from(slot.origin().row().get())
                                         + u16::from(footprint.height())
                                         <= u16::from(grid.geometry().rows()),
                                 "{directory}/{name}: {id} holds an item outside its grid"
@@ -103,7 +104,7 @@ fn the_shared_stash_marker_file_counts_what_the_plan_records() {
     );
 
     let census = Census::of(&vault);
-    let counted: u32 = census.entries().map(|(_, _, count)| count).sum();
+    let counted: u32 = census.totals().values().sum();
     assert_eq!(counted, 146 + 1306);
 
     let pile_id = PileId::new(stash, TabIndex::new(5));
