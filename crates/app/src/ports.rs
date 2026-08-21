@@ -55,9 +55,11 @@ pub enum Availability {
     Missing,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub trait Guard: fmt::Debug {}
+
+#[derive(Debug)]
 pub enum Lease {
-    Held,
+    Held(Box<dyn Guard>),
     Busy,
 }
 

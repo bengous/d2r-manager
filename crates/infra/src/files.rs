@@ -1,9 +1,8 @@
-use std::cell::RefCell;
 use std::fs::{File, OpenOptions, TryLockError};
 use std::io::{ErrorKind, Write};
 use std::path::{Path, PathBuf};
 
-use app::ports::{FileError, Files, Lease, Locks, PathState};
+use app::ports::{FileError, Files, Guard, Lease, Locks, PathState};
 
 #[derive(Debug, Default)]
 pub struct RealFiles;
@@ -56,9 +55,7 @@ impl Files for RealFiles {
 }
 
 #[derive(Debug, Default)]
-pub struct FileLock {
-    held: RefCell<Option<File>>,
-}
+pub struct FileLock;
 
 impl Locks for FileLock {
     fn hold(&self, path: &Path) -> Result<Lease, FileError> {
@@ -69,13 +66,21 @@ impl Locks for FileLock {
             .open(path)
             .map_err(|source| failure(path, "open", source))?;
         match file.try_lock() {
-            Ok(()) => {
-                *self.held.borrow_mut() = Some(file);
-                Ok(Lease::Held)
-            }
+            Ok(()) => Ok(Lease::Held(Box::new(Handle(file)))),
             Err(TryLockError::WouldBlock) => Ok(Lease::Busy),
             Err(TryLockError::Error(source)) => Err(failure(path, "lock", source)),
         }
+    }
+}
+
+#[derive(Debug)]
+struct Handle(File);
+
+impl Guard for Handle {}
+
+impl Drop for Handle {
+    fn drop(&mut self) {
+        let _ = self.0.unlock();
     }
 }
 

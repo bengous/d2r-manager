@@ -101,9 +101,9 @@ impl Backup<'_> {
         self.on_main(&paths.repo)?;
         self.has_origin(&paths.repo)?;
 
-        if self.take_lock(&paths.lock)? == Lease::Busy {
+        let Lease::Held(_lease) = self.take_lock(&paths.lock)? else {
             return Ok(SyncOutcome::LockHeldElsewhere);
-        }
+        };
         if self.game()? == GameState::Running {
             return Ok(SyncOutcome::GameRunning);
         }

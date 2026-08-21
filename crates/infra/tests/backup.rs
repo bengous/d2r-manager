@@ -26,7 +26,7 @@ fn seeded(tree: &TempTree) -> PathBuf {
 
 fn run(tree: &TempTree, source: &Path, repo: &Path, processes: &StillProcesses) -> SyncOutcome {
     let files = RealFiles;
-    let locks = FileLock::default();
+    let locks = FileLock;
     let mirrors = Rsync;
     let repository = GitCommands;
     let clock = SteadyClock::default();
@@ -131,15 +131,21 @@ fn a_lock_another_handle_holds_stops_the_mirror() {
     let lock = tree.path("lock/backup.lock");
     std::fs::create_dir_all(lock.parent().expect("lock directory")).expect("lock directory");
 
-    let held = FileLock::default();
-    assert_eq!(
-        held.hold(&lock).expect("the first handle locks"),
-        Lease::Held
-    );
+    let held = FileLock;
+    let Lease::Held(lease) = held.hold(&lock).expect("the first handle locks") else {
+        panic!("the first handle takes the lock");
+    };
 
     let outcome = run(&tree, &source, &repo, &StillProcesses::quiet());
     assert_eq!(outcome, SyncOutcome::LockHeldElsewhere);
     assert!(!repo.join("saves").exists());
+
+    drop(lease);
+    let outcome = run(&tree, &source, &repo, &StillProcesses::quiet());
+    assert!(
+        matches!(outcome, SyncOutcome::Committed { .. }),
+        "a released lock leaves the mirror free: {outcome:?}"
+    );
 }
 
 #[test]

@@ -10,7 +10,7 @@ use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 
 use app::ports::{
-    Availability, Clock, CommandError, FileError, Files, Lease, Locks, MirrorPlan, Mirrors,
+    Availability, Clock, CommandError, FileError, Files, Guard, Lease, Locks, MirrorPlan, Mirrors,
     PathState, ProcessQuery, Processes, Repository, Sighting, Staged, TimerState, Timers,
 };
 use app::value::{Branch, CommitId, Timestamp, UnitName, ValueError};
@@ -191,9 +191,15 @@ fn missing(path: &Path, action: &'static str) -> FileError {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum Grant {
+    Held,
+    Busy,
+}
+
 #[derive(Debug)]
 pub(crate) struct FakeLocks {
-    pub(crate) lease: Lease,
+    pub(crate) grant: Grant,
     pub(crate) asked: RefCell<Vec<PathBuf>>,
 }
 
@@ -201,7 +207,7 @@ impl FakeLocks {
     #[must_use]
     pub(crate) fn holding() -> Self {
         Self {
-            lease: Lease::Held,
+            grant: Grant::Held,
             asked: RefCell::new(Vec::new()),
         }
     }
@@ -209,7 +215,7 @@ impl FakeLocks {
     #[must_use]
     pub(crate) fn busy() -> Self {
         Self {
-            lease: Lease::Busy,
+            grant: Grant::Busy,
             asked: RefCell::new(Vec::new()),
         }
     }
@@ -218,9 +224,17 @@ impl FakeLocks {
 impl Locks for FakeLocks {
     fn hold(&self, path: &Path) -> Result<Lease, FileError> {
         self.asked.borrow_mut().push(path.to_owned());
-        Ok(self.lease)
+        Ok(match self.grant {
+            Grant::Held => Lease::Held(Box::new(FakeGuard)),
+            Grant::Busy => Lease::Busy,
+        })
     }
 }
+
+#[derive(Debug)]
+pub(crate) struct FakeGuard;
+
+impl Guard for FakeGuard {}
 
 #[derive(Debug, Default)]
 pub(crate) struct FakeProcesses {
