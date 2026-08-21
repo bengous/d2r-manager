@@ -167,25 +167,31 @@ fn body(request: &mut Request) -> Result<Vec<u8>, Failure> {
 }
 
 fn from_this_machine(request: &Request) -> Result<(), Failure> {
-    for (field, named) in [("Origin", true), ("Host", false)] {
-        let Some(header) = request
+    let header = |name: &'static str| {
+        request
             .headers()
             .iter()
-            .find(|header| header.field.equiv(field))
-        else {
-            continue;
-        };
-        let value = header.value.as_str();
-        let host = if named { origin(value) } else { Some(value) };
-        if host.is_some_and(loopback) {
-            continue;
-        }
-        return Err(Failure::new(
-            Kind::ForbiddenOrigin,
-            format!("the {field} {value:?} is no name of this machine"),
-        ));
+            .find(|header| header.field.equiv(name))
+            .map(|header| header.value.as_str())
+    };
+    if let Some(value) = header("Origin")
+        && !origin(value).is_some_and(loopback)
+    {
+        return Err(elsewhere("Origin", value));
+    }
+    if let Some(value) = header("Host")
+        && !loopback(value)
+    {
+        return Err(elsewhere("Host", value));
     }
     Ok(())
+}
+
+fn elsewhere(field: &str, value: &str) -> Failure {
+    Failure::new(
+        Kind::ForbiddenOrigin,
+        format!("the {field} {value:?} is no name of this machine"),
+    )
 }
 
 fn origin(value: &str) -> Option<&str> {
