@@ -35,7 +35,7 @@ impl Fingerprint {
             });
         }
         let mut digest = [0u8; DIGEST_BYTES];
-        for (slot, pair) in digest.iter_mut().zip(text.as_bytes().chunks_exact(2)) {
+        for (slot, pair) in digest.iter_mut().zip(text.as_bytes().as_chunks::<2>().0) {
             let mut value = 0u8;
             for byte in pair {
                 let digit = char::from(*byte);
