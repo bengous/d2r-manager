@@ -220,7 +220,7 @@ sont la definition de « fait ».
 | Etape | Contenu | Fait quand |
 |---|---|---|
 | 1 | harnais : dumpers oracles, goldens, REPORT | goldens commites pour les 60 fichiers du corpus ; REPORT complet ; `just goldens` regenere tout |
-| 2 | spec `FORMAT.md` depuis le source D2SSharp + `d2r-saves:docs/research/format-objet-v105.md` | chaque champ du bitstream a sa largeur en bits et sa reference croisee |
+| 2 | spec `FORMAT.md` depuis D2SSharp et les mesures du corpus | chaque champ du bitstream a sa largeur en bits et sa reference croisee |
 | 3 | `format` lecture | 55/55 `v105/linux/` concordent avec les goldens C# ; legacy en erreur propre |
 | 4 | `format` ecriture | round-trip 55/55 octet pour octet ; checksum `.d2s` reproduit |
 | 5 | `domain` : grilles, regles, plans | tests par table verts ; la fusion de coffres du 2026-08-20 rejouee donne un resultat equivalent (reference : commit `2885c71` de d2r-saves) |

@@ -24,7 +24,7 @@ Toute autre version produit une erreur explicite portant la version lue.
 |---|---|---|
 | `reference/D2SSharp/src/D2SSharp` | MIT | source de la spec, portage permis |
 | `reference/halbu/src` | MIT | recoupement des offsets de l'en-tete |
-| `~/Work/d2r-saves/docs/research/format-objet-v105.md` | recherche locale | recoupement |
+| `fixtures/v105/` et `goldens/` | corpus personnel public | mesures et recoupement differentiel |
 
 Chaque champ ci-dessous porte sa reference croisee vers le source C# sous la
 forme `Fichier.cs:Membre`. Les chemins sont relatifs a

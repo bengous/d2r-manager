@@ -2,7 +2,8 @@
 
 Etat du coffre partage Linux avant et apres la fusion faite en jeu le
 2026-08-20, avec un personnage porteur et un echange temporaire du fichier de
-coffre (methode decrite dans `d2r-saves:docs/migration-windows-2026-08-20.md`).
+coffre. Le [README](../../../../../README.md#case-study-windows-to-linux-recovery)
+resume la migration complete.
 
 La source de la fusion est deja dans le corpus fige :
 `fixtures/v105/windows/ModernSharedStashSoftCoreV2.d2i`.
