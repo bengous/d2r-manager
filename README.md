@@ -77,8 +77,9 @@ cargo build --release -p cli
 target/release/d2r-manager --help
 ```
 
-The pinned Rust toolchain is in `rust-toolchain.toml`. `rsync`, `pgrep`, Git,
-and systemd user services are required only by the related operational commands.
+Building needs Rust at or above the `rust-version` of `Cargo.toml`. `rsync`,
+`pgrep`, Git, and systemd user services are required only by the related
+operational commands.
 
 The CLI provides these commands:
 
