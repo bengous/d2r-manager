@@ -107,7 +107,7 @@ fn a_code_filter_keeps_that_code_alone() {
             ..Needle::default()
         },
     );
-    assert!(!rows.is_empty());
+    assert_ne!(rows, []);
     assert!(rows.iter().all(|row| row.code == Some(code)));
 }
 
@@ -121,7 +121,7 @@ fn a_quality_filter_keeps_that_quality_alone() {
             ..Needle::default()
         },
     );
-    assert!(!rows.is_empty());
+    assert_ne!(rows, []);
     assert!(rows.iter().all(|row| row.quality == Quality::Unique));
 }
 
@@ -138,7 +138,7 @@ fn a_fingerprint_prefix_keeps_the_items_it_covers() {
             ..Needle::default()
         },
     );
-    assert!(!rows.is_empty());
+    assert_ne!(rows, []);
     assert!(rows.iter().all(|row| {
         row.fingerprint
             .to_string()
@@ -214,7 +214,7 @@ fn a_move_shows_up_as_one_loss_and_one_gain_in_the_comparison() {
 
 #[test]
 fn a_comparison_of_a_world_with_itself_is_empty() {
-    assert!(compare(&vault(), &vault()).is_empty());
+    assert_eq!(compare(&vault(), &vault()), []);
 }
 
 #[test]

@@ -168,7 +168,7 @@ fn the_listing_of_one_container_prints_that_container_alone() {
         "--container",
         "char/Gous/inventory",
     ]);
-    assert!(!text.is_empty());
+    assert_ne!(text, "");
     assert!(
         text.lines()
             .all(|line| line.starts_with("char/Gous/inventory"))
@@ -189,7 +189,7 @@ fn a_search_by_code_prints_that_code_alone() {
         "--quality",
         "magic",
     ]);
-    assert!(!text.is_empty());
+    assert_ne!(text, "");
     assert!(
         text.lines()
             .all(|line| line.contains("cm1") && line.contains("magic"))
@@ -399,7 +399,7 @@ fn a_plan_the_apply_would_refuse_is_refused_at_the_gate() {
     let mut out = Vec::new();
     let error = cli::run(&options, &mut out)
         .expect_err("a grid item carries no advanced stash stack field");
-    assert!(out.is_empty());
+    assert_eq!(out, b"");
     assert!(
         format!("{error}").contains("advanced stash stack field"),
         "{error}"
@@ -442,6 +442,6 @@ fn a_plan_the_rules_refuse_prints_nothing() {
     .expect("the arguments parse");
     let mut out = Vec::new();
     let error = cli::run(&options, &mut out).expect_err("no item carries that fingerprint");
-    assert!(out.is_empty());
+    assert_eq!(out, b"");
     assert!(format!("{error:#}").contains("fingerprint"), "{error:#}");
 }

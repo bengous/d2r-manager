@@ -279,7 +279,7 @@ fn a_move_applies_reads_back_and_keeps_every_item() {
         git(&repo, &["show", "--name-only", "--format=", "HEAD"]),
         format!("saves/{STASH}.d2i")
     );
-    assert!(git(&repo, &["status", "--porcelain"]).is_empty());
+    assert_eq!(git(&repo, &["status", "--porcelain"]), "");
 }
 
 #[test]
@@ -325,7 +325,7 @@ fn a_revert_of_the_apply_commit_puts_every_byte_back() {
             .find(fingerprint)
             .is_none()
     );
-    assert!(git(&repo, &["status", "--porcelain"]).is_empty());
+    assert_eq!(git(&repo, &["status", "--porcelain"]), "");
 }
 
 #[test]
@@ -378,7 +378,7 @@ fn a_duplication_writes_the_ledger_inside_the_commit_of_the_operation() {
         Census::of(&after).totals()[&fingerprint],
         Census::of(&before).totals()[&fingerprint] + 1
     );
-    assert!(git(&repo, &["status", "--porcelain"]).is_empty());
+    assert_eq!(git(&repo, &["status", "--porcelain"]), "");
 }
 
 #[test]

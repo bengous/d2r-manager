@@ -278,12 +278,12 @@ fn the_stash_merge_of_2026_08_20_replays_to_the_file_the_game_wrote() {
         pile_entries(outcome, &pile(&linux(), PILE_TAB)),
         pile_entries(&after, &pile(&linux(), PILE_TAB))
     );
-    assert!(
+    assert_eq!(
         outcome
             .pile(&pile(&windows(), PILE_TAB))
             .expect("windows pile")
-            .entries()
-            .is_empty()
+            .entries(),
+        []
     );
 }
 

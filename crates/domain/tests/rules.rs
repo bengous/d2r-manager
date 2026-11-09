@@ -127,13 +127,7 @@ fn a_grid_takes_an_item_that_fits() {
     let target = outcome.grid(&tab(0)).expect("target tab");
     assert_eq!(target.slots().len(), 1);
     assert_eq!(target.slots()[0].origin(), at(3, 4));
-    assert!(
-        outcome
-            .grid(&tab(1))
-            .expect("source tab")
-            .slots()
-            .is_empty()
-    );
+    assert_eq!(outcome.grid(&tab(1)).expect("source tab").slots(), []);
 }
 
 #[test]
@@ -339,13 +333,7 @@ fn a_pile_stacks_up_to_ninety_nine_then_adds_a_second_entry() {
     let pile = outcome.pile(&pile_tab(5)).expect("target pile");
     let counts: Vec<u8> = pile.entries().iter().map(|e| e.count().get()).collect();
     assert_eq!(counts, vec![99, 8]);
-    assert!(
-        outcome
-            .pile(&pile_tab(6))
-            .expect("source")
-            .entries()
-            .is_empty()
-    );
+    assert_eq!(outcome.pile(&pile_tab(6)).expect("source").entries(), []);
 }
 
 #[test]

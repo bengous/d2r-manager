@@ -137,8 +137,8 @@ fn a_running_game_stops_the_apply_before_anything_moves() {
         .expect_err("the game holds the saves");
     assert!(matches!(error, TransactionError::GameRunning), "{error}");
     assert_eq!(rig.files.bytes(stash_path()), Some(bytes));
-    assert!(rig.timers.called().is_empty());
-    assert!(rig.git.called().is_empty());
+    assert_eq!(rig.timers.called(), Vec::<String>::new());
+    assert_eq!(rig.git.called(), Vec::<String>::new());
 }
 
 #[test]
@@ -338,8 +338,8 @@ fn a_plan_that_changes_nothing_leaves_no_commit() {
         })
         .expect("an empty plan applies");
     assert_eq!(applied.record, Record::NothingChanged);
-    assert!(applied.written.is_empty());
-    assert!(applied.realized.is_empty());
+    assert_eq!(applied.written, Vec::<PathBuf>::new());
+    assert_eq!(applied.realized, []);
     assert!(
         !rig.git
             .called()
@@ -368,7 +368,7 @@ fn a_cell_the_grid_refuses_stops_the_plan_before_the_timer_moves() {
     };
     let error = rig.apply(&document).expect_err("the cell is taken");
     assert!(matches!(error, TransactionError::Refused(_)), "{error}");
-    assert!(rig.timers.called().is_empty());
+    assert_eq!(rig.timers.called(), Vec::<String>::new());
     assert!(
         !rig.git
             .called()
@@ -418,7 +418,7 @@ fn an_operation_the_rules_refuse_stops_the_whole_plan() {
     };
     assert_eq!(refused.index, 1);
     assert_eq!(rig.files.bytes(stash_path()), Some(bytes));
-    assert!(rig.timers.called().is_empty());
+    assert_eq!(rig.timers.called(), Vec::<String>::new());
     assert!(rig.git.called().iter().all(|call| call == "root"));
 }
 
@@ -438,7 +438,7 @@ fn a_repository_root_that_is_not_the_repository_stops_the_apply() {
         matches!(error, TransactionError::UnexpectedRoot { .. }),
         "{error}"
     );
-    assert!(rig.timers.called().is_empty());
+    assert_eq!(rig.timers.called(), Vec::<String>::new());
 }
 
 #[test]

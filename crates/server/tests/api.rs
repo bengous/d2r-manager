@@ -88,7 +88,7 @@ fn the_api_keeps_the_one_container_the_query_names() {
 
     let listing = items(&rig, &saves, "&container=char/Gous/inventory");
     let held = listing["items"].as_array().expect("a list of items");
-    assert!(!held.is_empty());
+    assert_ne!(held, &Vec::<Value>::new());
     assert!(
         held.iter()
             .all(|item| item["container"] == "char/Gous/inventory")
@@ -102,7 +102,7 @@ fn the_api_keeps_the_code_and_the_quality_the_query_names() {
 
     let listing = items(&rig, &saves, "&code=cm1&quality=magic");
     let held = listing["items"].as_array().expect("a list of items");
-    assert!(!held.is_empty());
+    assert_ne!(held, &Vec::<Value>::new());
     assert!(
         held.iter()
             .all(|item| item["code"] == "cm1" && item["quality"] == "magic")
@@ -345,8 +345,8 @@ fn a_move_from_a_grid_to_an_advanced_stash_tab_is_refused_before_any_write() {
     assert_eq!(answer.kind(), "projection_refused");
     assert_eq!(bytes_of(&saves), held);
     assert_eq!(git(&repo, &["rev-parse", "HEAD"]), commit);
-    assert!(git(&repo, &["status", "--porcelain"]).is_empty());
-    assert!(rig.timers.called().is_empty());
+    assert_eq!(git(&repo, &["status", "--porcelain"]), "");
+    assert_eq!(rig.timers.called(), Vec::<String>::new());
 }
 
 #[test]
@@ -392,7 +392,7 @@ fn two_applies_at_once_run_one_after_the_other() {
         1
     );
     assert_eq!(git(&repo, &["log", "--oneline"]).lines().count(), 3);
-    assert!(git(&repo, &["status", "--porcelain"]).is_empty());
+    assert_eq!(git(&repo, &["status", "--porcelain"]), "");
 }
 
 #[test]

@@ -638,7 +638,7 @@ fn the_contract_serves_the_loopback_only() {
         .at(&["servers"])
         .as_array()
         .expect("the servers of the contract");
-    assert!(!servers.is_empty());
+    assert_ne!(servers, &Vec::<Value>::new());
     for held in servers {
         let url = held["url"].as_str().expect("a url");
         let host = url
